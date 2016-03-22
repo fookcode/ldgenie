@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">豆豆精灵</string>
+    <string name="app_name">小豆</string>
     <string name="action_settings">设置</string>
     
     <string name="message_button_name">消息</string>
     <string name="contacts_button_name">联系人</string>
     <string name="pandora_button_name">潘朵拉</string>
 
+    <string name="drawer_open">打开设置</string>
+    <string name="drawer_close">关闭设置</string>
+
+    <string-array name="configItems">
+        <item>配置1</item>
+        <item>配置2</item>
+    </string-array>
 
 </resources>

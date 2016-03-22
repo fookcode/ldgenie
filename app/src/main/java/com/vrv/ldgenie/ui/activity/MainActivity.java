@@ -4,15 +4,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.common.widget.ButtonActiveFragmentOnClickListener;
@@ -32,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
 	private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
 
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//无标题栏
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//无状态栏
 		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
@@ -47,13 +55,45 @@ public class MainActivity extends AppCompatActivity {
 		int height = outMetrics.heightPixels;
 		int width = outMetrics.widthPixels;
 
+        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.configDrawer);
+        final ListView configListView = (ListView)findViewById(R.id.configListView);
+        LayoutParams layoutParams = configListView.getLayoutParams();
+        layoutParams.width = width * 4 / 5;
+        configListView.setLayoutParams(layoutParams);
+
+        configListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(R.array.configItems)));
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open, R.string.drawer_close) {
+            private void onDrawClosed(View v) {
+                super.onDrawerClosed(v);
+                Toast.makeText(MainActivity.this, "onDrawClosed", Toast.LENGTH_SHORT).show();
+            }
+
+            private void onDrawOpened(View v) {
+                super.onDrawerOpened(v);
+                Toast.makeText(MainActivity.this, "onDrawOpened", Toast.LENGTH_SHORT).show();
+            }
+        };
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 		//设置上部状态条高度
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-		LayoutParams toolbarLayoutParams = toolbar.getLayoutParams();
-        toolbarLayoutParams.height = height * 7 / 90;
-        toolbar.setLayoutParams(toolbarLayoutParams);
-        toolbar.setLogo(R.drawable.ic_launcher);
+		//LayoutParams toolbarLayoutParams = toolbar.getLayoutParams();
+        //toolbarLayoutParams.height = height * 7 / 90;
+        //toolbar.setLayoutParams(toolbarLayoutParams);
+//        toolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_drawer);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayShowTitleEnabled(false);
+        //ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
+
+
 
         //初始化装载聊天列表
         MessageFragment fragment = new MessageFragment();
@@ -88,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 		//Log.d("x", "z");
 
 		for(Button btn: buttons) {
-			LayoutParams layoutParams = btn.getLayoutParams();
+			layoutParams = btn.getLayoutParams();
 			layoutParams.width = width / 3;
 			btn.setLayoutParams(layoutParams);
             btn.setOnClickListener(new ButtonActiveFragmentOnClickListener(fragments, fragmentManager));
@@ -107,10 +147,15 @@ public class MainActivity extends AppCompatActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
+            return true;
+        }
+
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}
+
 		return super.onOptionsItemSelected(item);
 	}
 
