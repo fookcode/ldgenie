@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.vrv.ldgenie.ui.activity.MainActivity;
+
 public class FragmentButton extends Button {
 	private String tag = "";
 	
@@ -41,7 +43,6 @@ public class FragmentButton extends Button {
 				// TODO Auto-generated method stub
 				//Log.v(tag, v.getParent().getClass().getName());
                 LinearLayout ll = (LinearLayout)v.getParent();
-
 //                MessageFragment fragment = new MessageFragment();
 //                FragmentTransaction ft = getFragmentManager().beginTransaction();
 //                ft.replace(R.id.fragment_layout, fragment, TAG_CHAT_FRAGMENT);

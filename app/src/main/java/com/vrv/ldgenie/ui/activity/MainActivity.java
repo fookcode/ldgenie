@@ -1,5 +1,6 @@
 package com.vrv.ldgenie.ui.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.*;
+
 public class MainActivity extends AppCompatActivity {
 
 	public static final String TAG_MESSAGE_FRAGMENT = "MESSAGE_FRAGMENT";
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 	public static final String TAG_PANDORA_FRAGMENT = "PANDORA_FRAGMENT";
     public static final String TAG_CURRENT_FRAGMENT = "CURRENT_FRAGMENT";
 
-	private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
+    private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -57,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.configDrawer);
         final ListView configListView = (ListView)findViewById(R.id.configListView);
+        configListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(view.getClass().getName(), String.valueOf(view.getId()) + String.valueOf(position));
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        });
         LayoutParams layoutParams = configListView.getLayoutParams();
         layoutParams.width = width * 4 / 5;
         configListView.setLayoutParams(layoutParams);
@@ -65,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             private void onDrawClosed(View v) {
                 super.onDrawerClosed(v);
-                Toast.makeText(MainActivity.this, "onDrawClosed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "onDrawClosed", Toast.LENGTH_SHORT).show();
             }
 
             private void onDrawOpened(View v) {
                 super.onDrawerOpened(v);
-                Toast.makeText(MainActivity.this, "onDrawOpened", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "onDrawOpened", Toast.LENGTH_SHORT).show();
             }
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayShowTitleEnabled(false);
+        //ab.setDisplayShowTitleEnabled(false);
         //ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
@@ -158,7 +171,5 @@ public class MainActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }
