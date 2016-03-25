@@ -1,4 +1,4 @@
-package com.example.sdkdemo.bean;
+package com.vrv.ldgenie.common.sdk.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;

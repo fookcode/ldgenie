@@ -7,6 +7,6 @@
     <dimen name="no_margin">0dp</dimen>
     <dimen name="no_padding">0dp</dimen>
 
-    <dimen name="message_group_avatar_horizontal_margin">5dp</dimen>
+    <dimen name="message_group_avatar_margin">5dp</dimen>
 
 </resources>

@@ -24,9 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.vrv.imsdk.model.Chat;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.common.widget.ButtonActiveFragmentOnClickListener;
-import com.vrv.ldgenie.ui.activity.fragment.MessageFragment;
+import com.vrv.ldgenie.ui.activity.fragment.ChatFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //初始化装载聊天列表
-        MessageFragment fragment = new MessageFragment();
+        ChatFragment fragment = new ChatFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_layout, fragment, TAG_MESSAGE_FRAGMENT);

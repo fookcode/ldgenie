@@ -1,4 +1,4 @@
-package com.vrv.ldgenie.action;
+package com.vrv.ldgenie.common.sdk.action;
 
 import android.os.Bundle;
 import android.os.Message;

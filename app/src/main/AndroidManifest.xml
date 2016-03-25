@@ -25,7 +25,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:name=".ldGenieApplication">
+        android:name=".ldGenieApplication"
+        android:label="ldgenie">
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:theme="@style/AppTheme"

@@ -16,4 +16,19 @@
         <item>配置2</item>
     </string-array>
 
+    <string name="computer">[电脑]</string>
+    <string name="phone">[手机]</string>
+    <string name="pad">[平板]</string>
+    <string name="html">[网页]</string>
+    <string name="audio">[语音]</string>
+    <string name="image">[图片]</string>
+    <string name="file">[文件]</string>
+    <string name="position">[位置]</string>
+    <string name="card">[名片]</string>
+    <string name="weakHint">[提示]</string>
+    <string name="unknowMsg">[未知]</string>
+    <string name="sending">[发送中]</string>
+    <string name="send_fail">[发送失败]</string>
+    <string name="draft">[草稿]</string>
+
 </resources>
