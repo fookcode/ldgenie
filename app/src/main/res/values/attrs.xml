@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="testAttr">
+        <attr name="attr1" format="string" />
+        <attr name="attr3" format="string" />
+    </declare-styleable>
+
 </resources>

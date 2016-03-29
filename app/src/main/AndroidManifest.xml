@@ -26,17 +26,31 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:name=".ldGenieApplication"
-        android:label="ldgenie">
-
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/app_name">
+            android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--必须添加的组件  begin-->
+        <service android:name="com.vrv.imsdk.service.ApNotifyService"/>
+        <receiver android:name="com.vrv.imsdk.receiver.ApNotifyReceiver">
+            <intent-filter>
+                <action android:name="com.vrv.imsdk.receiver.ApNotifyReceiver"/>
+            </intent-filter>
+        </receiver>
+        <!-- android:process=":remote"/> -->
+        <meta-data
+            android:name="com.vrv.imsdk"
+            android:value="0l"/>
+        <!--必须添加的组件  end-->
+
+        <activity android:name=".ui.activity.MainActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

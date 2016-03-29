@@ -1,6 +1,7 @@
 package com.vrv.ldgenie.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
+
+    public static void startMainActivity(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 			btn.setLayoutParams(layoutParams);
             btn.setOnClickListener(new ButtonActiveFragmentOnClickListener(fragments, fragmentManager));
 		}
+
 	}
 
 	@Override

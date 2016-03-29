@@ -31,4 +31,11 @@
     <string name="send_fail">[发送失败]</string>
     <string name="draft">[草稿]</string>
 
+    <string name="login_name_hint">手机号/豆豆号</string>
+    <string name="login_password_hint">密码</string>
+    <string name="login_button_text">登   录</string>
+
+    <string name="login_usercode_empty_hint">请输入正确的手机号/豆豆号</string>
+    <string name="login_password_empty_hint">请输入正确的密码</string>
+
 </resources>

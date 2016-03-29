@@ -25,12 +25,16 @@ public abstract class RequestHandler extends Handler {
     public static final int DIS_PRO = 3;
 
     private Dialog dialog;
+    private Context context;
 
-    public RequestHandler() {
-
-    }
+    public RequestHandler(){};
 
     public RequestHandler(Context context) {
+        this.context = context;
+    };
+
+    public Context getContext() {
+        return context;
     }
 
     @Override
@@ -57,6 +61,7 @@ public abstract class RequestHandler extends Handler {
                         dialog = null;
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
         }
@@ -65,6 +70,6 @@ public abstract class RequestHandler extends Handler {
     public abstract void handleSuccess(Message msg);
 
     public void handleFailure(int code, String message) {
-        Toast.makeText(ldGenieApplication.getAppContext(), "Code=" + code, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, code + ":" + message, Toast.LENGTH_SHORT).show();
     }
 }

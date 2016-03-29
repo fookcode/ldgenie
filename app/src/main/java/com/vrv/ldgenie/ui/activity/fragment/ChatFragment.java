@@ -36,23 +36,13 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        boolean bLogin = RequestHelper.login("008618602701898", "12345678", "vrv", "0086", new RequestHandler() {
-            @Override
-            public void handleSuccess(Message msg) {
-                Toast.makeText(getActivity(), "RequestHandler", Toast.LENGTH_SHORT);
-            }
-        });
-        if (bLogin) {
-            ArrayList<Chat> chatArrayList = SDKManager.instance().getChatList().getList();
-            messageQueue.addAll(chatArrayList);
-            setNotifyListener();
-            chatAdapter = new ChatAdapter(getActivity(), messageQueue);
 
-        }
+        ArrayList<Chat> chatArrayList = SDKManager.instance().getChatList().getList();
+        messageQueue.addAll(chatArrayList);
+        setNotifyListener();
+        chatAdapter = new ChatAdapter(getActivity(), messageQueue);
 
-
-
-        super.onCreate(savedInstanceState);
+         super.onCreate(savedInstanceState);
     }
 
 	@Override
@@ -69,8 +59,6 @@ public class ChatFragment extends Fragment {
                 //
             }
         });
-
-
         return result;
 	}
 

@@ -24,5 +24,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="testStyle" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="attr3">testNull</item>
+        <item name="attr1">?attr/attr3</item>
+    </style>
 
 </resources>
