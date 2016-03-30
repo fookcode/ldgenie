@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.vrv.ldgenie.R;
-import com.vrv.ldgenie.bpo.LoginRequestHandler;
+import com.vrv.ldgenie.bpo.GenieRequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 
@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String sUserCode="", sPwd = "";
 
-    private LoginRequestHandler handler = new LoginRequestHandler(this);
+    private GenieRequestHandler handler = new GenieRequestHandler(GenieRequestHandler.HANDLER_LOGIN, this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -3,8 +3,9 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/configDrawer"
 	android:layout_height="match_parent"
-	android:layout_width="match_parent">
-	<LinearLayout
+	android:layout_width="match_parent"
+	>
+	<android.support.v7.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
@@ -21,7 +22,7 @@
 			android:layout_height="0dp"
 			android:layout_weight="1">
 		</FrameLayout>
-		<LinearLayout
+		<android.support.v7.widget.LinearLayoutCompat
 			android:id="@+id/actionBar"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
@@ -61,17 +62,45 @@
 				android:background="@drawable/button"
 				android:textColor="@color/white"
 			 />
-		</LinearLayout>
+		</android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
 
-	</LinearLayout>
-	<ListView
-		android:layout_width="240dp"
-		android:layout_height="match_parent"
-		android:layout_gravity="start"
-		android:choiceMode="singleChoice"
-		android:divider="@android:color/transparent"
-		android:dividerHeight="0dp"
-		android:background="#111"
-		android:id="@+id/configListView">
-	</ListView>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/drawerPanel"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+		android:background="@color/DarkSeaGreen">
+        <ListView
+            android:id="@+id/drawerListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:foreground="@color/black"
+            android:divider="@android:color/holo_red_dark"
+            android:dividerHeight="1dp"
+            android:layout_weight="1"
+            >
+        </ListView>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/red"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/btnLogout"
+				android:layout_marginRight="@dimen/login_button_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_margin="@dimen/login_button_margin"
+                android:text="@string/logout_button_text"
+                />
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v4.widget.DrawerLayout>

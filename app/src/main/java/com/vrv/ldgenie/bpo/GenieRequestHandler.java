@@ -12,17 +12,29 @@ import com.vrv.ldgenie.ui.activity.MainActivity;
 /**
  * Created by kinee on 2016/3/29.
  */
-public class LoginRequestHandler extends RequestHandler {
+public class GenieRequestHandler extends RequestHandler {
+    public static final int HANDLER_LOGIN = 1;
+    public static final int HANDLER_LOGOUT = 2;
+    private int handlerType;
 
-//    private static final int LOGIN_USERCODE_PASSWORD_ERROR_HINT = 112;
 
-    public LoginRequestHandler(Context context) {
+    public GenieRequestHandler(int handlerType, Context context) {
         super(context);
+        this.handlerType = handlerType;
     }
 
     @Override
     public void handleSuccess(Message msg) {
-        MainActivity.startMainActivity((Activity)getContext());
+        switch (handlerType) {
+            case HANDLER_LOGIN: {
+                MainActivity.startMainActivity((Activity)getContext());
+                break;
+            }
+            case HANDLER_LOGOUT: {
+                LoginActivity.startLoginActivity((Activity)getContext());
+                break;
+            }
+        }
     }
 
 //    @Override

@@ -3,6 +3,7 @@ package com.vrv.ldgenie.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +29,9 @@ import android.widget.Toast;
 
 import com.vrv.imsdk.model.Chat;
 import com.vrv.ldgenie.R;
+import com.vrv.ldgenie.bpo.GenieRequestHandler;
+import com.vrv.ldgenie.common.sdk.action.RequestHandler;
+import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 import com.vrv.ldgenie.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.ldgenie.ui.activity.fragment.ChatFragment;
 
@@ -46,7 +51,18 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private int clientWidth, clientHeight;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;               //抽屉Listener
+    private LinearLayoutCompat drawerPanel;
+    private  ListView drawerListView;
+
+    private Toolbar  toolBar;
+
+    private FragmentManager fragmentManager;
+
+    private LinearLayoutCompat actionBar;
 
     public static void startMainActivity(Activity activity) {
         Intent intent = new Intent();
@@ -58,32 +74,51 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        //由于使用Theme,以下两个设置由Theme完成
 		//无标题栏
 		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//无状态栏
 		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(R.layout.activity_main);
 
-		//ActionBar图标起始位置横向：1/14 ActionBar纵向高度：8/90
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		this.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-		int height = outMetrics.heightPixels;
-		int width = outMetrics.widthPixels;
+		getClientSize();
 
-        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.configDrawer);
-        final ListView configListView = (ListView)findViewById(R.id.configListView);
-        configListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        initDrawer();
+
+        initToolbar();
+
+        initFragment();
+
+		initActionBar();
+
+	}
+
+    private void getClientSize() {
+        //ActionBar图标起始位置横向：1/14 ActionBar纵向高度：8/90
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        clientHeight = outMetrics.heightPixels;
+        clientWidth = outMetrics.widthPixels;
+    }
+
+    private void initDrawer() {
+        drawerLayout = (DrawerLayout)findViewById(R.id.configDrawer);
+        drawerPanel = (LinearLayoutCompat)findViewById(R.id.drawerPanel);
+        LayoutParams layoutParams = drawerPanel.getLayoutParams();
+        layoutParams.width = clientWidth * 4 / 5;
+        drawerPanel.setLayoutParams(layoutParams);
+
+        drawerListView = (ListView)findViewById(R.id.drawerListView);
+        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(view.getClass().getName(), String.valueOf(view.getId()) + String.valueOf(position));
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
         });
-        LayoutParams layoutParams = configListView.getLayoutParams();
-        layoutParams.width = width * 4 / 5;
-        configListView.setLayoutParams(layoutParams);
 
-        configListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(R.array.configItems)));
+        drawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(R.array.configItems)));
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             private void onDrawClosed(View v) {
                 super.onDrawerClosed(v);
@@ -96,67 +131,79 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
-		//设置上部状态条高度
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-		//LayoutParams toolbarLayoutParams = toolbar.getLayoutParams();
+
+        Button btnLogout = (Button)findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestHelper.logout(new GenieRequestHandler(GenieRequestHandler.HANDLER_LOGOUT, MainActivity.this));
+            }
+        });
+    }
+
+    private void initToolbar() {
+        //设置上部状态条高度
+       toolBar = (Toolbar) findViewById(R.id.toolBar);
+        //LayoutParams toolbarLayoutParams = toolbar.getLayoutParams();
         //toolbarLayoutParams.height = height * 7 / 90;
         //toolbar.setLayoutParams(toolbarLayoutParams);
-//        toolbar.setLogo(R.drawable.ic_launcher);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        //toolbar.setLogo(R.drawable.ic_launcher);
+        setSupportActionBar(toolBar);
+        toolBar.setNavigationIcon(R.drawable.ic_drawer);
+        toolBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        ActionBar ab = getSupportActionBar();
-        //ab.setDisplayShowTitleEnabled(false);
-        //ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeButtonEnabled(true);
 
+        ActionBar supportActionBarr = getSupportActionBar();
+        //supportActionBarr.setDisplayShowTitleEnabled(false);
+        //supportActionBarr.setDisplayHomeAsUpEnabled(true);
+        supportActionBarr.setHomeButtonEnabled(true);
+    }
 
-
-        //初始化装载聊天列表
+    private void initFragment() {
+        //初始化装载聊天列表, 这部分操作可以使用ViewPager代替
         ChatFragment fragment = new ChatFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_layout, fragment, TAG_MESSAGE_FRAGMENT);
         fragmentTransaction.commit();
 
         fragments.put(TAG_MESSAGE_FRAGMENT, fragment);
         fragments.put(TAG_CURRENT_FRAGMENT, fragment);
+    }
 
-		//设置下部动作条高度
-		LinearLayout actionBar = (LinearLayout) findViewById(R.id.actionBar);
-		//width = actionBar.getHeight();
-		LayoutParams actionBarParams = actionBar.getLayoutParams();
-		actionBarParams.height = height * 8 / 90;
-		actionBar.setLayoutParams(actionBarParams);
+    private void initActionBar() {
+        //设置下部动作条高度
+        actionBar = (LinearLayoutCompat) findViewById(R.id.actionBar);
+        //width = actionBar.getHeight();
+        LayoutParams actionBarParams = actionBar.getLayoutParams();
+        actionBarParams.height = clientHeight * 8 / 90;
+        actionBar.setLayoutParams(actionBarParams);
 
-		//设置动作按钮位置、大小
-		List<Button> buttons = new ArrayList<Button>();
-		Button btnMessage = (Button) findViewById(R.id.message);
+        //设置动作按钮位置、大小
+        List<Button> buttons = new ArrayList<Button>();
+        Button btnMessage = (Button) findViewById(R.id.message);
         btnMessage.setTag(TAG_MESSAGE_FRAGMENT);
-		buttons.add(btnMessage);
+        buttons.add(btnMessage);
 
-		Button btnContacts = (Button) findViewById(R.id.contacts);
+        Button btnContacts = (Button) findViewById(R.id.contacts);
         btnContacts.setTag(TAG_CONTACTS_FRAGMENT);
-		buttons.add(btnContacts);
+        buttons.add(btnContacts);
 
-		Button btnPandora = (Button) findViewById(R.id.pandora);
-		btnPandora.setTag(TAG_PANDORA_FRAGMENT);
-		buttons.add(btnPandora);
-		//Log.d("x", "z");
+        Button btnPandora = (Button) findViewById(R.id.pandora);
+        btnPandora.setTag(TAG_PANDORA_FRAGMENT);
+        buttons.add(btnPandora);
 
-		for(Button btn: buttons) {
-			layoutParams = btn.getLayoutParams();
-			layoutParams.width = width / 3;
-			btn.setLayoutParams(layoutParams);
+        for(Button btn: buttons) {
+            LayoutParams layoutParams = btn.getLayoutParams();
+            layoutParams.width = clientWidth / 3;
+            btn.setLayoutParams(layoutParams);
             btn.setOnClickListener(new ButtonActiveFragmentOnClickListener(fragments, fragmentManager));
-		}
-
-	}
+        }
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
