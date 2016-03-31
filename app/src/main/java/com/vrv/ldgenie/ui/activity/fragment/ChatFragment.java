@@ -8,9 +8,11 @@
 
 package com.vrv.ldgenie.ui.activity.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.common.sdk.action.RequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 import com.vrv.ldgenie.adapter.ChatAdapter;
+import com.vrv.ldgenie.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +59,11 @@ public class ChatFragment extends Fragment {
         lvMessageGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
+                Chat chat = (Chat)parent.getItemAtPosition(position);
+                if (chat != null) {
+                    MessageActivity.startMessageActivity(ChatFragment.this.getActivity(), chat);
+                }
+
             }
         });
         return result;

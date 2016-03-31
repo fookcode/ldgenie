@@ -3,7 +3,6 @@ package com.vrv.ldgenie.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,20 +16,15 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.vrv.imsdk.model.Chat;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.bpo.GenieRequestHandler;
-import com.vrv.ldgenie.common.sdk.action.RequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 import com.vrv.ldgenie.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.ldgenie.ui.activity.fragment.ChatFragment;
@@ -39,8 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.app.Activity.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        //由于使用Theme,以下两个设置由Theme完成
+        //使用Theme,以下两个设置由Theme完成
 		//无标题栏
 		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//无状态栏
