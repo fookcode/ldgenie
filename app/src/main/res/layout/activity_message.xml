@@ -20,18 +20,21 @@
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnMessageFace"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="^.^"
             />
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edtMessage"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="32dp"
-            android:layout_height="32dp" />
+            android:id="@+id/btnSendMessage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text=">"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
 

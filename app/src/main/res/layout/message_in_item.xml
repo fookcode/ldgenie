@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/message_group_margin">
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgMessageInAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/message_group_avatar_margin"
+        android:layout_gravity="center_vertical"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvMessageIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:padding="3dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="58dp"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+        android:background="@drawable/message_bubble"/>
+</LinearLayout>

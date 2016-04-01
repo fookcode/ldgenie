@@ -15,6 +15,7 @@ import com.vrv.ldgenie.ui.activity.MainActivity;
 public class GenieRequestHandler extends RequestHandler {
     public static final int HANDLER_LOGIN = 1;
     public static final int HANDLER_LOGOUT = 2;
+    public static final int HANDLER_SEND_MESSAGE = 3;
     private int handlerType;
 
 

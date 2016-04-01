@@ -1,6 +1,7 @@
 package com.vrv.ldgenie.ui.activity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.vrv.imsdk.SDKManager;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.bpo.GenieRequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHandler;
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 sUserCode = ((EditText)findViewById(R.id.edtUserCode)).getText().toString();
                 if(sUserCode.isEmpty()) {
                     Toast.makeText(LoginActivity.this, R.string.login_usercode_empty_hint, Toast.LENGTH_SHORT).show();
@@ -45,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 handler.sendEmptyMessage(RequestHandler.SHOW_PRO);
                 try {
+
                     boolean login = RequestHelper.login(sUserCode, sPwd, AREA_CODE,NATIONAL_CODE, handler);
                     if(!login) {
                         handler.sendEmptyMessage(RequestHandler.REQUEST_FALSE);

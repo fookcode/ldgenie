@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.vrv.imsdk.SDKManager;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.bpo.GenieRequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHelper;
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SDKManager.instance().destroy();
                 RequestHelper.logout(new GenieRequestHandler(GenieRequestHandler.HANDLER_LOGOUT, MainActivity.this));
             }
         });

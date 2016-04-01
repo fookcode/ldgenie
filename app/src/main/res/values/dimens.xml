@@ -8,6 +8,7 @@
     <dimen name="no_padding">0dp</dimen>
 
     <dimen name="message_group_avatar_margin">5dp</dimen>
+    <dimen name="message_group_margin">8dp</dimen>
 
     <dimen name="login_edit_padding">5dp</dimen>
     <dimen name="login_button_margin">8dp</dimen>
