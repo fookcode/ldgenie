@@ -5,24 +5,25 @@
     android:gravity="center_horizontal|center_vertical"
     android:layout_margin="@dimen/list_item_margin">
         <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/chatItemAvatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/contactAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/message_group_avatar_margin"/>
-    <TextView
-        android:id="@+id/chatItemTitle"
+            android:layout_margin="@dimen/message_group_avatar_margin"
+            />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/contactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/chatItemAvatar"
+        android:layout_toRightOf="@id/contactAvatar"
         android:layout_alignParentTop="true"
         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         android:singleLine="true"/>
-    <TextView
-        android:id="@+id/chatItemRecentMessage"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/contactSign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/chatItemAvatar"
+        android:layout_toRightOf="@id/contactAvatar"
         android:layout_alignParentBottom="true"
         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
         android:singleLine="true"/>

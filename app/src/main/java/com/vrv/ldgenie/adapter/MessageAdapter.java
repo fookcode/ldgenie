@@ -136,11 +136,12 @@ public class MessageAdapter extends BaseAdapter {
         return convertView;
     }
 
+    class ViewHolder {
+        AppCompatImageView imgAvatar;
+        AppCompatTextView tvMessage;
+
+        public ViewHolder() {};
+    }
+
 }
 
-class ViewHolder {
-    AppCompatImageView imgAvatar;
-    AppCompatTextView tvMessage;
-
-    public ViewHolder() {};
-}

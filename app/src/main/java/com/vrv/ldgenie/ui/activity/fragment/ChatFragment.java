@@ -27,6 +27,7 @@ import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.common.sdk.action.RequestHandler;
 import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 import com.vrv.ldgenie.adapter.ChatAdapter;
+import com.vrv.ldgenie.common.sdk.utils.BaseInfoBean;
 import com.vrv.ldgenie.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
@@ -54,14 +55,15 @@ public class ChatFragment extends Fragment {
         //Log.v("container", String.valueOf(container.getClass().getName()));
 
         View result =  inflater.inflate(R.layout.fragment_chat, container, false);
-        final ListView lvMessageGroup = (ListView)result.findViewById(R.id.messageGroupList);
+        final ListView lvMessageGroup = (ListView)result.findViewById(R.id.listChat);
         lvMessageGroup.setAdapter(chatAdapter);
         lvMessageGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Chat chat = (Chat)parent.getItemAtPosition(position);
                 if (chat != null) {
-                    MessageActivity.startMessageActivity(ChatFragment.this.getActivity(), chat);
+                    BaseInfoBean bean = BaseInfoBean.chat2BaseInfo(chat);
+                    MessageActivity.startMessageActivity(ChatFragment.this.getActivity(), bean);
                 }
 
             }

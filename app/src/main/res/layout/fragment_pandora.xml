@@ -6,7 +6,8 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue"
-        android:text="Pandora" />
+        android:background="@color/LightGrey"
+        android:text="拼命建设中...敬请期待"
+        android:gravity="center_horizontal|center_vertical"/>
 
 </FrameLayout>

@@ -9,10 +9,11 @@
         >
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.ListViewCompat
-        android:id="@+id/lvMessage"
+        android:id="@+id/listMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clickable="false">
     </android.support.v7.widget.ListViewCompat>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
