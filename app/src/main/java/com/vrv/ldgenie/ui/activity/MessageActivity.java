@@ -9,8 +9,8 @@ import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.ChatMsg;
@@ -84,8 +84,8 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        final Button btnSendMessage = (Button)findViewById(R.id.btnSendMessage);
-        final EditText edtMessage = (EditText)findViewById(R.id.edtMessage);
+        final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
+        final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
 
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override

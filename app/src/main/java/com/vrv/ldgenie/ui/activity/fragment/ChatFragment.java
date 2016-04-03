@@ -8,24 +8,18 @@
 
 package com.vrv.ldgenie.ui.activity.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.support.v7.widget.ListViewCompat;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.ldgenie.R;
-import com.vrv.ldgenie.common.sdk.action.RequestHandler;
-import com.vrv.ldgenie.common.sdk.action.RequestHelper;
 import com.vrv.ldgenie.adapter.ChatAdapter;
 import com.vrv.ldgenie.common.sdk.utils.BaseInfoBean;
 import com.vrv.ldgenie.ui.activity.MessageActivity;
@@ -55,7 +49,7 @@ public class ChatFragment extends Fragment {
         //Log.v("container", String.valueOf(container.getClass().getName()));
 
         View result =  inflater.inflate(R.layout.fragment_chat, container, false);
-        final ListView lvMessageGroup = (ListView)result.findViewById(R.id.listChat);
+        final ListViewCompat lvMessageGroup = (ListViewCompat)result.findViewById(R.id.listChat);
         lvMessageGroup.setAdapter(chatAdapter);
         lvMessageGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

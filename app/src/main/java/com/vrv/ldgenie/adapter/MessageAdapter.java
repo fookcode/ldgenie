@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
@@ -77,7 +76,7 @@ public class MessageAdapter extends BaseAdapter {
                 break;
             }
             case MESSAGE_OUT: {
-                convertView = (LinearLayout)LayoutInflater.from(context).inflate(R.layout.message_out_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.message_out_item, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOut);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageOutAvatar);

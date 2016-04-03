@@ -3,23 +3,17 @@ package com.vrv.ldgenie.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Environment;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 
 import com.vrv.imsdk.model.Chat;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.common.sdk.utils.ChatMsgUtil;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,14 +46,14 @@ public class ChatAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.chat_item, null);
             viewHolder = new ViewHolder();
 
-            viewHolder.avatar = (ImageView)convertView.findViewById(R.id.chatItemAvatar);
+            viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.chatItemAvatar);
             ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
             layoutParams.width = 72;
             layoutParams.height = 72;
             viewHolder.avatar.setLayoutParams(layoutParams);
 
-            viewHolder.title = (TextView)convertView.findViewById(R.id.chatItemTitle);
-            viewHolder.recentMessage = (TextView)convertView.findViewById(R.id.chatItemRecentMessage);
+            viewHolder.title = (AppCompatTextView)convertView.findViewById(R.id.chatItemTitle);
+            viewHolder.recentMessage = (AppCompatTextView)convertView.findViewById(R.id.chatItemRecentMessage);
             convertView.setTag(viewHolder);
         }
         else {
@@ -89,11 +83,11 @@ public class ChatAdapter extends BaseAdapter {
 
     class ViewHolder {
 
-        public ImageView avatar;
+        public AppCompatImageView avatar;
 
-        public TextView title;
+        public AppCompatTextView title;
 
-        public TextView recentMessage;
+        public AppCompatTextView recentMessage;
 
         public ViewHolder() {};
 

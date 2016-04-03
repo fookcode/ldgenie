@@ -2,13 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-	<ListView
+	<android.support.v7.widget.ListViewCompat
 		android:scrollbars="vertical"
 	    android:id="@+id/listChat"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-		android:background="@color/LightGrey"
-		android:divider="@color/DarkGray"
 		android:dividerHeight="1dp"
 	     />
 

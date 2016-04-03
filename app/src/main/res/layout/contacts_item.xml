@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/contactAvatar"
         android:layout_alignParentTop="true"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:singleLine="true"/>
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/contactSign"
@@ -25,8 +25,5 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/contactAvatar"
         android:layout_alignParentBottom="true"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
         android:singleLine="true"/>
-
-
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.vrv.ldgenie.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -11,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.ldgenie.R;
 
 import java.io.File;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by kinee on 2016/4/3.

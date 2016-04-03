@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/message_group_margin"
     android:gravity="right"
@@ -14,7 +16,6 @@
         android:padding="3dp"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
         android:background="@drawable/message_bubble"
         />
     <android.support.v7.widget.AppCompatImageView
@@ -25,4 +26,4 @@
         android:layout_margin="@dimen/message_group_avatar_margin"/>
 
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

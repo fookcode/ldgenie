@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.ListViewCompat;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.ldgenie.R;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;               //抽屉Listener
     private LinearLayoutCompat drawerPanel;
-    private  ListView drawerListView;
+    private  ListViewCompat drawerListView;
 
     private Toolbar  toolBar;
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.width = clientWidth * 4 / 5;
         drawerPanel.setLayoutParams(layoutParams);
 
-        drawerListView = (ListView)findViewById(R.id.drawerListView);
+        drawerListView = (ListViewCompat)findViewById(R.id.drawerListView);
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        Button btnLogout = (Button)findViewById(R.id.btnLogout);
+        AppCompatButton btnLogout = (AppCompatButton)findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,20 +178,20 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setLayoutParams(actionBarParams);
 
         //设置动作按钮位置、大小
-        List<Button> buttons = new ArrayList<Button>();
-        Button btnMessage = (Button) findViewById(R.id.message);
+        List<AppCompatButton> buttons = new ArrayList<AppCompatButton>();
+        AppCompatButton btnMessage = (AppCompatButton) findViewById(R.id.message);
         btnMessage.setTag(TAG_MESSAGE_FRAGMENT);
         buttons.add(btnMessage);
 
-        Button btnContacts = (Button) findViewById(R.id.contacts);
+        AppCompatButton btnContacts = (AppCompatButton) findViewById(R.id.contacts);
         btnContacts.setTag(TAG_CONTACTS_FRAGMENT);
         buttons.add(btnContacts);
 
-        Button btnPandora = (Button) findViewById(R.id.pandora);
+        AppCompatButton btnPandora = (AppCompatButton) findViewById(R.id.pandora);
         btnPandora.setTag(TAG_PANDORA_FRAGMENT);
         buttons.add(btnPandora);
 
-        for(Button btn: buttons) {
+        for(AppCompatButton btn: buttons) {
             LayoutParams layoutParams = btn.getLayoutParams();
             layoutParams.width = clientWidth / 3;
             btn.setLayoutParams(layoutParams);
