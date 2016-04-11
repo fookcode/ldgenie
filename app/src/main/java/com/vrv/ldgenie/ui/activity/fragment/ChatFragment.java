@@ -8,8 +8,10 @@
 
 package com.vrv.ldgenie.ui.activity.fragment;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.support.v7.widget.ListViewCompat;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
+import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.ldgenie.R;
 import com.vrv.ldgenie.adapter.ChatAdapter;
@@ -28,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
+    private static String TAG = ChatFragment.class.getSimpleName();
+
+    private ContentResolver resolver;
 
     private List<Chat> messageQueue = new ArrayList<Chat>();
     private ChatAdapter chatAdapter;
@@ -39,8 +45,8 @@ public class ChatFragment extends Fragment {
         messageQueue.addAll(chatArrayList);
         setNotifyListener();
         chatAdapter = new ChatAdapter(getActivity(), messageQueue);
-
-         super.onCreate(savedInstanceState);
+        resolver = getActivity().getContentResolver();
+        super.onCreate(savedInstanceState);
     }
 
 	@Override
@@ -70,8 +76,10 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void notifyDataChange() {
+
                 messageQueue.clear();
                 messageQueue.addAll(SDKManager.instance().getChatList().getList());
+
                 if (chatAdapter != null)
                     chatAdapter.notifyDataSetChanged();
             }
@@ -83,4 +91,7 @@ public class ChatFragment extends Fragment {
         });
     }
 
+    private void saveMessageToDB(List<Chat> chatList) {
+        //resolver.insert()
+    }
 }

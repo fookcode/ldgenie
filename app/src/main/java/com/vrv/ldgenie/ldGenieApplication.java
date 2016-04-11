@@ -9,7 +9,7 @@ import com.vrv.imsdk.VIMClient;
  * Created by kinee on 2016/3/24.
  */
 public class ldGenieApplication extends Application {
-    private final static String APP_ID = "ldgenie";
+    public final static String APP_ID = "ldgenie";
     private static Context appContext;
 
     @Override

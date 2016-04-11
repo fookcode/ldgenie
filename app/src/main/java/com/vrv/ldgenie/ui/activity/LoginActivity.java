@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import com.vrv.ldgenie.common.sdk.action.RequestHelper;
  * Created by kinee on 2016/3/25.
  */
 public class LoginActivity extends AppCompatActivity {
+    private final static String TAG = LoginActivity.class.getSimpleName();
+
     private final static String AREA_CODE = "vrv";
     private final static String NATIONAL_CODE = "0086";
 
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, getIntent().getData() == null?"null":getIntent().getData().toString());
         setContentView(R.layout.activity_login);
 
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {

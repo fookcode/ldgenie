@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.ldgenie.R;
+import com.vrv.ldgenie.ui.activity.MessageActivity;
 
 import java.io.File;
 import java.util.List;
@@ -22,10 +24,11 @@ import java.util.List;
  * Created by kinee on 2016/3/31.
  */
 public class MessageAdapter extends BaseAdapter {
-    private static long myID = -1;
+    private static String TAG = MessageAdapter.class.getSimpleName();
+
+
     private static final int MESSAGE_IN = 1;
     private static final int MESSAGE_OUT = 2;
-
     private Context context;
     private List<ChatMsg> chatMsgList;
 
@@ -56,12 +59,16 @@ public class MessageAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         ChatMsg chatMsg = chatMsgList.get(position);
-        return SDKManager.instance().getAuth().isMyself(chatMsg.getSendID()) ? MESSAGE_OUT : MESSAGE_IN;
+        long id = chatMsg.getSendID() == 0?chatMsg.getId():chatMsg.getSendID();
+
+        return SDKManager.instance().getAuth().isMyself(id) ? MESSAGE_OUT : MESSAGE_IN;
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsg chatMsg = chatMsgList.get(position);
+        Log.v(TAG, chatMsg == null?"":chatMsg.toString());
         int type = getItemViewType(position);
         ViewHolder viewHolder = null;
         String msg;
