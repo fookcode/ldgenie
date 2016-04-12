@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
@@ -38,7 +38,7 @@ import java.util.List;
 public class MessageActivity extends AppCompatActivity {
     private static final String TAG = MessageActivity.class.getSimpleName();
     private static final String ID_USER_INFO="USER_INFO";
-    private static final String LAST_MESSAGE_ID = "lastmsgid";
+    private static final String ID_LAST_MESSAGE = "LAST_MESSAGE_ID";
 
     private Toolbar toolbarMessage;
     private BaseInfoBean userInfo;
@@ -52,7 +52,7 @@ public class MessageActivity extends AppCompatActivity {
     public static void startMessageActivity(Activity activity, Chat chat) {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
-        intent.putExtra(LAST_MESSAGE_ID, chat.getLastMsgID());
+        intent.putExtra(ID_LAST_MESSAGE, chat.getLastMsgID());
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
         activity.finish();
@@ -71,7 +71,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        userInfo = (BaseInfoBean) getIntent().getParcelableExtra(MessageActivity.ID_USER_INFO);
+        userInfo = getIntent().getParcelableExtra(MessageActivity.ID_USER_INFO);
         resolver = getContentResolver();
 
         initToolbar();
@@ -108,7 +108,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        setMessageHistory(userInfo.getID(), getIntent().getLongExtra(LAST_MESSAGE_ID, -1));
+        setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
 
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
