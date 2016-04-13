@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by kinee on 2016/3/24.
  */
-public class ChatAdapter extends BaseAdapter {
+public class   ChatAdapter extends BaseAdapter {
 
     private Context context;
     private  List<Chat> chatList;

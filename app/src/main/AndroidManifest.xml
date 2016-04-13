@@ -57,12 +57,7 @@
 
         <activity android:name="com.vrv.litedood.ui.activity.MainActivity"
             android:label="@string/app_name"/>
-        <activity android:name="com.vrv.litedood.ui.activity.MessageActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="content" android:host="com.vrv.ldgenie.provider" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.vrv.litedood.ui.activity.MessageActivity" />
     </application>
 
 </manifest>
