@@ -35,6 +35,8 @@
     <string name="login_password_hint">密码</string>
     <string name="login_button_text">登   录</string>
     <string name="logout_button_text">退出登录</string>
+    <string name="login_text_forgot_password">忘记密码？</string>
+    <string name="login_text_register">注册</string>
 
     <string name="login_usercode_empty_hint">请输入正确的手机号/豆豆号</string>
     <string name="login_password_empty_hint">请输入正确的密码</string>

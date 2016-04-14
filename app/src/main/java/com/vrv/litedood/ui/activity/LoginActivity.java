@@ -2,7 +2,9 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,11 +29,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private LiteDoodRequestHandler handler = new LiteDoodRequestHandler(LiteDoodRequestHandler.HANDLER_LOGIN, this);
 
+    public static void startLoginActivity(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, getIntent().getData() == null?"null":getIntent().getData().toString());
         setContentView(R.layout.activity_login);
+
 
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,14 +75,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.forgot_password).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
-    public static void startLoginActivity(Activity activity) {
-        Intent intent = new Intent();
-        intent.setClass(activity, LoginActivity.class);
-        activity.startActivity(intent);
-        activity.finish();
+    private class LoginRequestHandler extends RequestHandler {
+        @Override
+        public void handleSuccess(Message msg) {
+
+        }
+
+        @Override
+        public void handleFailure(int code, String message) {
+            super.handleFailure(code, message);
+        }
 
     }
+
 
 }

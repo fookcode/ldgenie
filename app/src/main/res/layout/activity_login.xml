@@ -39,6 +39,29 @@
             android:layout_margin="@dimen/login_button_margin"
             android:text="@string/login_button_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/common_margin"
+            >
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_text_forgot_password"
+                android:layout_alignParentLeft="true"
+
+                android:clickable="true"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_text_register"
+                android:layout_alignParentRight="true"
+                android:clickable="true"/>
+
+        </RelativeLayout>
 
     </android.support.v7.widget.LinearLayoutCompat>
 

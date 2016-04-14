@@ -21,7 +21,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
     private static final String TAG = LiteDoodMessageProvider.class.getSimpleName();
 
     public static final String SCHEME = "content://";
-    public static final String AUTHORITY = "com.vrv.ldgenie.provider";
+    public static final String AUTHORITY = "com.vrv.litedood.provider";
     public static final String PATH_INSERT_SUCCESS = "/insert_success";
 
     public static final String DB_NAME = LiteDoodApplication.APP_ID + ".db";
@@ -87,7 +87,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return null;
+        return SCHEME + AUTHORITY + "TEST";
     }
 
     @Nullable

@@ -29,7 +29,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <provider
-            android:authorities="com.vrv.litedood.provider"
+            android:authorities="com.vrv.litedood"
             android:name=".bpo.LiteDoodMessageProvider"
             android:exported="false">
                 <grant-uri-permission android:pathPattern=".*" />

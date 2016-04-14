@@ -2,6 +2,7 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = MainActivity.class.getSimpleName();
 
 	public static final String TAG_MESSAGE_FRAGMENT = "MESSAGE_FRAGMENT";
 	public static final String TAG_CONTACTS_FRAGMENT = "CONTACTS_FRAGMENT";
