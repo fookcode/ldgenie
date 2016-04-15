@@ -2,7 +2,6 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.vrv.litedood.R;
-import com.vrv.litedood.bpo.LiteDoodRequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 
@@ -22,12 +20,16 @@ import com.vrv.litedood.common.sdk.action.RequestHelper;
 public class LoginActivity extends AppCompatActivity {
     private final static String TAG = LoginActivity.class.getSimpleName();
 
+
     private final static String AREA_CODE = "vrv";
     private final static String NATIONAL_CODE = "0086";
 
+    public enum HandlerType  {TYPE_LOGIN, TYPE_AUTOLOGIN};
+    private final static String RELOGIN = "relogin";
+
     private String sUserCode="", sPwd = "";
 
-    private LiteDoodRequestHandler handler = new LiteDoodRequestHandler(LiteDoodRequestHandler.HANDLER_LOGIN, this);
+    private LoginRequestHandler handler = new LoginRequestHandler(this, HandlerType.TYPE_LOGIN);
 
     public static void startLoginActivity(Activity activity) {
         Intent intent = new Intent();
@@ -37,12 +39,32 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public static void startLoginActivity(Activity activity, boolean isLogout) {
+        Intent intent = new Intent();
+        intent.putExtra(RELOGIN, true);
+        intent.setClass(activity, LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(TAG, getIntent().getData() == null?"null":getIntent().getData().toString());
-        setContentView(R.layout.activity_login);
+        Intent intent = getIntent();
+        if (!intent.getBooleanExtra(RELOGIN, false)) {
+            boolean loginResult = RequestHelper.autoLogin(new LoginRequestHandler(this, HandlerType.TYPE_AUTOLOGIN));
+            if (!loginResult) {
+                Log.v(TAG, "SDK autoLogin()调用失败");
+            }
+        }
+        else {
+            setLoginContent();
+        }
+    }
 
+
+    public void setLoginContent() {
+        setContentView(R.layout.activity_login);
 
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.forgot_password).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tvForgotPassword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tvRegisterUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -91,17 +113,44 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginRequestHandler extends RequestHandler {
+
+        private Activity activity;
+        private HandlerType type;
+
+        public LoginRequestHandler(Activity activity, HandlerType type) {
+            super();
+            this.activity = activity;
+            this.type = type;
+        }
+
         @Override
         public void handleSuccess(Message msg) {
-
+            MainActivity.startMainActivity(activity);
         }
 
         @Override
         public void handleFailure(int code, String message) {
-            super.handleFailure(code, message);
+
+            Log.v(TAG, "登录失败 " + code + ": " + message);
+
+            switch(type) {
+                case TYPE_AUTOLOGIN: {
+                    setLoginContent();
+                    break;
+                }
+                case TYPE_LOGIN: {
+                    String hint = "登录失败";
+                    if ((message != null) && (!message.isEmpty())) {
+                        hint = hint + ": " + message;
+                    } else {
+                        hint = hint + ", 请与管理员联系";
+                    }
+
+                    Toast.makeText(activity, hint, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+
         }
-
     }
-
-
 }

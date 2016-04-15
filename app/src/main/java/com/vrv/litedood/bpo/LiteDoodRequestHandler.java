@@ -27,18 +27,18 @@ public class LiteDoodRequestHandler extends RequestHandler {
 
     @Override
     public void handleSuccess(Message msg) {
-        switch (handlerType) {
-            case HANDLER_LOGIN: {
-                MainActivity.startMainActivity((Activity)getContext());
-                break;
-            }
-            case HANDLER_LOGOUT: {
-                LoginActivity.startLoginActivity((Activity)getContext());
-                break;
-            }
+//        switch (handlerType) {
+//            case HANDLER_LOGIN: {
+//                MainActivity.startMainActivity((Activity)getContext());
+//                break;
+//            }
+//            case HANDLER_LOGOUT: {
+//                LoginActivity.startLoginActivity((Activity)getContext());
+//                break;
+//            }
+//
 
-
-        }
+//        }
     }
 
 //    @Override

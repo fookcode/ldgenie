@@ -2,8 +2,8 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,10 +23,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.ListViewCompat;
+import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.litedood.R;
-import com.vrv.litedood.bpo.LiteDoodRequestHandler;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.litedood.ui.activity.fragment.ChatFragment;
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SDKManager.instance().destroy();
-                RequestHelper.logout(new LiteDoodRequestHandler(LiteDoodRequestHandler.HANDLER_LOGOUT, MainActivity.this));
+                RequestHelper.logout(new LogoutRequestHandler(MainActivity.this));
             }
         });
     }
@@ -224,5 +225,32 @@ public class MainActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
+    class LogoutRequestHandler extends RequestHandler {
+        private Activity activity;
+
+        public LogoutRequestHandler(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public void handleSuccess(Message msg) {
+            LoginActivity.startLoginActivity(activity, true);
+        }
+
+        @Override
+        public void handleFailure(int code, String message) {
+            Log.v(TAG, "注销异常 " + code + ": " + message);
+
+            String hint = "注销异常";
+            if ((message != null) && (!message.isEmpty())) {
+                hint = hint + ": " + message;
+            } else {
+                hint = hint + ", 请与管理员联系";
+            }
+            Toast.makeText(activity, hint, Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }

@@ -46,7 +46,7 @@
             android:layout_margin="@dimen/common_margin"
             >
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/forgot_password"
+                android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_forgot_password"
@@ -54,7 +54,7 @@
 
                 android:clickable="true"/>
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/register"
+                android:id="@+id/tvRegisterUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_register"
