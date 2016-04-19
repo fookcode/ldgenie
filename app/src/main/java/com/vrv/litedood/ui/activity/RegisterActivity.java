@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.register_title);
 
         findViewById(R.id.btnRegisterNoMask).setOnClickListener(new View.OnClickListener() {
             @Override

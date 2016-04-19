@@ -4,16 +4,16 @@
 	android:id="@+id/configDrawer"
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
+
 	>
 	<android.support.v7.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 		<android.support.v7.widget.Toolbar
-			android:id="@+id/toolBar"
+			android:id="@+id/tbMain"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:logo="@drawable/ic_launcher"
 		/>
 		<FrameLayout
 			android:id="@+id/fragment_layout"

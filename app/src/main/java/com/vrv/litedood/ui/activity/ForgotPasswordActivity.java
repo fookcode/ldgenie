@@ -68,6 +68,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbForgotPassword);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }

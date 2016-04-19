@@ -69,12 +69,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 sUserCode = ((EditText)findViewById(R.id.edtUserCode)).getText().toString();
                 if(sUserCode.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, R.string.login_usercode_empty_hint, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_usercode_empty_message, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 sPwd = ((EditText)findViewById(R.id.edtPassword)).getText().toString();
                 if (sPwd.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, R.string.login_password_empty_hint, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_password_empty_message, Toast.LENGTH_SHORT).show();
                     return;
                 }
 

@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;               //抽屉Listener
     private LinearLayoutCompat drawerPanel;
-    private  ListViewCompat drawerListView;
+    private ListViewCompat drawerListView;
 
-    private Toolbar  toolBar;
+    private Toolbar toobar;
 
     private FragmentManager fragmentManager;
 
@@ -109,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(view.getClass().getName(), String.valueOf(view.getId()) + String.valueOf(position));
-                getSupportActionBar().setDisplayShowTitleEnabled(false);
+                //
             }
         });
 
@@ -139,25 +138,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        //设置上部状态条高度
-       toolBar = (Toolbar) findViewById(R.id.toolBar);
-        //LayoutParams toolbarLayoutParams = toolbar.getLayoutParams();
-        //toolbarLayoutParams.height = height * 7 / 90;
-        //toolbar.setLayoutParams(toolbarLayoutParams);
-        //toolbar.setLogo(R.drawable.ic_launcher);
-        setSupportActionBar(toolBar);
-        toolBar.setNavigationIcon(R.drawable.ic_drawer);
-        toolBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+        toobar = (Toolbar) findViewById(R.id.tbMain);
+        toobar.setNavigationIcon(R.drawable.ic_drawer);
 
-        ActionBar supportActionBarr = getSupportActionBar();
-        //supportActionBarr.setDisplayShowTitleEnabled(false);
-        //supportActionBarr.setDisplayHomeAsUpEnabled(true);
-        supportActionBarr.setHomeButtonEnabled(true);
+        setSupportActionBar(toobar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
     }
 
     private void initFragment() {
