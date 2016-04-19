@@ -51,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_forgot_password"
                 android:layout_alignParentLeft="true"
-
                 android:clickable="true"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvRegisterUser"

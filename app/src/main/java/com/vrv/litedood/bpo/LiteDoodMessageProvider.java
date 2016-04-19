@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.dto.MessageDTO;
-import com.vrv.litedood.LiteDoodApplication;
 
 /**
  * Created by kinee on 2016/4/6.
@@ -20,11 +20,9 @@ import com.vrv.litedood.LiteDoodApplication;
 public class LiteDoodMessageProvider extends ContentProvider {
     private static final String TAG = LiteDoodMessageProvider.class.getSimpleName();
 
-    public static final String SCHEME = "content://";
-    public static final String AUTHORITY = "com.vrv.litedood.provider";
     public static final String PATH_INSERT_SUCCESS = "/insert_success";
 
-    public static final String DB_NAME = LiteDoodApplication.APP_ID + ".db";
+
     public static final int DB_VERSION = 1;
 
 
@@ -36,7 +34,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, MessageDTO.TABLE_NAME, CODE_TABLE_MESSAGE);
+        uriMatcher.addURI(LiteDood.AUTHORITY, MessageDTO.TABLE_NAME, CODE_TABLE_MESSAGE);
 
     }
 
@@ -44,7 +42,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
 
     class DatabaseHelper extends SQLiteOpenHelper {
         public DatabaseHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
+            super(context, LiteDood.DB_NAME, null, DB_VERSION);
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
@@ -87,7 +85,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return SCHEME + AUTHORITY + "TEST";
+        return LiteDood.URI + "TEST";
     }
 
     @Nullable
@@ -100,7 +98,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
                 SQLiteDatabase db = dbhelper.getWritableDatabase();
                 long count = db.insert(MessageDTO.TABLE_NAME, MessageDTO.TABLE_MESSAGE_COLUMN_ID, values);
                 if (count == 1) {
-                    String uriString = SCHEME + AUTHORITY + PATH_INSERT_SUCCESS;
+                    String uriString = LiteDood.URI + PATH_INSERT_SUCCESS;
                     uri = Uri.parse(uriString);
 
                 }

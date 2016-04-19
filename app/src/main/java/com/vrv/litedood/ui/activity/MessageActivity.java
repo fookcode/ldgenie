@@ -24,6 +24,7 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.bpo.LiteDoodMessageProvider;
 import com.vrv.litedood.bpo.LiteDoodRequestHandler;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
@@ -184,7 +185,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void saveMessageToDB(ChatMsg chatMsg) {
 
-        String uriString = LiteDoodMessageProvider.SCHEME + LiteDoodMessageProvider.AUTHORITY + "/" + MessageDTO.TABLE_NAME;
+        String uriString = LiteDood.URI + "/" + MessageDTO.TABLE_NAME;
         Uri insertUri = Uri.parse(uriString);
         resolver.insert(insertUri, MessageDTO.convertChatMessage(chatMsg));
     }

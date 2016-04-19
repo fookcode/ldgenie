@@ -32,16 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     private LoginRequestHandler handler = new LoginRequestHandler(this, HandlerType.TYPE_LOGIN);
 
     public static void startLoginActivity(Activity activity) {
-        Intent intent = new Intent();
-        intent.setClass(activity, LoginActivity.class);
-        activity.startActivity(intent);
-        activity.finish();
+        startLoginActivity(activity, true);
 
     }
 
     public static void startLoginActivity(Activity activity, boolean isLogout) {
         Intent intent = new Intent();
-        intent.putExtra(RELOGIN, true);
+        intent.putExtra(RELOGIN, isLogout);
         intent.setClass(activity, LoginActivity.class);
         activity.startActivity(intent);
         activity.finish();
@@ -108,6 +105,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        findViewById(R.id.tvRegisterUser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.startActivity(LoginActivity.this);
             }
         });
     }
