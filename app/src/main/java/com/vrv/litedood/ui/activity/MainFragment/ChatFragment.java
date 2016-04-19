@@ -6,7 +6,7 @@
 //Date      : Mar 18, 2016
 //************************************************************//
 
-package com.vrv.litedood.ui.activity.fragment;
+package com.vrv.litedood.ui.activity.MainFragment;
 
 import android.content.ContentResolver;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.vrv.litedood.ui.activity.fragment;
+package com.vrv.litedood.ui.activity.MainFragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

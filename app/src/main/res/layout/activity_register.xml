@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnNoMask"
+            android:id="@+id/btnRegisterNoMask"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:text="*"

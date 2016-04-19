@@ -36,9 +36,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public static void startLoginActivity(Activity activity, boolean isLogout) {
+    public static void startLoginActivity(Activity activity, boolean autoLogin) {
         Intent intent = new Intent();
-        intent.putExtra(RELOGIN, isLogout);
+        intent.putExtra(RELOGIN, autoLogin);
         intent.setClass(activity, LoginActivity.class);
         activity.startActivity(intent);
         activity.finish();
@@ -97,21 +97,14 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.tvForgotPassword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ForgotPasswordActivity.startForgotPasswordActivity(LoginActivity.this);
             }
         });
 
         findViewById(R.id.tvRegisterUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-
-        findViewById(R.id.tvRegisterUser).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RegisterActivity.startActivity(LoginActivity.this);
+                RegisterActivity.startRegisterActivity(LoginActivity.this);
             }
         });
     }

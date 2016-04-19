@@ -8,8 +8,8 @@ import android.widget.Button;
 
 import com.vrv.litedood.ui.activity.MainActivity;
 import com.vrv.litedood.R;
-import com.vrv.litedood.ui.activity.fragment.ContactsFragment;
-import com.vrv.litedood.ui.activity.fragment.PandoraFragment;
+import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
+import com.vrv.litedood.ui.activity.MainFragment.PandoraFragment;
 
 import java.util.Map;
 

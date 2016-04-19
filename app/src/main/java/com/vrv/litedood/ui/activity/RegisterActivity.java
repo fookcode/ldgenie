@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -20,7 +19,7 @@ import com.vrv.litedood.R;
 public class RegisterActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
-    public static void startActivity(Activity activity) {
+    public static void startRegisterActivity(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, RegisterActivity.class);
         activity.startActivity(intent);
@@ -35,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        findViewById(R.id.btnNoMask).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnRegisterNoMask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatEditText edtPassword = (AppCompatEditText)findViewById(R.id.edtRegisterPassword);

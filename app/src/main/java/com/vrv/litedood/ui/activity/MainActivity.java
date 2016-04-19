@@ -30,7 +30,7 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
-import com.vrv.litedood.ui.activity.fragment.ChatFragment;
+import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
