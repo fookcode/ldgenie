@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             boolean loginResult = RequestHelper.autoLogin(new LoginRequestHandler(this, HandlerType.TYPE_AUTOLOGIN));
             if (!loginResult) {
                 Log.v(TAG, "SDK autoLogin()调用失败");
+                setLoginContent();
             }
         }
         else {

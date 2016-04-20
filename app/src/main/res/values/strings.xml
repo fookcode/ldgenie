@@ -2,7 +2,7 @@
 <resources>
     <string name="app_id">litedood</string>
     <string name="app_name">轻豆</string>
-    <string name="action_settings">设置</string>
+    <string name="app_settings">设置</string>
     
     <string name="message_button_name">消息</string>
     <string name="contacts_button_name">联系人</string>
@@ -33,7 +33,7 @@
 
     <string name="login_name_hint">手机号/豆豆号</string>
     <string name="login_password_hint">密码</string>
-    <string name="login_button_text">登   录</string>
+    <string name="login_button_text">登　　录</string>
     <string name="logout_button_text">退出登录</string>
     <string name="login_text_forgot_password">忘记密码？</string>
     <string name="login_text_register">注册</string>

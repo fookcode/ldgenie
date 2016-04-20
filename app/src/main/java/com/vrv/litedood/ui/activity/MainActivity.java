@@ -262,9 +262,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void handleFailure(int code, String message) {
-            Log.v(TAG, "注销异常 " + code + ": " + message);
+            Log.v(TAG, "退出异常 " + code + ": " + message);
 
-            String hint = "注销异常";
+            String hint = "退出异常";
             if ((message != null) && (!message.isEmpty())) {
                 hint = hint + ": " + message;
             } else {
