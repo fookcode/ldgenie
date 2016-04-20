@@ -61,17 +61,17 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
-		android:background="@color/DarkOrange"
+		android:background="@color/LightSteelBlue"
         android:clickable="true">
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="118dp"
 			android:orientation="horizontal"
-            android:background="@color/LightSteelBlue">
+            android:background="@color/LightCyan">
 			<android.support.v7.widget.AppCompatImageView
 				android:id="@+id/ivMyProfileAvatar"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_width="60dp"
+				android:layout_height="60dp"
 				android:layout_marginLeft="28dp"
                 android:src="@drawable/ic_launcher"
                 android:clickable="true"
@@ -81,18 +81,30 @@
                 android:id="@+id/tvMyProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_margin"
                 android:layout_toRightOf="@id/ivMyProfileAvatar"
                 android:layout_centerVertical="true"
                 android:text="用户名称"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+			<android.support.v7.widget.AppCompatTextView
+				android:id="@+id/tvMyProfileComma"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:layout_alignLeft="@id/ivMyProfileAvatar"
+				android:layout_below="@id/ivMyProfileAvatar"
+				android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+				android:text="”"
+				android:textStyle="bold"
+				android:textSize="28dp"
+				android:singleLine="true"
+				/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMyProfileSign"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_alignLeft="@id/ivMyProfileAvatar"
+                android:layout_toRightOf="@id/tvMyProfileComma"
                 android:layout_below="@id/ivMyProfileAvatar"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-                android:text="”个性签名个性签名个性签名个性签名个性签名个性签名个性签名个性签名"
                 android:singleLine="true"
                 android:layout_marginRight="28dp"
                 />

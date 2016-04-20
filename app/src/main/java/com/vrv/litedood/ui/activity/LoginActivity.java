@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
@@ -24,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private final static String AREA_CODE = "vrv";
     private final static String NATIONAL_CODE = "0086";
 
-    public enum HandlerType  {TYPE_LOGIN, TYPE_AUTOLOGIN};
+    public enum HandlerType  {TYPE_LOGIN, TYPE_AUTOLOGIN, TYPE_GET_MYSELF};
     private final static String RELOGIN = "relogin";
 
     private String sUserCode="", sPwd = "";
@@ -122,14 +125,25 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void handleSuccess(Message msg) {
-            MainActivity.startMainActivity(activity);
+            switch (type) {
+                case TYPE_AUTOLOGIN:
+                case TYPE_LOGIN:
+                    long userid = SDKManager.instance().getAuth().getUserID();
+                    RequestHelper.getUserInfo(userid, new LoginRequestHandler(LoginActivity.this, HandlerType.TYPE_GET_MYSELF));
+                    break;
+                case TYPE_GET_MYSELF: {
+                    LiteDoodApplication.getAppContext().setMyself((Contact) msg.getData().getParcelable("data"));
+                    MainActivity.startMainActivity(activity);
+                    break;
+                }
+            }
         }
 
         @Override
         public void handleFailure(int code, String message) {
 
             Log.v(TAG, "登录失败 " + code + ": " + message);
-
+            clearLoginInfo();
             switch(type) {
                 case TYPE_AUTOLOGIN: {
                     setLoginContent();
@@ -146,8 +160,13 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(activity, hint, Toast.LENGTH_SHORT).show();
                     break;
                 }
+
             }
 
+        }
+
+        private void clearLoginInfo() {
+            LiteDoodApplication.getAppContext().setMyself(null);
         }
     }
 }

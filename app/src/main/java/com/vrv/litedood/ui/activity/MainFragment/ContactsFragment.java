@@ -53,7 +53,7 @@ public class ContactsFragment extends Fragment {
                 //Contact contact = contactQueue.get(position);
                 Contact contact = (Contact)parent.getItemAtPosition(position);
                 BaseInfoBean bean = BaseInfoBean.contact2BaseInfo(contact);
-                MessageActivity.startMessageActivity1(getActivity(), bean);
+                MessageActivity.startMessageActivity(getActivity(), bean);
             }
         });
         return view;

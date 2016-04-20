@@ -8,7 +8,6 @@
 
 package com.vrv.litedood.ui.activity.MainFragment;
 
-import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.ListViewCompat;
@@ -19,10 +18,10 @@ import android.widget.AdapterView;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
+import com.vrv.imsdk.model.ChatList;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ChatAdapter;
-import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
@@ -31,23 +30,22 @@ import java.util.List;
 public class ChatFragment extends Fragment {
     private static String TAG = ChatFragment.class.getSimpleName();
 
-    private ContentResolver resolver;
-
-    private List<Chat> chatQueue = new ArrayList<Chat>();
+    private ChatList chatList;
+    private List<Chat> chatQueue = new ArrayList<>();
     private ChatAdapter chatAdapter;
-
-
-    private MessageAdapter messageAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        ArrayList<Chat> chatArrayList = SDKManager.instance().getChatList().getList();
-        chatQueue.addAll(chatArrayList);
-        setNotifyListener();
-        chatAdapter = new ChatAdapter(getActivity(), chatQueue);
-        resolver = getActivity().getContentResolver();
         super.onCreate(savedInstanceState);
+
+        chatList =  SDKManager.instance().getChatList();
+        ArrayList<Chat> chatArrayList = chatList.getList();          //初次获取会话列表
+
+        chatQueue.addAll(chatArrayList);
+        chatAdapter = new ChatAdapter(getActivity(), chatQueue);   //初始化适配器
+
+        setChatQueueChangeListener();                                  //添加监听，有新会话时刷新会话列表
+
     }
 
 	@Override
@@ -72,8 +70,8 @@ public class ChatFragment extends Fragment {
         return result;
 	}
 
-    private void setNotifyListener() {
-        SDKManager.instance().getChatList().setListener(new ListModel.OnChangeListener() {
+    private void setChatQueueChangeListener() {
+        chatList.setListener(new ListModel.OnChangeListener() {
 
             @Override
             public void notifyDataChange() {
@@ -87,12 +85,10 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void notifyItemChange(int i) {
-                chatAdapter.notifyDataSetChanged();
+                if(chatAdapter != null)
+                    chatAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void saveMessageToDB(List<Chat> chatList) {
-        //resolver.insert()
-    }
 }

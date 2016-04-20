@@ -3,6 +3,7 @@ package com.vrv.litedood.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -14,7 +15,11 @@ import android.widget.BaseAdapter;
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
 
 import java.io.File;
 import java.util.List;
@@ -25,9 +30,11 @@ import java.util.List;
 public class MessageAdapter extends BaseAdapter {
     private static String TAG = MessageAdapter.class.getSimpleName();
 
+    private static final int TYPE_GET_MYSELF = 1;
 
     private static final int MESSAGE_IN = 1;
     private static final int MESSAGE_OUT = 2;
+
     private Context context;
     private List<ChatMsg> chatMsgList;
 
@@ -60,7 +67,7 @@ public class MessageAdapter extends BaseAdapter {
         ChatMsg chatMsg = chatMsgList.get(position);
         long id = chatMsg.getSendID() == 0?chatMsg.getId():chatMsg.getSendID();
 
-        return SDKManager.instance().getAuth().isMyself(id) ? MESSAGE_OUT : MESSAGE_IN;
+        return  SDKManager.instance().getAuth().isMyself(id) ? MESSAGE_OUT : MESSAGE_IN;
 
     }
 
@@ -71,6 +78,9 @@ public class MessageAdapter extends BaseAdapter {
         int type = getItemViewType(position);
         ViewHolder viewHolder = null;
         String msg;
+
+        long id=0;
+        int count = 0;
 
         convertView = null;
         switch (type) {
@@ -90,6 +100,7 @@ public class MessageAdapter extends BaseAdapter {
             }
         }
 
+
         String avatarPath = chatMsg.getAvatar();
         if ((null != avatarPath) && (!avatarPath.isEmpty())) {
             File fAvatar = new File(avatarPath);
@@ -107,11 +118,6 @@ public class MessageAdapter extends BaseAdapter {
                 msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
                 break;
             case ChatMsgApi.TYPE_IMAGE:
-//                holder.mChatMsgImg.setVisibility(View.VISIBLE);
-//                holder.mChatMsgTxt.setVisibility(View.GONE);
-//                msg="";
-//                msgImageview=holder.mChatMsgImg;
-//                showImg(chatMsg);
                 msg = "[图片]";
                 break;
             case ChatMsgApi.TYPE_FILE:
@@ -147,6 +153,7 @@ public class MessageAdapter extends BaseAdapter {
 
         public ViewHolder() {};
     }
+
 
 }
 

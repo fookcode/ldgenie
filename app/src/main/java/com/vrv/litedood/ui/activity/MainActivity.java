@@ -2,6 +2,8 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -26,12 +30,15 @@ import android.support.v7.widget.ListViewCompat;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,6 +133,34 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        Contact myself = LiteDoodApplication.getAppContext().getMyself();
+        if (myself != null) {
+            AppCompatImageView ivAvatar = (AppCompatImageView)findViewById(R.id.ivMyProfileAvatar);
+            String avatarPath = myself.getAvatar();
+            if ((null != avatarPath) && (!avatarPath.isEmpty())) {
+                File fAvatar = new File(avatarPath);
+                if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
+
+                    ivAvatar.setImageResource(R.drawable.ic_launcher);
+                    //boolean result = RequestHelper.getUserInfo(chat.getId(), new ChatRequlestHandler(context, viewHolder, TYPE_GET_USER));
+                    //if (!result) {Log.v(TAG, "获取用户数据失败");}
+                }
+                else {
+                    Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
+                    ivAvatar.setImageBitmap(bitmapAvatar);
+                }
+            }
+
+            AppCompatTextView tvName = (AppCompatTextView)findViewById(R.id.tvMyProfileName);
+            tvName.setText(myself.getName());
+
+            String sSign = myself.getSign();
+            if(!sSign.isEmpty()) {
+                AppCompatTextView tvSign = (AppCompatTextView)findViewById(R.id.tvMyProfileSign);
+                tvSign.setText(sSign);
+            }
+        }
 
         AppCompatButton btnLogout = (AppCompatButton)findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleSuccess(Message msg) {
             LoginActivity.startLoginActivity(activity, true);
+            LiteDoodApplication.getAppContext().setMyself(null);
         }
 
         @Override

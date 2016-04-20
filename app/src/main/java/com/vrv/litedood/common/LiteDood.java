@@ -1,5 +1,7 @@
 package com.vrv.litedood.common;
 
+import com.vrv.imsdk.model.Contact;
+
 /**
  * Created by kinee on 2016/4/18.
  */
@@ -14,4 +16,5 @@ public final class LiteDood {
     public static final String URI = SCHEME + AUTHORITY;
 
     public static final String DB_NAME = APP_ID + ".db";
+
 }

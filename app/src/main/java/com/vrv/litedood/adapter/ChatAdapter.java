@@ -3,6 +3,7 @@ package com.vrv.litedood.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,14 @@ import android.widget.BaseAdapter;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 
+import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.bean.UserInfoResult;
 import com.vrv.imsdk.model.Chat;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
 
 import java.io.File;
@@ -22,7 +29,10 @@ import java.util.List;
 /**
  * Created by kinee on 2016/3/24.
  */
-public class   ChatAdapter extends BaseAdapter {
+public class ChatAdapter extends BaseAdapter {
+
+    public static final String TAG = ChatAdapter.class.getSimpleName();
+    public static final int TYPE_GET_USER = 1;
 
     private Context context;
     private  List<Chat> chatList;
@@ -40,6 +50,7 @@ public class   ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         ViewHolder viewHolder;
         Bitmap bitmapAvatar;
         if(convertView == null) {
@@ -60,26 +71,38 @@ public class   ChatAdapter extends BaseAdapter {
             viewHolder =(ViewHolder) convertView.getTag();
         }
         Chat chat = chatList.get(position);
+
+
         String avatarPath = chat.getAvatar();
         if ((null != avatarPath) && (!avatarPath.isEmpty())) {
            File fAvatar = new File(avatarPath);
-            if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
+            if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
+
                 viewHolder.avatar.setImageResource(R.drawable.ic_launcher);
+                //boolean result = RequestHelper.getUserInfo(chat.getId(), new ChatRequlestHandler(context, viewHolder, TYPE_GET_USER));
+                //if (!result) {Log.v(TAG, "获取用户数据失败");}
+            }
             else {
                 bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
                 viewHolder.avatar.setImageBitmap(bitmapAvatar);
             }
         }
 
-        ArrayList relatedUser = chat.getRelatedUsers();
-        //String describeContents = chat.describeContents() == null ? "null":chat.describeContents();
-        //Log.v("aaaaaaaa", "relatedUsers:" + (relatedUser == null ? "好友":relatedUser.toString()) + " describeContents: " + describeContents  + " whereFrom: " +  chat.getWhereFrom());
         viewHolder.title.setText(chat.getName());
-        Log.v("getAvatar", chat.getAvatar());
         viewHolder.recentMessage.setText(ChatMsgUtil.lastMsgBrief(context, chat.getMsgType(), chat.getLastMsg()));
 
         return convertView;
     }
+
+        @Override
+        public Object getItem(int index) {
+            return chatList.get(index);
+        }
+
+        public long getItemId(int index) {
+            return index;
+        }
+
 
     class ViewHolder {
 
@@ -89,17 +112,30 @@ public class   ChatAdapter extends BaseAdapter {
 
         public AppCompatTextView recentMessage;
 
-        public ViewHolder() {};
-
+        public ViewHolder() {
+        }
     }
 
-    @Override
-    public Object getItem(int index) {
-        return chatList.get(index);
-    }
 
-    public long getItemId(int index) {
-        return index;
+    class ChatRequlestHandler extends RequestHandler {
+        private int nType;
+        private Context context;
+        private ViewHolder viewHolder;
+
+        public ChatRequlestHandler(Context context, ViewHolder holder, int nType) {
+            this.context = context;
+            this.viewHolder = holder;
+            this.nType = nType;
+        }
+
+        @Override
+        public void handleSuccess(Message msg) {
+            switch (nType) {
+                case TYPE_GET_USER : {
+                    Log.v(TAG, msg.getData().toString());
+                }
+            }
+        }
     }
 }
 

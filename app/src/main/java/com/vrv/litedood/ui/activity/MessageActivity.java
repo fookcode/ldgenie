@@ -20,10 +20,10 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
-import com.vrv.litedood.bpo.LiteDoodMessageProvider;
-import com.vrv.litedood.bpo.LiteDoodRequestHandler;
 import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
@@ -38,8 +38,14 @@ import java.util.List;
  */
 public class MessageActivity extends AppCompatActivity {
     private static final String TAG = MessageActivity.class.getSimpleName();
+
     private static final String ID_USER_INFO="USER_INFO";
     private static final String ID_LAST_MESSAGE = "LAST_MESSAGE_ID";
+
+    private static final int TYPE_GET_HISTORY_MESSAGE = 1;
+    private static final int TYPE_SEND_MESSAGE = 2;
+
+    private static final int RECENT_MESSAGE_COUNT = 16;
 
     private Toolbar toolbarMessage;
     private BaseInfoBean userInfo;
@@ -59,7 +65,7 @@ public class MessageActivity extends AppCompatActivity {
         activity.finish();
     }
 
-    public static void startMessageActivity1(Activity activity, BaseInfoBean bean) {
+    public static void startMessageActivity(Activity activity, BaseInfoBean bean) {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, bean);
         intent.setClass(activity, MessageActivity.class);
@@ -90,9 +96,11 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void initMessageData() {
+
         messageAdapter = new MessageAdapter(MessageActivity.this, chatMsgQueue);
         lvMessage = (ListViewCompat)findViewById(R.id.listMessage);
         lvMessage.setAdapter(messageAdapter);
+
 
 
         chatMsgList = SDKManager.instance().getChatMsgList();
@@ -120,7 +128,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String txt = edtMessage.getText().toString();
                 if (!txt.isEmpty()) {
-                    RequestHelper.sendTxt(userInfo.getID(), txt, null, new LiteDoodRequestHandler(LiteDoodRequestHandler.HANDLER_SEND_MESSAGE, MessageActivity.this));
+                    RequestHelper.sendTxt(userInfo.getID(), txt, null, new MessageRequestHandler(TYPE_SEND_MESSAGE));
                     edtMessage.getText().clear();
                 }
             }
@@ -180,43 +188,47 @@ public class MessageActivity extends AppCompatActivity {
     }*/
 
     private void setMessageHistory(long targetID, long lastChatID) {
-        RequestHelper.getChatHistory(targetID, lastChatID, 16, new HistoryMessageHandler(1));
+        RequestHelper.getChatHistory(targetID, lastChatID, RECENT_MESSAGE_COUNT, new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
     }
 
-    private void saveMessageToDB(ChatMsg chatMsg) {
-
-        String uriString = LiteDood.URI + "/" + MessageDTO.TABLE_NAME;
-        Uri insertUri = Uri.parse(uriString);
-        resolver.insert(insertUri, MessageDTO.convertChatMessage(chatMsg));
-    }
+//    private void saveMessageToDB(ChatMsg chatMsg) {
+//
+//        String uriString = LiteDood.URI + "/" + MessageDTO.TABLE_NAME;
+//        Uri insertUri = Uri.parse(uriString);
+//        resolver.insert(insertUri, MessageDTO.convertChatMessage(chatMsg));
+//    }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                //NavUtils.navigateUpFromSameTask(this);
                 MainActivity.startMainActivity(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    class HistoryMessageHandler extends RequestHandler {
+    class MessageRequestHandler extends RequestHandler {
         private int nType;
 
-        public HistoryMessageHandler(int type) {
+        public MessageRequestHandler(int type) {
             this.nType = type;
         }
         @Override
         public void handleSuccess(Message msg) {
-            if (nType == 1) {
-                ArrayList<ChatMsg> chatMsgArray = msg.getData().getParcelableArrayList("data");
+            switch (nType){
+                case TYPE_GET_HISTORY_MESSAGE:
+                    ArrayList<ChatMsg> chatMsgArray = msg.getData().getParcelableArrayList("data");
 
-                chatMsgQueue.clear();
-                chatMsgQueue.addAll(chatMsgArray);
-                messageAdapter.notifyDataSetChanged();
+                    chatMsgQueue.clear();
+                    chatMsgQueue.addAll(chatMsgArray);
+                    messageAdapter.notifyDataSetChanged();
+                    break;
+                case TYPE_SEND_MESSAGE:
+
+                    break;
+
 
             }
         }

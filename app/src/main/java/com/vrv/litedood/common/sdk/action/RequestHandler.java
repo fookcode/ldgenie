@@ -15,6 +15,7 @@ import android.widget.Toast;
 public abstract class RequestHandler extends Handler {
 
     private static final String TAG = RequestHandler.class.getSimpleName();
+
     public static final String KEY_DATA = "data";
     public static final int SUCCESS = 0;
     public static final int FAILURE = -1;
