@@ -36,11 +36,11 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
         if (selectedFragment == null) {
             if (MainActivity.TAG_CONTACTS_FRAGMENT.equals(button.getTag().toString())) {               //联系人按钮响应
                 selectedFragment = new ContactsFragment();
-                fragmentTransaction.add(R.id.fragment_layout, selectedFragment, MainActivity.TAG_CONTACTS_FRAGMENT);
+                fragmentTransaction.add(R.id.layoutFragmentContainer, selectedFragment, MainActivity.TAG_CONTACTS_FRAGMENT);
                 fragments.put(MainActivity.TAG_CONTACTS_FRAGMENT, selectedFragment);
             } else if (MainActivity.TAG_PANDORA_FRAGMENT.equals(button.getTag().toString())) {         //潘多拉按钮响应
                 selectedFragment = new PandoraFragment();
-                fragmentTransaction.add(R.id.fragment_layout, selectedFragment, MainActivity.TAG_PANDORA_FRAGMENT);
+                fragmentTransaction.add(R.id.layoutFragmentContainer, selectedFragment, MainActivity.TAG_PANDORA_FRAGMENT);
                 fragments.put(MainActivity.TAG_PANDORA_FRAGMENT, selectedFragment);
             }
         }

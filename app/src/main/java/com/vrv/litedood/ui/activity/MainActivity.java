@@ -33,6 +33,7 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
+import com.vrv.litedood.adapter.ConfigureAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
     private int clientWidth, clientHeight;
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;               //抽屉Listener
-    private LinearLayoutCompat drawerPanel;
-    private ListViewCompat drawerListView;
+    private DrawerLayout drawerConfig;
+    private ActionBarDrawerToggle listenerDrawer;               //抽屉Listener
+    private LinearLayoutCompat drawerConfigPanel;
+    private ListViewCompat drawerConfigListView;
 
     private Toolbar toobar;
 
@@ -106,22 +107,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDrawer() {
-        drawerLayout = (DrawerLayout)findViewById(R.id.configDrawer);
-        drawerPanel = (LinearLayoutCompat)findViewById(R.id.drawerPanel);
-        LayoutParams layoutParams = drawerPanel.getLayoutParams();
+        drawerConfig = (DrawerLayout)findViewById(R.id.drawerConfig);
+        drawerConfigPanel = (LinearLayoutCompat)findViewById(R.id.drawerConfigPanel);
+        LayoutParams layoutParams = drawerConfigPanel.getLayoutParams();
         layoutParams.width = clientWidth * 4 / 5;
-        drawerPanel.setLayoutParams(layoutParams);
+        drawerConfigPanel.setLayoutParams(layoutParams);
 
-        drawerListView = (ListViewCompat)findViewById(R.id.drawerListView);
-        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drawerConfigListView = (ListViewCompat)findViewById(R.id.drawerConfigListView);
+        drawerConfigListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //
             }
         });
 
-        drawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(R.array.configItems)));
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open, R.string.drawer_close) {
+        drawerConfigListView.setAdapter(new ConfigureAdapter(this));//(new ArrayAdapter<String>(this, R.layout.item_drawer_list, getResources().getStringArray(R.array.configItems)));
+        listenerDrawer = new ActionBarDrawerToggle(this, drawerConfig, R.string.drawer_open, R.string.drawer_close) {
             private void onDrawClosed(View v) {
                 super.onDrawerClosed(v);
                 //Toast.makeText(MainActivity.this, "onDrawClosed", Toast.LENGTH_SHORT).show();
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "onDrawOpened", Toast.LENGTH_SHORT).show();
             }
         };
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        drawerConfig.addDrawerListener(listenerDrawer);
 
         Contact myself = LiteDoodApplication.getAppContext().getMyself();
         if (myself != null) {
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         ChatFragment fragment = new ChatFragment();
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_layout, fragment, TAG_MESSAGE_FRAGMENT);
+        fragmentTransaction.replace(R.id.layoutFragmentContainer, fragment, TAG_MESSAGE_FRAGMENT);
         fragmentTransaction.commit();
 
         fragments.put(TAG_MESSAGE_FRAGMENT, fragment);
@@ -203,15 +204,15 @@ public class MainActivity extends AppCompatActivity {
 
         //设置动作按钮位置、大小
         List<AppCompatButton> buttons = new ArrayList<AppCompatButton>();
-        AppCompatButton btnMessage = (AppCompatButton) findViewById(R.id.message);
+        AppCompatButton btnMessage = (AppCompatButton) findViewById(R.id.btnMessage);
         btnMessage.setTag(TAG_MESSAGE_FRAGMENT);
         buttons.add(btnMessage);
 
-        AppCompatButton btnContacts = (AppCompatButton) findViewById(R.id.contacts);
+        AppCompatButton btnContacts = (AppCompatButton) findViewById(R.id.btnContacts);
         btnContacts.setTag(TAG_CONTACTS_FRAGMENT);
         buttons.add(btnContacts);
 
-        AppCompatButton btnPandora = (AppCompatButton) findViewById(R.id.pandora);
+        AppCompatButton btnPandora = (AppCompatButton) findViewById(R.id.btnPandora);
         btnPandora.setTag(TAG_PANDORA_FRAGMENT);
         buttons.add(btnPandora);
 
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
+        if (listenerDrawer.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
             return true;
         }
 

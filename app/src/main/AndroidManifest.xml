@@ -30,7 +30,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <provider
             android:authorities="com.vrv.litedood"
-            android:name=".bpo.LiteDoodMessageProvider"
+            android:name=".provider.LiteDoodMessageProvider"
             android:exported="false">
                 <grant-uri-permission android:pathPattern=".*" />
         </provider>

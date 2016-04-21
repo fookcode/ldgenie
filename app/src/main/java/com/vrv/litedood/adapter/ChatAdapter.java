@@ -12,18 +12,12 @@ import android.widget.BaseAdapter;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 
-import com.vrv.imsdk.SDKManager;
-import com.vrv.imsdk.bean.UserInfoResult;
 import com.vrv.imsdk.model.Chat;
-import com.vrv.imsdk.model.Contact;
-import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
-import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +48,7 @@ public class ChatAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         Bitmap bitmapAvatar;
         if(convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.chat_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_chat, null);
             viewHolder = new ViewHolder();
 
             viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.chatItemAvatar);

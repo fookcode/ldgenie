@@ -53,7 +53,7 @@ public class ContactsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.contacts_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_contacts, null);
             viewHolder = new ViewHolder();
             viewHolder.ivContactAvatar = (AppCompatImageView)convertView.findViewById(R.id.contactAvatar);
             viewHolder.txtContactName = (AppCompatTextView)convertView.findViewById(R.id.contactName);

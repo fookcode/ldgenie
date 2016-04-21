@@ -1,4 +1,4 @@
-package com.vrv.litedood.bpo;
+package com.vrv.litedood.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
