@@ -14,8 +14,7 @@
         android:id="@+id/listMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:clickable="false">
+        android:layout_weight="1">
     </android.support.v7.widget.ListViewCompat>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"

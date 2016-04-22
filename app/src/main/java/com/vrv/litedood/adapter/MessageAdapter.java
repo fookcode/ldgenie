@@ -3,7 +3,6 @@ package com.vrv.litedood.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Message;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -15,11 +14,7 @@ import android.widget.BaseAdapter;
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
-import com.vrv.imsdk.model.Contact;
-import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
-import com.vrv.litedood.common.sdk.action.RequestHandler;
-import com.vrv.litedood.common.sdk.action.RequestHelper;
 
 import java.io.File;
 import java.util.List;
@@ -85,14 +80,14 @@ public class MessageAdapter extends BaseAdapter {
         convertView = null;
         switch (type) {
             case MESSAGE_IN: {
-                convertView = LayoutInflater.from(context).inflate(R.layout.message_in_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_message_in, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageIn);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageInAvatar);
                 break;
             }
             case MESSAGE_OUT: {
-                convertView = LayoutInflater.from(context).inflate(R.layout.message_out_item, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_message_out, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOut);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageOutAvatar);

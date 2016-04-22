@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         private HandlerType type;
 
         public LoginRequestHandler(Activity activity, HandlerType type) {
-            super();
+            super(activity);
             this.activity = activity;
             this.type = type;
         }

@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/message_group_margin"
-    android:gravity="right"
-    >
+    android:clickable="false">
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgMessageInAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/message_group_avatar_margin"
+        android:layout_gravity="center_vertical"/>
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvMessageOut"
+        android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="116dp"
         android:minHeight="35dp"
         android:padding="3dp"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
+        android:layout_marginRight="58dp"
         android:background="@drawable/message_bubble"
-        />
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/imgMessageOutAvatar"
-        android:layout_width="48dp"
-        android:layout_gravity="center_vertical"
-        android:layout_height="48dp"
-        android:layout_margin="@dimen/message_group_avatar_margin"/>
-
-
+        android:clickable="true"/>
 </android.support.v7.widget.LinearLayoutCompat>
