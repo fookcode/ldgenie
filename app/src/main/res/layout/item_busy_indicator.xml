@@ -3,20 +3,24 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    android:background="@color/DarkGray"
+    android:background="@drawable/button"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/ivBusyIndicatorAni"
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/pbIndicator"
         android:layout_width="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
-
+        android:indeterminateOnly="true"
+        android:layout_gravity="center"
+        android:visibility="visible">
+    </android.support.v4.widget.ContentLoadingProgressBar>
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvBusyIndicatorHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin_min"
-        android:text="@string/busy_indicator_hint" />
+        android:layout_gravity="center_horizontal"
+        android:text="@string/busy_indicator_hint"
+        android:layout_margin="@dimen/common_margin_min"/>
+
 
 </LinearLayout>

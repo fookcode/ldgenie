@@ -40,7 +40,7 @@ public abstract class RequestHandler extends Handler {
     public static final int SHOW_PRO = 2;
     public static final int DIS_PRO = 3;
 
-    private static ProgressDialog dialog;
+    private static AlertDialog dialog;
     private Context context;
 
     public RequestHandler(){};
@@ -66,20 +66,20 @@ public abstract class RequestHandler extends Handler {
                 handleFailure(msg.arg1, String.valueOf(msg.obj));
                 break;
             case SHOW_PRO:
-                dialog = new ProgressDialog(context);
-                dialog.setCancelable(false);
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                Window window = dialog.getWindow();
 
-                window.setLayout(48, 48);
-                dialog.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                AppCompatActivity activity = (AppCompatActivity)context;
+                View view = activity.getLayoutInflater().inflate(R.layout.item_busy_indicator, null);
+                dialog = builder.setView(view).show();
+                dialog.getWindow().setLayout(160, 160);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
                 break;
             case DIS_PRO:
                 try {
                     if (dialog != null) {
-//                        dialog.dismiss();
-//                        dialog = null;
-
+                       dialog.dismiss();
+                       dialog = null;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,25 +91,34 @@ public abstract class RequestHandler extends Handler {
     public abstract void handleSuccess(Message msg);
 
     public void handleFailure(int code, String message) {
+        if ((dialog != null)&&(dialog.isShowing())) {
+            dialog.dismiss();
+        }
         Toast.makeText(context, code + ":" + message, Toast.LENGTH_SHORT).show();
     }
-
-    public static class BusyIndicatorDialog extends DialogFragment {
-        public BusyIndicatorDialog() {
-            super();
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            View view = getActivity().getLayoutInflater().inflate(R.layout.item_busy_indicator, null);
-           // Log.v(TAG, String.valueOf(params.height) + "   " + String.valueOf(params.width));
-
-            builder.setView(view);
-
-            return builder.create();
-        }
-
-    }
+//
+//    public static class BusyIndicatorDialog extends DialogFragment {
+//        private static AlertDialog dialog;
+//        public BusyIndicatorDialog() {
+//            super();
+//        }
+//
+//        @Override
+//        public Dialog getDialog() {
+//            return dialog;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public Dialog onCreateDialog(Bundle savedInstanceState) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//            View view = getActivity().getLayoutInflater().inflate(R.layout.item_busy_indicator, null);
+//           // Log.v(TAG, String.valueOf(params.height) + "   " + String.valueOf(params.width));
+//            builder.setView(view);
+//
+//            dialog = builder.create();
+//            return dialog;
+//        }
+//
+//    }
 }

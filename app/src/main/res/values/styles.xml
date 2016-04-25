@@ -15,6 +15,9 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowMinWidthMinor">0dp</item>
+        <item name="android:windowMinWidthMajor">0dp</item>
+
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -28,5 +31,6 @@
         <item name="attr3">testNull</item>
         <item name="attr1">?attr/attr3</item>
     </style>
+
 
 </resources>
