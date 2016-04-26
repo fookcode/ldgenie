@@ -79,6 +79,7 @@ public class BaseInfoBean implements Parcelable {
         baseInfoBean.setIcon(chat.getAvatar());
         baseInfoBean.setGender(chat.getGender());
         baseInfoBean.setLastMsgID(chat.getLastMsgID());
+
         return baseInfoBean;
     }
 

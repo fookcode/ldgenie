@@ -58,7 +58,7 @@ public class MessageActivity extends AppCompatActivity {
     public static void startMessageActivity(Activity activity, Chat chat) {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
-        intent.putExtra(ID_LAST_MESSAGE, chat.getLastMsgID());
+        intent.putExtra(ID_LAST_MESSAGE, chat.getLastMsg());
         intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, chat.getUnReadNum());
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
@@ -117,8 +117,12 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
-
+        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
+        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 1);
+        RequestHelper.getChatHistory(userInfo.getID(),
+                getIntent().getLongExtra(ID_LAST_MESSAGE, -1),
+                count == 0 ? 1 : count,       //值为0会取所有记录
+                new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));                 //获取未读记录
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
@@ -138,6 +142,17 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        SDKManager.instance().getChatMsgList().setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener() {
+            @Override
+            public void onReceive(ChatMsg chatMsg) {
+
+            }
+
+            @Override
+            public void onUpdate(ChatMsg chatMsg) {
+
+            }
+        });
 
     }
 
@@ -194,10 +209,6 @@ public class MessageActivity extends AppCompatActivity {
         };
     }*/
 
-    private void setMessageHistory(long targetID, long lastMsgID) {
-        RequestHelper.getChatHistory(targetID, lastMsgID, getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 1), new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
-    }
-
 //    private void saveMessageToDB(ChatMsg chatMsg) {
 //
 //        String uriString = LiteDood.URI + "/" + MessageDTO.TABLE_NAME;
@@ -231,8 +242,8 @@ public class MessageActivity extends AppCompatActivity {
                         chatMsgQueue.clear();
                         chatMsgQueue.addAll(chatMsgArray);
                         messageAdapter.notifyDataSetChanged();
-                        BaseInfoBean userInfo = MessageActivity.this.getIntent().getParcelableExtra(ID_USER_INFO);
-                        RequestHelper.setMsgRead(userInfo.getID(),getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
+                        ChatMsg lastMsg = chatMsgArray.get(chatMsgArray.size()-1);
+                        RequestHelper.setMsgRead(lastMsg.getTargetID(), lastMsg.getMessageID());
                         lvMessage.setSelection(chatMsgArray.size() -1);
                     }
                     break;

@@ -25,8 +25,6 @@ import java.util.List;
 public class MessageAdapter extends BaseAdapter {
     private static String TAG = MessageAdapter.class.getSimpleName();
 
-    private static final int TYPE_GET_MYSELF = 1;
-
     private static final int MESSAGE_IN = 1;
     private static final int MESSAGE_OUT = 2;
 
@@ -73,9 +71,6 @@ public class MessageAdapter extends BaseAdapter {
         int type = getItemViewType(position);
         ViewHolder viewHolder = null;
         String msg;
-
-        long id=0;
-        int count = 0;
 
         convertView = null;
         switch (type) {
