@@ -53,8 +53,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
     /*
         //以上是onClick新逻辑，2016/3/21
         //以下是onClick原逻辑，2016/3/20
-        if (button.getTag() == MainActivity.TAG_CHAT_FRAGMENT) {
-            Fragment chatFragment = fragments.get(button.getTag());
+        if (sl_main_button.getTag() == MainActivity.TAG_CHAT_FRAGMENT) {
+            Fragment chatFragment = fragments.get(sl_main_button.getTag());
             if (chatFragment == currentFragment) {
                 return;
             }
@@ -69,8 +69,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
             fragments.put(MainActivity.TAG_CURRENT_FRAGMENT, chatFragment);
         }
 
-        if (button.getTag() == MainActivity.TAG_CONTACTS_FRAGMENT) {
-            Fragment contactsFragment = fragments.get(button.getTag());
+        if (sl_main_button.getTag() == MainActivity.TAG_CONTACTS_FRAGMENT) {
+            Fragment contactsFragment = fragments.get(sl_main_button.getTag());
             if (contactsFragment == currentFragment) {
                 return;
             }
@@ -90,8 +90,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
             fragments.put(MainActivity.TAG_CURRENT_FRAGMENT, contactsFragment);
         }
 
-        if (button.getTag() == MainActivity.TAG_PANDORA_FRAGMENT) {
-            Fragment pandoraFragment = fragments.get(button.getTag());
+        if (sl_main_button.getTag() == MainActivity.TAG_PANDORA_FRAGMENT) {
+            Fragment pandoraFragment = fragments.get(sl_main_button.getTag());
             if (pandoraFragment == currentFragment) {
                 return;
             }

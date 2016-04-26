@@ -16,8 +16,10 @@ import com.vrv.imsdk.model.Chat;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
+import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -57,7 +59,8 @@ public class ChatAdapter extends BaseAdapter {
             layoutParams.height = 72;
             viewHolder.avatar.setLayoutParams(layoutParams);
 
-            viewHolder.title = (AppCompatTextView)convertView.findViewById(R.id.chatItemTitle);
+            viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.chatItemCountIndicator);
+            viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.chatItemName);
             viewHolder.recentMessage = (AppCompatTextView)convertView.findViewById(R.id.chatItemRecentMessage);
             convertView.setTag(viewHolder);
         }
@@ -65,7 +68,15 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder =(ViewHolder) convertView.getTag();
         }
         Chat chat = chatList.get(position);
+        int unReadNum = chat.getUnReadNum();
 
+        if (unReadNum > 0) {
+            viewHolder.count.setText(String.valueOf(unReadNum));
+            viewHolder.count.setVisibility(View.VISIBLE);
+        }
+        else if (viewHolder.count.getVisibility() == View.VISIBLE){
+            viewHolder.count.setVisibility(View.GONE);
+        }
 
         String avatarPath = chat.getAvatar();
         if ((null != avatarPath) && (!avatarPath.isEmpty())) {
@@ -82,7 +93,7 @@ public class ChatAdapter extends BaseAdapter {
             }
         }
 
-        viewHolder.title.setText(chat.getName());
+        viewHolder.name.setText(chat.getName());
         viewHolder.recentMessage.setText(ChatMsgUtil.lastMsgBrief(context, chat.getMsgType(), chat.getLastMsg()));
 
         return convertView;
@@ -102,7 +113,9 @@ public class ChatAdapter extends BaseAdapter {
 
         public AppCompatImageView avatar;
 
-        public AppCompatTextView title;
+        public AppCompatTextView count;
+
+        public AppCompatTextView name;
 
         public AppCompatTextView recentMessage;
 

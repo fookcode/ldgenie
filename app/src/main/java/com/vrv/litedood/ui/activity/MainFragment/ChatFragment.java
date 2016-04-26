@@ -11,6 +11,7 @@ package com.vrv.litedood.ui.activity.MainFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.ListViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,11 @@ import com.vrv.imsdk.model.ChatList;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ChatAdapter;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
@@ -45,10 +48,15 @@ public class ChatFragment extends Fragment {
         chatAdapter = new ChatAdapter(getActivity(), chatQueue);   //初始化适配器
 
         setChatQueueChangeListener();                                  //添加监听，有新会话时刷新会话列表
-
     }
 
-	@Override
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.v(TAG, "onSaveInstanceState");
+    }
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //Log.v("container", String.valueOf(container.getClass().getName()));
@@ -75,12 +83,13 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void notifyDataChange() {
+                ArrayList<Chat> list = SDKManager.instance().getChatList().getList();
+                    chatQueue.clear();
+                    chatQueue.addAll(list);
 
-                chatQueue.clear();
-                chatQueue.addAll(SDKManager.instance().getChatList().getList());
-
-                if (chatAdapter != null)
-                    chatAdapter.notifyDataSetChanged();
+                    if (chatAdapter != null) {
+                        chatAdapter.notifyDataSetChanged();
+                    }
             }
 
             @Override
@@ -90,5 +99,6 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
 
 }

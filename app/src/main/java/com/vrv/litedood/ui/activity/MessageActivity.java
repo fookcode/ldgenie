@@ -41,11 +41,10 @@ public class MessageActivity extends AppCompatActivity {
 
     private static final String ID_USER_INFO="USER_INFO";
     private static final String ID_LAST_MESSAGE = "LAST_MESSAGE_ID";
+    private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREADNUM";
 
     private static final int TYPE_GET_HISTORY_MESSAGE = 1;
     private static final int TYPE_SEND_MESSAGE = 2;
-
-    private static final int RECENT_MESSAGE_COUNT = 16;
 
     private Toolbar toolbarMessage;
     private BaseInfoBean userInfo;
@@ -60,6 +59,7 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
         intent.putExtra(ID_LAST_MESSAGE, chat.getLastMsgID());
+        intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, chat.getUnReadNum());
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
         activity.finish();
@@ -135,11 +135,18 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
     private void addChatMsg(ChatMsg chatMsg) {
         if (chatMsg == null) return;
         if((chatMsg.getTargetID() == userInfo.getID()) && (chatMsgQueue != null)) {
             //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
             chatMsgQueue.add(chatMsg);
+            RequestHelper.setMsgRead(chatMsg.getTargetID(), chatMsg.getMessageID());
             messageAdapter.notifyDataSetChanged();
             //saveMessageToDB(chatMsg);
 
@@ -187,8 +194,8 @@ public class MessageActivity extends AppCompatActivity {
         };
     }*/
 
-    private void setMessageHistory(long targetID, long lastChatID) {
-        RequestHelper.getChatHistory(targetID, lastChatID, RECENT_MESSAGE_COUNT, new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
+    private void setMessageHistory(long targetID, long lastMsgID) {
+        RequestHelper.getChatHistory(targetID, lastMsgID, getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 1), new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
     }
 
 //    private void saveMessageToDB(ChatMsg chatMsg) {
@@ -220,10 +227,14 @@ public class MessageActivity extends AppCompatActivity {
             switch (nType){
                 case TYPE_GET_HISTORY_MESSAGE:
                     ArrayList<ChatMsg> chatMsgArray = msg.getData().getParcelableArrayList("data");
-
-                    chatMsgQueue.clear();
-                    chatMsgQueue.addAll(chatMsgArray);
-                    messageAdapter.notifyDataSetChanged();
+                    if (chatMsgArray.size() > 0) {
+                        chatMsgQueue.clear();
+                        chatMsgQueue.addAll(chatMsgArray);
+                        messageAdapter.notifyDataSetChanged();
+                        BaseInfoBean userInfo = MessageActivity.this.getIntent().getParcelableExtra(ID_USER_INFO);
+                        RequestHelper.setMsgRead(userInfo.getID(),getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
+                        lvMessage.setSelection(chatMsgArray.size() -1);
+                    }
                     break;
                 case TYPE_SEND_MESSAGE:
 

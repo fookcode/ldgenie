@@ -20,6 +20,6 @@
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="58dp"
-        android:background="@drawable/message_bubble"
+        android:background="@drawable/sp_message_bubble"
         android:clickable="true"/>
 </android.support.v7.widget.LinearLayoutCompat>

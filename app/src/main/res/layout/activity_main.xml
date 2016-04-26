@@ -31,7 +31,7 @@
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/message_button_name"
-				android:background="@drawable/button"
+				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			/>
 			<android.support.v7.widget.AppCompatButton
@@ -40,7 +40,7 @@
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/contacts_button_name"
-				android:background="@drawable/button"
+				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			/>
 			<android.support.v7.widget.AppCompatButton
@@ -49,7 +49,7 @@
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/pandora_button_name"
-				android:background="@drawable/button"
+				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			 />
 		</android.support.v7.widget.LinearLayoutCompat>
@@ -81,7 +81,7 @@
                 android:id="@+id/tvMyProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_margin"
+                android:layout_marginLeft="@dimen/common_margin_max"
                 android:layout_toRightOf="@id/ivMyProfileAvatar"
                 android:layout_centerVertical="true"
                 android:text="用户名称"

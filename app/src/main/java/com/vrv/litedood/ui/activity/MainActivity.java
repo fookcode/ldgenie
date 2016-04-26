@@ -68,10 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayoutCompat actionBar;
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.v(TAG, "onSaveInstanceState");
+    }
+
     public static void startMainActivity(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, MainActivity.class);
         activity.startActivity(intent);
+
         activity.finish();
     }
 
@@ -234,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
+		// automatically handle clicks on the Home/Up sl_main_button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
         if (listenerDrawer.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
             return true;

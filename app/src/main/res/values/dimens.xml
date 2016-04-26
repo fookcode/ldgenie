@@ -7,8 +7,11 @@
     <dimen name="no_margin">0dp</dimen>
     <dimen name="no_padding">0dp</dimen>
 
-    <dimen name="common_margin">8dp</dimen>
-    <dimen name="common_padding">8dp</dimen>
+    <dimen name="common_margin_max">8dp</dimen>
+    <dimen name="common_padding_max">8dp</dimen>
+
+    <dimen name="common_margin">5dp</dimen>
+    <dimen name="common_padding">5dp</dimen>
 
     <dimen name="common_margin_min">3dp</dimen>
     <dimen name="common_padding_min">3dp</dimen>

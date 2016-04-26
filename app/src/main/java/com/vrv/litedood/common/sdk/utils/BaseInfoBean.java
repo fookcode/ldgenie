@@ -15,6 +15,7 @@ public class BaseInfoBean implements Parcelable {
     private String content = "";
     private String icon = "";
     private byte gender = 0;
+    private long LastMsgID = 0;
 
     public long getID() {
         return ID;
@@ -56,6 +57,10 @@ public class BaseInfoBean implements Parcelable {
         this.gender = gender;
     }
 
+    public void setLastMsgID(long msgid) {this.LastMsgID = msgid;}
+
+    public long getLastMsgID() {return this.LastMsgID;}
+
     @Override
     public String toString() {
         return "BaseInfoBean{" +
@@ -73,6 +78,7 @@ public class BaseInfoBean implements Parcelable {
         baseInfoBean.setName(chat.getName());
         baseInfoBean.setIcon(chat.getAvatar());
         baseInfoBean.setGender(chat.getGender());
+        baseInfoBean.setLastMsgID(chat.getLastMsgID());
         return baseInfoBean;
     }
 
