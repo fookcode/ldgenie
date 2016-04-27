@@ -37,6 +37,7 @@ public class ChatFragment extends Fragment {
     private List<Chat> chatQueue = new ArrayList<>();
     private ChatAdapter chatAdapter;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +48,26 @@ public class ChatFragment extends Fragment {
         chatQueue.addAll(chatArrayList);
         chatAdapter = new ChatAdapter(getActivity(), chatQueue);   //初始化适配器
 
-        setChatQueueChangeListener();                                  //添加监听，有新会话时刷新会话列表
-    }
+        //添加监听，有新会话时刷新会话列表
+        chatList.setListener(new ListModel.OnChangeListener() {
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.v(TAG, "onSaveInstanceState");
+            @Override
+            public void notifyDataChange() {
+                ArrayList<Chat> list = SDKManager.instance().getChatList().getList();
+                chatQueue.clear();
+                chatQueue.addAll(list);
+
+                if ((chatQueue.size() > 0) && (chatAdapter != null)) {
+                    chatAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void notifyItemChange(int i) {
+                if (chatAdapter != null)
+                    chatAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -68,6 +82,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Chat chat = (Chat)parent.getItemAtPosition(position);
+                Log.v(TAG, chat.toString());
                 if (chat != null) {
                     //BaseInfoBean bean = BaseInfoBean.chat2BaseInfo(chat);
                     MessageActivity.startMessageActivity(ChatFragment.this.getActivity(), chat);
@@ -78,27 +93,16 @@ public class ChatFragment extends Fragment {
         return result;
 	}
 
-    private void setChatQueueChangeListener() {
-        chatList.setListener(new ListModel.OnChangeListener() {
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        //将对话监听过程清空
+        chatList.setNotificationListener(new ChatList.OnNotificationListener() {
             @Override
-            public void notifyDataChange() {
-                ArrayList<Chat> list = SDKManager.instance().getChatList().getList();
-                    chatQueue.clear();
-                    chatQueue.addAll(list);
+            public void onNotification(Chat chat) {
 
-                    if (chatAdapter != null) {
-                        chatAdapter.notifyDataSetChanged();
-                    }
-            }
-
-            @Override
-            public void notifyItemChange(int i) {
-                if(chatAdapter != null)
-                    chatAdapter.notifyDataSetChanged();
             }
         });
     }
-
 
 }

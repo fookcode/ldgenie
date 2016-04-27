@@ -67,7 +67,7 @@ public class MessageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsg chatMsg = chatMsgList.get(position);
-        Log.v(TAG, chatMsg == null?"":chatMsg.toString());
+        Log.v(TAG, chatMsg == null?"":chatMsg.toString() + chatMsg.getMessage());
         int type = getItemViewType(position);
         ViewHolder viewHolder = null;
         String msg;

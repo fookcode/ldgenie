@@ -47,6 +47,8 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        if (context == null) return null;
+
         ViewHolder viewHolder;
         Bitmap bitmapAvatar;
         if(convertView == null) {

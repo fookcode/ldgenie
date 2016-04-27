@@ -3,7 +3,6 @@ package com.vrv.litedood.ui.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
@@ -20,15 +19,11 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
-import com.vrv.imsdk.model.Contact;
-import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
-import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
-import com.vrv.litedood.dto.MessageDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +35,7 @@ public class MessageActivity extends AppCompatActivity {
     private static final String TAG = MessageActivity.class.getSimpleName();
 
     private static final String ID_USER_INFO="USER_INFO";
-    private static final String ID_LAST_MESSAGE = "LAST_MESSAGE_ID";
+    private static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
     private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREADNUM";
 
     private static final int TYPE_GET_HISTORY_MESSAGE = 1;
@@ -58,7 +53,7 @@ public class MessageActivity extends AppCompatActivity {
     public static void startMessageActivity(Activity activity, Chat chat) {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
-        intent.putExtra(ID_LAST_MESSAGE, chat.getLastMsg());
+        intent.putExtra(ID_LAST_MESSAGE_ID, chat.getLastMsgID());
         intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, chat.getUnReadNum());
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
@@ -101,28 +96,46 @@ public class MessageActivity extends AppCompatActivity {
         lvMessage = (ListViewCompat)findViewById(R.id.listMessage);
         lvMessage.setAdapter(messageAdapter);
 
-
-
         chatMsgList = SDKManager.instance().getChatMsgList();
         chatMsgList.setReceiveListener(userInfo.getID(), new ChatMsgList.OnReceiveChatMsgListener() {
             @Override
             public void onReceive(ChatMsg msg) {
-                addChatMsg(msg);
+                if (msg == null) return;
+                if((msg.getTargetID() == userInfo.getID()) && (chatMsgQueue != null)) {
+                    //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
+                    chatMsgQueue.add(msg);
+                    RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
+                    messageAdapter.notifyDataSetChanged();
+                    //saveMessageToDB(chatMsg);
+
+                }
             }
 
             @Override
             public void onUpdate(ChatMsg msg) {
 
-                updateMsgStatus(msg);
+                if (msg == null) {
+                    return;
+                }
+                int size = chatMsgQueue.size();
+                Log.v(TAG, "in Update, MsgQueueSize: " + String.valueOf(size));
+                for (int i = size - 1; i >= 0; i--) {
+                    if (msg.getLocalID() == chatMsgQueue.get(i).getLocalID()) {
+                        chatMsgQueue.set(i, msg);
+                        messageAdapter.notifyDataSetChanged();
+                        return;
+                    }
+                }
             }
         });
 
-        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE, -1));
+        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
+        //获取未读记录
         int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 1);
         RequestHelper.getChatHistory(userInfo.getID(),
-                getIntent().getLongExtra(ID_LAST_MESSAGE, -1),
+                getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1) + 100,
                 count == 0 ? 1 : count,       //值为0会取所有记录
-                new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));                 //获取未读记录
+                new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
@@ -142,7 +155,8 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        SDKManager.instance().getChatMsgList().setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener() {
+        //将消息接收监听过程清空
+        chatMsgList.setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener() {
             @Override
             public void onReceive(ChatMsg chatMsg) {
 
@@ -154,33 +168,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void addChatMsg(ChatMsg chatMsg) {
-        if (chatMsg == null) return;
-        if((chatMsg.getTargetID() == userInfo.getID()) && (chatMsgQueue != null)) {
-            //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
-            chatMsgQueue.add(chatMsg);
-            RequestHelper.setMsgRead(chatMsg.getTargetID(), chatMsg.getMessageID());
-            messageAdapter.notifyDataSetChanged();
-            //saveMessageToDB(chatMsg);
-
-        }
-    }
-
-    private void updateMsgStatus(ChatMsg chatMsg) {
-        if (chatMsg == null) {
-            return;
-        }
-        int size = chatMsgQueue.size();
-        Log.v(TAG, "in Update, MsgQueueSize: " + String.valueOf(size));
-        for (int i = size - 1; i >= 0; i--) {
-            if (chatMsg.getLocalID() == chatMsgQueue.get(i).getLocalID()) {
-                chatMsgQueue.set(i, chatMsg);
-                messageAdapter.notifyDataSetChanged();
-                return;
-            }
-        }
     }
 
     /*private void setMessageHistory(long targetID) {
