@@ -23,49 +23,52 @@ import com.vrv.imsdk.model.ChatList;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ChatAdapter;
-import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
     private static String TAG = ChatFragment.class.getSimpleName();
 
-    private ChatList chatList;
-    private List<Chat> chatQueue = new ArrayList<>();
-    private ChatAdapter chatAdapter;
+    private ChatList mChatList;
+    private List<Chat> mChatQueue =  new ArrayList<>();;
+    private ChatAdapter mChatAdapter;
+    private ListViewCompat mChatView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        chatList =  SDKManager.instance().getChatList();
-        ArrayList<Chat> chatArrayList = chatList.getList();          //初次获取会话列表
+        mChatList =  SDKManager.instance().getChatList();
 
-        chatQueue.addAll(chatArrayList);
-        chatAdapter = new ChatAdapter(getActivity(), chatQueue);   //初始化适配器
+        mChatQueue.addAll(mChatList.getList());     //初始化获取对话列表
+
+        mChatAdapter = new ChatAdapter(getActivity(), mChatQueue);   //初始化适配器
 
         //添加监听，有新会话时刷新会话列表
-        chatList.setListener(new ListModel.OnChangeListener() {
+        mChatList.setListener(new ListModel.OnChangeListener() {
 
             @Override
             public void notifyDataChange() {
-                ArrayList<Chat> list = SDKManager.instance().getChatList().getList();
-                chatQueue.clear();
-                chatQueue.addAll(list);
+                ArrayList<Chat> chatList = mChatList.getList();
+                mChatQueue.clear();
+                mChatQueue.addAll(chatList);
 
-                if ((chatQueue.size() > 0) && (chatAdapter != null)) {
-                    chatAdapter.notifyDataSetChanged();
+                if ((mChatQueue.size() > 0) && (mChatAdapter != null)) {
+                    mChatAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void notifyItemChange(int i) {
-                if (chatAdapter != null)
-                    chatAdapter.notifyDataSetChanged();
+                if (mChatAdapter != null) {
+                    //View chatItemView = (View) mChatView.getView(i);
+                    //ChatAdapter.ViewHolder chatItem = (ChatAdapter.ViewHolder)chatItemView.getTag();
+
+                    mChatAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -76,9 +79,9 @@ public class ChatFragment extends Fragment {
         //Log.v("container", String.valueOf(container.getClass().getName()));
 
         View result =  inflater.inflate(R.layout.fragment_chat, container, false);
-        final ListViewCompat lvMessageGroup = (ListViewCompat)result.findViewById(R.id.listChat);
-        lvMessageGroup.setAdapter(chatAdapter);
-        lvMessageGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         mChatView = (ListViewCompat)result.findViewById(R.id.lvChat);
+        mChatView.setAdapter(mChatAdapter);
+        mChatView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Chat chat = (Chat)parent.getItemAtPosition(position);
@@ -92,17 +95,5 @@ public class ChatFragment extends Fragment {
         });
         return result;
 	}
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //将对话监听过程清空
-        chatList.setNotificationListener(new ChatList.OnNotificationListener() {
-            @Override
-            public void onNotification(Chat chat) {
-
-            }
-        });
-    }
 
 }

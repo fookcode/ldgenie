@@ -12,27 +12,30 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.sdk.utils.PinYinUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by kinee on 2016/4/3.
  */
 public class ContactsAdapter extends BaseAdapter {
-    private Context context;
-    private List<Contact> listContact;
+    private Context mContext;
+    private List<Contact> mContactList;
+    private static HashMap<String, Integer> mSeekPosition = new HashMap<>();
 
     public ContactsAdapter(Context context, List<Contact> listContact) {
-        this.context = context;
-        this.listContact = listContact;
+        this.mContext = context;
+        this.mContactList = listContact;
     }
 
     @Override
     public int getCount() {
         int result = 0;
-        if (listContact != null)
-            result =  listContact.size();
+        if (mContactList != null)
+            result =  mContactList.size();
         return result;
     }
 
@@ -40,7 +43,7 @@ public class ContactsAdapter extends BaseAdapter {
     public Object getItem(int position) {
         Contact result = null;
         if (getCount()>0)
-            result = listContact.get(position);
+            result = mContactList.get(position);
         return result;
     }
 
@@ -51,19 +54,30 @@ public class ContactsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        String spellTitle = "#";
         ViewHolder viewHolder;
+
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_contacts, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts, null);
             viewHolder = new ViewHolder();
             viewHolder.ivContactAvatar = (AppCompatImageView)convertView.findViewById(R.id.contactAvatar);
             viewHolder.txtContactName = (AppCompatTextView)convertView.findViewById(R.id.contactName);
             viewHolder.txtContactSign = (AppCompatTextView)convertView.findViewById(R.id.contactSign);
+            viewHolder.tvContactsSeparator = (AppCompatTextView)convertView.findViewById(R.id.tvContactsSeparator);
             convertView.setTag(viewHolder);
         }
         else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        Contact contact = listContact.get(position);
+
+        Contact contact = mContactList.get(position);
+        String nameFirstSpell = String.valueOf(PinYinUtil.getFirstSpell(String.valueOf(contact.getName().charAt(0))).toUpperCase().toCharArray()[0]);
+        if (!spellTitle.equals(nameFirstSpell)) {
+            spellTitle = nameFirstSpell;
+            viewHolder.tvContactsSeparator.setVisibility(View.VISIBLE);
+            viewHolder.tvContactsSeparator.setText(spellTitle);
+            mSeekPosition.put(spellTitle, position);
+        }
         String avatarPath = contact.getAvatar();
         Bitmap bitmapAvatar;
         if ((null != avatarPath) && (!avatarPath.isEmpty())) {
@@ -82,8 +96,13 @@ public class ContactsAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public static HashMap<String, Integer> getSeekPositionMap() {
+        return mSeekPosition;
+    }
+
     class ViewHolder {
 
+        AppCompatTextView tvContactsSeparator;
         AppCompatImageView ivContactAvatar;
         AppCompatTextView txtContactName;
         AppCompatTextView txtContactSign;

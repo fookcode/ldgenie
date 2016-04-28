@@ -36,7 +36,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private static final String ID_USER_INFO="USER_INFO";
     private static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
-    private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREADNUM";
+    private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
 
     private static final int TYPE_GET_HISTORY_MESSAGE = 1;
     private static final int TYPE_SEND_MESSAGE = 2;
@@ -49,6 +49,8 @@ public class MessageActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
 
     private ContentResolver resolver;
+
+
 
     public static void startMessageActivity(Activity activity, Chat chat) {
         Intent intent = new Intent();
@@ -107,7 +109,6 @@ public class MessageActivity extends AppCompatActivity {
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
                     messageAdapter.notifyDataSetChanged();
                     //saveMessageToDB(chatMsg);
-
                 }
             }
 
@@ -131,10 +132,10 @@ public class MessageActivity extends AppCompatActivity {
 
         //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
         //获取未读记录
-        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 1);
+        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
         RequestHelper.getChatHistory(userInfo.getID(),
-                getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1) + 100,
-                count == 0 ? 1 : count,       //值为0会取所有记录
+                0,
+                getShowedMessageCount(count),
                 new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
@@ -152,11 +153,15 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    private int getShowedMessageCount(int unReadCount) {
+        return unReadCount == 0 ? 3 : unReadCount;
+    }
+
     @Override
-    protected void onStop() {
-        super.onStop();
-        //将消息接收监听过程清空
-        chatMsgList.setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener() {
+    protected void onDestroy() {
+        super.onDestroy();
+        //清除消息点对点接收监听函数，否则此Activity就算消毁，过程依然继续后台执行
+        chatMsgList.setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener(){
             @Override
             public void onReceive(ChatMsg chatMsg) {
 
@@ -167,7 +172,6 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     /*private void setMessageHistory(long targetID) {

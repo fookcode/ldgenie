@@ -65,8 +65,8 @@ public abstract class RequestHandler extends Handler {
             case DIS_PRO:
                 try {
                     if (dialog != null) {
-                       //dialog.dismiss();
-                       //dialog = null;
+                       dialog.dismiss();
+                       dialog = null;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

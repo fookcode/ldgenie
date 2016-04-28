@@ -4,6 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.util.TimeUtils;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.text.format.DateUtils;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,8 @@ import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
 import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
 import java.io.File;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,12 +37,18 @@ public class ChatAdapter extends BaseAdapter {
     public static final String TAG = ChatAdapter.class.getSimpleName();
     public static final int TYPE_GET_USER = 1;
 
+    private static final int CHAT_AVATAR_SIZE = 72;
+
     private Context context;
     private  List<Chat> chatList;
 
     public ChatAdapter(Context context, List<Chat> chatList) {
         this.context = context;
         this.chatList = chatList;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -57,12 +70,14 @@ public class ChatAdapter extends BaseAdapter {
 
             viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.chatItemAvatar);
             ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
-            layoutParams.width = 72;
-            layoutParams.height = 72;
+            layoutParams.width = CHAT_AVATAR_SIZE;
+            layoutParams.height = CHAT_AVATAR_SIZE;
             viewHolder.avatar.setLayoutParams(layoutParams);
 
             viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.chatItemCountIndicator);
             viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.chatItemName);
+            viewHolder.time = (AppCompatTextView)convertView.findViewById(R.id.chatItemTime);
+            viewHolder.status = (ContentLoadingProgressBar)convertView.findViewById(R.id.chatItemSendingSatusIndicator);
             viewHolder.recentMessage = (AppCompatTextView)convertView.findViewById(R.id.chatItemRecentMessage);
             convertView.setTag(viewHolder);
         }
@@ -70,8 +85,10 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder =(ViewHolder) convertView.getTag();
         }
         Chat chat = chatList.get(position);
-        int unReadNum = chat.getUnReadNum();
+        //Log.v(TAG, chat.toString());
 
+        //设置示读指示
+        int unReadNum = chat.getUnReadNum();
         if (unReadNum > 0) {
             viewHolder.count.setText(String.valueOf(unReadNum));
             viewHolder.count.setVisibility(View.VISIBLE);
@@ -80,6 +97,7 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder.count.setVisibility(View.GONE);
         }
 
+        //设置头像
         String avatarPath = chat.getAvatar();
         if ((null != avatarPath) && (!avatarPath.isEmpty())) {
            File fAvatar = new File(avatarPath);
@@ -95,7 +113,45 @@ public class ChatAdapter extends BaseAdapter {
             }
         }
 
+        //设置聊天对方名称
         viewHolder.name.setText(chat.getName());
+
+        //设置发送时间
+        Time time = new Time();
+        time.set(chat.getTime());
+        int msg_year = time.year;
+        int msg_day = time.yearDay;
+
+        time.set(System.currentTimeMillis());
+        int now_year = time.year;
+        int now_day = time.yearDay;
+        int now_weekday = time.weekDay;
+
+        if (DateUtils.isToday(chat.getTime())) {
+            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_TIME));
+        }
+        else if (msg_year == now_year) {
+            if (now_day - msg_day == 1) {
+                viewHolder.time.setText("昨天");
+            } else if (now_day - msg_day == 2) {
+                viewHolder.time.setText("前天");
+            }
+            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
+                viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY));
+            }
+            else viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
+        }
+        else {
+            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
+        }
+
+
+        //设置消息发送状态
+        if(chat.getMsgType() != 2) {
+            viewHolder.status.setVisibility(View.VISIBLE);
+        }
+        else viewHolder.status.setVisibility(View.GONE);
+        //设置消息体
         viewHolder.recentMessage.setText(ChatMsgUtil.lastMsgBrief(context, chat.getMsgType(), chat.getLastMsg()));
 
         return convertView;
@@ -111,13 +167,17 @@ public class ChatAdapter extends BaseAdapter {
         }
 
 
-    class ViewHolder {
+    public class ViewHolder {
 
         public AppCompatImageView avatar;
 
         public AppCompatTextView count;
 
         public AppCompatTextView name;
+
+        public AppCompatTextView time;
+
+        public ContentLoadingProgressBar status;
 
         public AppCompatTextView recentMessage;
 

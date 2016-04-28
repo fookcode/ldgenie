@@ -22,10 +22,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
 
     public static final String PATH_INSERT_SUCCESS = "/insert_success";
 
-
     public static final int DB_VERSION = 1;
-
-
 
     public static final int CODE_TABLE_MESSAGE = 1;
 
