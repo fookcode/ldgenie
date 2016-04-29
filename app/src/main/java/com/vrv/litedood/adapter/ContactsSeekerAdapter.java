@@ -24,18 +24,19 @@ public class ContactsSeekerAdapter extends BaseAdapter {
     private Context mContext;
     private List<Contact> mContacts;
 
-    private static ArrayList<Character> mNameLetters;
+    private Character mCurrentSpell = '#';
+    private static ArrayList<Character> mNameLetters = new ArrayList<>();
 
     public ContactsSeekerAdapter(Context context, List<Contact> contacts) {
         super();
         this.mContacts = contacts;
         this.mContext = context;
         if (mContacts != null) {
-            mNameLetters = new ArrayList<>();
-            Character letter, current = '#';
+            mNameLetters.clear();
             for (Contact contact : mContacts) {
-                String name = contact.getName();
-                mNameLetters.add(Character.toUpperCase(PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]));
+                Character letter = Character.toUpperCase(contact.getPinyin().charAt(0));
+//                String name = contact.getName();
+//                Character letter = Character.toUpperCase(PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]);
 //                int ascii = name.charAt(0);
 //                if (((ascii>= 65) && (ascii <=90)) || ((ascii >= 97) && (ascii <= 122))) {
 //                    letter = Character.toUpperCase(name.charAt(0));
@@ -44,10 +45,10 @@ public class ContactsSeekerAdapter extends BaseAdapter {
 //                    String[] letters = PinyinHelper.toHanyuPinyinStringArray(name.charAt(0));
 //                    letter = Character.toUpperCase(letters[0].charAt(0));
 //                }
-//                if (current != letter) {
-//                    mNameLetters.add(letter);
-//                    current = letter;
-//                }
+                if (!mCurrentSpell.equals(letter)) {
+                    mNameLetters.add(letter);
+                    mCurrentSpell = letter;
+                }
             }
             Log.v(TAG, mNameLetters.toString());
         }

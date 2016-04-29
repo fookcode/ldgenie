@@ -4,20 +4,12 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal|center_vertical"
     android:padding="@dimen/common_padding_min">
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvContactsSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/LightGrey"
-        android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:paddingLeft="@dimen/common_padding"/>
+
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/contactAvatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/tvContactsSeparator"
         android:layout_margin="@dimen/common_margin_min"
         />
     <android.support.v7.widget.AppCompatTextView
@@ -25,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/contactAvatar"
-        android:layout_below="@id/tvContactsSeparator"
+        android:layout_alignParentTop="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:singleLine="true"/>
     <android.support.v7.widget.AppCompatTextView

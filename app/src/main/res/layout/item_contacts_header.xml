@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvConfigCategoryTitle"
+    android:id="@+id/tvContactsHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
     android:background="@color/LightGrey"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    android:clickable="false"
+    android:paddingLeft="@dimen/common_padding_max" />

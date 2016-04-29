@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.ListViewCompat;
 import android.widget.Toast;
@@ -53,20 +52,20 @@ public class MainActivity extends AppCompatActivity {
 	public static final String TAG_PANDORA_FRAGMENT = "PANDORA_FRAGMENT";
     public static final String TAG_CURRENT_FRAGMENT = "CURRENT_FRAGMENT";
 
-    private Map<String, Fragment> fragments = new HashMap<String, Fragment>();
+    private Map<String, Fragment> mFragmentsMap = new HashMap<String, Fragment>();
 
     private int clientWidth, clientHeight;
 
-    private DrawerLayout drawerConfig;
-    private ActionBarDrawerToggle listenerDrawer;               //抽屉Listener
-    private LinearLayoutCompat drawerConfigPanel;
-    private ListViewCompat drawerConfigListView;
+    private DrawerLayout mConfigDrawer;
+    private ActionBarDrawerToggle mConfigDrawerToggleListener;               //抽屉Listener
+    private LinearLayoutCompat mConfigDrawerPanel;
+    private ListViewCompat mConfigDrawerPanelListView;
 
-    private Toolbar toobar;
+    private Toolbar mToobar;
 
-    private FragmentManager fragmentManager;
+    private FragmentManager mFragmentManager;
 
-    private LinearLayoutCompat actionBar;
+    private LinearLayoutCompat mMainActionBar;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -114,22 +113,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDrawer() {
-        drawerConfig = (DrawerLayout)findViewById(R.id.drawerConfig);
-        drawerConfigPanel = (LinearLayoutCompat)findViewById(R.id.drawerConfigPanel);
-        LayoutParams layoutParams = drawerConfigPanel.getLayoutParams();
+        mConfigDrawer = (DrawerLayout)findViewById(R.id.drawerConfig);
+        mConfigDrawerPanel = (LinearLayoutCompat)findViewById(R.id.drawerConfigPanel);
+        LayoutParams layoutParams = mConfigDrawerPanel.getLayoutParams();
         layoutParams.width = clientWidth * 4 / 5;
-        drawerConfigPanel.setLayoutParams(layoutParams);
+        mConfigDrawerPanel.setLayoutParams(layoutParams);
 
-        drawerConfigListView = (ListViewCompat)findViewById(R.id.drawerConfigListView);
-        drawerConfigListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mConfigDrawerPanelListView = (ListViewCompat)findViewById(R.id.drawerConfigListView);
+        mConfigDrawerPanelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //
             }
         });
 
-        drawerConfigListView.setAdapter(new ConfigureAdapter(this));//(new ArrayAdapter<String>(this, R.layout.item_drawer_list, getResources().getStringArray(R.array.configItems)));
-        listenerDrawer = new ActionBarDrawerToggle(this, drawerConfig, R.string.drawer_open, R.string.drawer_close) {
+        mConfigDrawerPanelListView.setAdapter(new ConfigureAdapter(this));//(new ArrayAdapter<String>(this, R.layout.item_drawer_list, getResources().getStringArray(R.array.configItems)));
+        mConfigDrawerToggleListener = new ActionBarDrawerToggle(this, mConfigDrawer, R.string.drawer_open, R.string.drawer_close) {
             private void onDrawClosed(View v) {
                 super.onDrawerClosed(v);
                 //Toast.makeText(MainActivity.this, "onDrawClosed", Toast.LENGTH_SHORT).show();
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "onDrawOpened", Toast.LENGTH_SHORT).show();
             }
         };
-        drawerConfig.addDrawerListener(listenerDrawer);
+        mConfigDrawer.addDrawerListener(mConfigDrawerToggleListener);
 
         Contact myself = LiteDoodApplication.getAppContext().getMyself();
         if (myself != null) {
@@ -174,17 +173,17 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SDKManager.instance().destroy();
                 RequestHelper.logout(new LogoutRequestHandler(MainActivity.this));
+                SDKManager.instance().destroy();
             }
         });
     }
 
     private void initToolbar() {
-        toobar = (Toolbar) findViewById(R.id.tbMain);
-        toobar.setNavigationIcon(R.drawable.ic_drawer);
+        mToobar = (Toolbar) findViewById(R.id.tbMain);
+        mToobar.setNavigationIcon(R.drawable.ic_drawer);
 
-        setSupportActionBar(toobar);
+        setSupportActionBar(mToobar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
     }
@@ -192,22 +191,22 @@ public class MainActivity extends AppCompatActivity {
     private void initFragment() {
         //初始化装载聊天列表, 这部分操作可以使用ViewPager代替
         ChatFragment fragment = new ChatFragment();
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutFragmentContainer, fragment, TAG_MESSAGE_FRAGMENT);
         fragmentTransaction.commit();
 
-        fragments.put(TAG_MESSAGE_FRAGMENT, fragment);
-        fragments.put(TAG_CURRENT_FRAGMENT, fragment);
+        mFragmentsMap.put(TAG_MESSAGE_FRAGMENT, fragment);
+        mFragmentsMap.put(TAG_CURRENT_FRAGMENT, fragment);
     }
 
     private void initActionBar() {
         //设置下部动作条高度
-        actionBar = (LinearLayoutCompat) findViewById(R.id.actionBar);
-        //width = actionBar.getHeight();
-        LayoutParams actionBarParams = actionBar.getLayoutParams();
+        mMainActionBar = (LinearLayoutCompat) findViewById(R.id.actionBar);
+        //width = mMainActionBar.getHeight();
+        LayoutParams actionBarParams = mMainActionBar.getLayoutParams();
         actionBarParams.height = clientHeight * 8 / 90;
-        actionBar.setLayoutParams(actionBarParams);
+        mMainActionBar.setLayoutParams(actionBarParams);
 
         //设置动作按钮位置、大小
         List<AppCompatButton> buttons = new ArrayList<AppCompatButton>();
@@ -227,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             LayoutParams layoutParams = btn.getLayoutParams();
             layoutParams.width = clientWidth / 3;
             btn.setLayoutParams(layoutParams);
-            btn.setOnClickListener(new ButtonActiveFragmentOnClickListener(fragments, fragmentManager));
+            btn.setOnClickListener(new ButtonActiveFragmentOnClickListener(mFragmentsMap, mFragmentManager));
         }
     }
 
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up sl_main_button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-        if (listenerDrawer.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
+        if (mConfigDrawerToggleListener.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
             return true;
         }
 
@@ -254,6 +253,39 @@ public class MainActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.v(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "onDestory");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v(TAG, "onPause");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(TAG, "onRestart");
+
+    }
 
     class LogoutRequestHandler extends RequestHandler {
         private Activity activity;

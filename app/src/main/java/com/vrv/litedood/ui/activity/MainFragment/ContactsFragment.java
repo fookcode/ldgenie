@@ -28,24 +28,44 @@ import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ContactsFragment extends Fragment {
+
+    public static final int CONTACTS_VIEW_HEADER_ID = -30;
 
     private List<Contact> mContactQueue = new ArrayList<>();
     private ContactsAdapter mContactsAdapter;
     private ContactsSeekerAdapter mContactsSeekerAdapter;
     private ListViewCompat mContactsList;
 
+    private static HashMap<Character, Integer> mSeekPositionMap = new HashMap<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ContactList contactList = SDKManager.instance().getContactList();
-        mContactQueue.addAll(contactList.getList());
+
+        List<Contact> list = contactList.getList();
+        mContactQueue.addAll(reorganizeContacts(list));
 
         mContactsAdapter = new ContactsAdapter(getActivity(), mContactQueue);
-        setContactDataChangedListener(contactList);
 
-        mContactsSeekerAdapter = new ContactsSeekerAdapter(getActivity(), mContactQueue);
+        mContactsSeekerAdapter = new ContactsSeekerAdapter(getActivity(), list);
+
+        contactList.setListener(new ListModel.OnChangeListener() {
+            @Override
+            public void notifyDataChange() {
+                mContactQueue.clear();
+                mContactQueue.addAll(reorganizeContacts(SDKManager.instance().getContactList().getList()));
+                if (mContactsAdapter != null) mContactsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void notifyItemChange(int i) {
+                if (mContactsAdapter != null) mContactsAdapter.notifyDataSetChanged();
+            }
+        });
 
         super.onCreate(savedInstanceState);
     }
@@ -54,8 +74,6 @@ public class ContactsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 		mContactsList = (ListViewCompat)view.findViewById(R.id.lvContacts);
-
-
         mContactsList.setAdapter(mContactsAdapter);
         mContactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,14 +85,14 @@ public class ContactsFragment extends Fragment {
             }
         });
 
-        ListViewCompat lvContacksSeeker = (ListViewCompat)view.findViewById(R.id.lvContactsSeeker);
-        lvContacksSeeker.setAdapter(mContactsSeekerAdapter);
-        lvContacksSeeker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListViewCompat lvContactsSeeker = (ListViewCompat)view.findViewById(R.id.lvContactsSeeker);
+        lvContactsSeeker.setAdapter(mContactsSeekerAdapter);
+        lvContactsSeeker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Character spellFirst = (Character) parent.getItemAtPosition(position);
                 if (spellFirst != null) {
-                    Integer pos = ContactsAdapter.getSeekPositionMap().get(String.valueOf(spellFirst));
+                    Integer pos = mSeekPositionMap.get(spellFirst);
                     if (pos != null)
                         mContactsList.setSelection(pos);
                 }
@@ -83,19 +101,28 @@ public class ContactsFragment extends Fragment {
         return view;
 	}
 
-    private void setContactDataChangedListener(ContactList contactList) {
-        contactList.setListener(new ListModel.OnChangeListener() {
-            @Override
-            public void notifyDataChange() {
-                mContactQueue.clear();
-                mContactQueue.addAll(SDKManager.instance().getContactList().getList());
-                if (mContactsAdapter != null) mContactsAdapter.notifyDataSetChanged();
-            }
+    private List<Contact> reorganizeContacts(List<Contact> contacts) {
+        if ((contacts == null) || (contacts.size() == 0)) return  contacts;
+        Character firstSpell = '#';
+        ArrayList<Contact> result = new ArrayList<>();
+        mSeekPositionMap.clear();
+        int index = 0;
+        for(Contact contact : contacts) {
+            Character nameFirstSpell = Character.toUpperCase(contact.getPinyin().charAt(0));
+            if (!firstSpell.equals(nameFirstSpell)) {
+                firstSpell = nameFirstSpell;
+                Contact c = new Contact();
+                c.setId(CONTACTS_VIEW_HEADER_ID);
+                c.setName("#" + firstSpell);
+                result.add(c);
 
-            @Override
-            public void notifyItemChange(int i) {
-                if (mContactsAdapter != null) mContactsAdapter.notifyDataSetChanged();
+                mSeekPositionMap.put(firstSpell, index);
+                index ++;
             }
-        });
+            index ++;
+            result.add(contact);
+
+        }
+        return result;
     }
 }

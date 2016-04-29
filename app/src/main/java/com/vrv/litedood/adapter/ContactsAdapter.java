@@ -12,10 +12,9 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
-import com.vrv.litedood.common.sdk.utils.PinYinUtil;
+import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,7 +23,8 @@ import java.util.List;
 public class ContactsAdapter extends BaseAdapter {
     private Context mContext;
     private List<Contact> mContactList;
-    private static HashMap<String, Integer> mSeekPosition = new HashMap<>();
+    private enum ITEM_TYPE {HEADER, CONTACT};
+    private Character mSpellTitle = '#';
 
     public ContactsAdapter(Context context, List<Contact> listContact) {
         this.mContext = context;
@@ -53,60 +53,84 @@ public class ContactsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        String spellTitle = "#";
-        ViewHolder viewHolder;
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts, null);
-            viewHolder = new ViewHolder();
-            viewHolder.ivContactAvatar = (AppCompatImageView)convertView.findViewById(R.id.contactAvatar);
-            viewHolder.txtContactName = (AppCompatTextView)convertView.findViewById(R.id.contactName);
-            viewHolder.txtContactSign = (AppCompatTextView)convertView.findViewById(R.id.contactSign);
-            viewHolder.tvContactsSeparator = (AppCompatTextView)convertView.findViewById(R.id.tvContactsSeparator);
-            convertView.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolder)convertView.getTag();
-        }
-
+    public int getItemViewType(int position) {
+        ITEM_TYPE result = ITEM_TYPE.CONTACT;
         Contact contact = mContactList.get(position);
-        String nameFirstSpell = String.valueOf(PinYinUtil.getFirstSpell(String.valueOf(contact.getName().charAt(0))).toUpperCase().toCharArray()[0]);
-        if (!spellTitle.equals(nameFirstSpell)) {
-            spellTitle = nameFirstSpell;
-            viewHolder.tvContactsSeparator.setVisibility(View.VISIBLE);
-            viewHolder.tvContactsSeparator.setText(spellTitle);
-            mSeekPosition.put(spellTitle, position);
+        if ((contact.getName().charAt(0) == '#') && (contact.getId() == ContactsFragment.CONTACTS_VIEW_HEADER_ID)) {
+            result = ITEM_TYPE.HEADER;
         }
-        String avatarPath = contact.getAvatar();
-        Bitmap bitmapAvatar;
-        if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-            File fAvatar = new File(avatarPath);
-            if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
-                viewHolder.ivContactAvatar.setImageResource(R.drawable.ic_launcher);
-            else {
-                bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                viewHolder.ivContactAvatar.setImageBitmap(bitmapAvatar);
-            }
-        }
-        viewHolder.txtContactName.setText(contact.getName());
-        viewHolder.txtContactSign.setText(contact.getSign());
-
-
-        return convertView;
+        return result.ordinal();
     }
 
-    public static HashMap<String, Integer> getSeekPositionMap() {
-        return mSeekPosition;
+    @Override
+    public int getViewTypeCount() {
+        return ITEM_TYPE.values().length;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Contact contact = mContactList.get(position);
+        ViewHolder viewHolder = null;
+        if (convertView != null) viewHolder = (ViewHolder) convertView.getTag();
+
+        if (getItemViewType(position) == ITEM_TYPE.HEADER.ordinal()) {
+            if (viewHolder != null) {
+                if (viewHolder.mType == ITEM_TYPE.HEADER) {
+                    viewHolder.tvContactHeader.setText(String.valueOf(contact.getName().charAt(1)));
+                    return convertView;
+                }
+
+            }
+            viewHolder = new ViewHolder(ITEM_TYPE.HEADER);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts_header, null);
+            viewHolder.tvContactHeader = (AppCompatTextView) convertView.findViewById(R.id.tvContactsHeader);
+            viewHolder.tvContactHeader.setText(String.valueOf(contact.getName().charAt(1)));
+            convertView.setTag(viewHolder);
+
+        }
+        else {
+            if ((convertView != null) && ((ViewHolder)convertView.getTag()).mType == ITEM_TYPE.CONTACT) {
+                viewHolder = (ViewHolder)convertView.getTag();
+            }
+            else
+            {
+                viewHolder = new ViewHolder(ITEM_TYPE.CONTACT);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts, null);
+                viewHolder.ivContactAvatar = (AppCompatImageView) convertView.findViewById(R.id.contactAvatar);
+                viewHolder.tvContactName = (AppCompatTextView) convertView.findViewById(R.id.contactName);
+                viewHolder.tvContactSign = (AppCompatTextView) convertView.findViewById(R.id.contactSign);
+                convertView.setTag(viewHolder);
+            }
+
+            String avatarPath = contact.getAvatar();
+            Bitmap bitmapAvatar;
+            if ((null != avatarPath) && (!avatarPath.isEmpty())) {
+                File fAvatar = new File(avatarPath);
+                if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
+                    viewHolder.ivContactAvatar.setImageResource(R.drawable.ic_launcher);
+                else {
+                    bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
+                    viewHolder.ivContactAvatar.setImageBitmap(bitmapAvatar);
+                }
+            }
+            viewHolder.tvContactName.setText(contact.getName());
+            viewHolder.tvContactSign.setText(contact.getSign());
+
+        }
+        return convertView;
     }
 
     class ViewHolder {
 
-        AppCompatTextView tvContactsSeparator;
-        AppCompatImageView ivContactAvatar;
-        AppCompatTextView txtContactName;
-        AppCompatTextView txtContactSign;
+        ITEM_TYPE mType;
 
-        public ViewHolder() {};
+        AppCompatImageView ivContactAvatar;
+        AppCompatTextView tvContactName;
+        AppCompatTextView tvContactSign;
+        AppCompatTextView tvContactHeader;
+
+        public ViewHolder(ITEM_TYPE type) {
+            this.mType = type;
+        };
     }
 }

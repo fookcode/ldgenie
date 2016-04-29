@@ -59,7 +59,10 @@ public class MessageActivity extends AppCompatActivity {
         intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, chat.getUnReadNum());
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
-        activity.finish();
+        if (!(activity instanceof MainActivity)) {
+            activity.finish();
+        }
+
     }
 
     public static void startMessageActivity(Activity activity, BaseInfoBean bean) {
@@ -67,7 +70,9 @@ public class MessageActivity extends AppCompatActivity {
         intent.putExtra(ID_USER_INFO, bean);
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
-        activity.finish();
+        if (!(activity instanceof MainActivity)) {
+            activity.finish();
+        }
     }
 
     @Override
@@ -210,11 +215,11 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                MainActivity.startMainActivity(this);
-                return true;
-        }
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                MainActivity.startMainActivity(this);
+//                return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
