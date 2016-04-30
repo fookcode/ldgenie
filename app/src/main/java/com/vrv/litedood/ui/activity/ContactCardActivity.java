@@ -1,0 +1,87 @@
+package com.vrv.litedood.ui.activity;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.bean.BaseBean;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.litedood.R;
+import com.vrv.litedood.adapter.ContactCardAdapter;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
+
+/**
+ * Created by kinee on 2016/4/30.
+ */
+public class ContactCardActivity extends AppCompatActivity {
+    public static final String TAG = ContactCardActivity.class.getSimpleName();
+    public static final String ID_CONTACT = "CONTACT";
+
+    private BaseInfoBean mContactBean;
+    private Contact mContact;
+
+    public static void startContactCardActivity(Activity activity, BaseInfoBean contact) {
+        Intent intent = new Intent();
+        intent.putExtra(ID_CONTACT, contact);
+        intent.setClass(activity, ContactCardActivity.class);
+        activity.startActivity(intent);
+        if (!(activity instanceof MainActivity)) {
+            activity.finish();
+        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContactBean = (BaseInfoBean)getIntent().getParcelableExtra(ID_CONTACT);
+        ContactCardActivityHandler handler = new ContactCardActivityHandler(this);
+
+        handler.sendEmptyMessage(RequestHandler.SHOW_PRO);
+
+        try {
+            if (!RequestHelper.getUserInfo(mContactBean.getID(),  handler)) {
+                Toast.makeText(this, "好友信息获取失败，请稍后重试", Toast.LENGTH_SHORT);
+                handler.sendEmptyMessage(RequestHandler.DIS_PRO);
+                return;
+            }
+        } catch (Exception e) {
+            handler.sendEmptyMessage(RequestHandler.DIS_PRO);
+            e.printStackTrace();
+        } finally {
+            handler.sendEmptyMessage(RequestHandler.DIS_PRO);
+        }
+
+
+    }
+
+    class ContactCardActivityHandler extends RequestHandler {
+        public ContactCardActivityHandler(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void handleSuccess(Message msg) {
+            mContact = (Contact)msg.getData().get("data");
+            //Log.v(TAG, mContact.toString());
+            setContentView(R.layout.activity_contact_card);
+
+            Toolbar tbContactCard = (Toolbar) findViewById(R.id.tbContactCard);
+            setSupportActionBar(tbContactCard);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            ListViewCompat lvContactCardItemList = (ListViewCompat)findViewById(R.id.lvContactCardItemList);
+            lvContactCardItemList.setAdapter(new ContactCardAdapter(ContactCardActivity.this, mContact));
+        }
+    }
+}
