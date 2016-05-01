@@ -9,11 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.vrv.imsdk.SDKManager;
-import com.vrv.imsdk.bean.BaseBean;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ContactCardAdapter;
@@ -30,6 +27,7 @@ public class ContactCardActivity extends AppCompatActivity {
 
     private BaseInfoBean mContactBean;
     private Contact mContact;
+    private ContactCardAdapter mContactCardAdapter;
 
     public static void startContactCardActivity(Activity activity, BaseInfoBean contact) {
         Intent intent = new Intent();
@@ -53,6 +51,7 @@ public class ContactCardActivity extends AppCompatActivity {
             if (!RequestHelper.getUserInfo(mContactBean.getID(),  handler)) {
                 Toast.makeText(this, "好友信息获取失败，请稍后重试", Toast.LENGTH_SHORT);
                 handler.sendEmptyMessage(RequestHandler.DIS_PRO);
+                this.finish();
                 return;
             }
         } catch (Exception e) {
@@ -82,6 +81,7 @@ public class ContactCardActivity extends AppCompatActivity {
 
             ListViewCompat lvContactCardItemList = (ListViewCompat)findViewById(R.id.lvContactCardItemList);
             lvContactCardItemList.setAdapter(new ContactCardAdapter(ContactCardActivity.this, mContact));
+
         }
     }
 }

@@ -3,6 +3,9 @@ package com.vrv.litedood.adapter;
 import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.ListViewCompat;
+import android.text.format.DateFormat;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
+import com.vrv.litedood.ui.activity.ContactCardActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +23,15 @@ import java.util.HashMap;
  * Created by kinee on 2016/4/30.
  */
 public class ContactCardAdapter extends BaseAdapter {
+    private static final String TAG = ContactCardActivity.class.getSimpleName();
+
     private static final String NAME = "name";
     private static final String VALUE = "value";
     private static final  String TYPE = "type";
-    private static enum ITEM_TYPE {line, list};
+
+    private enum ITEM_TYPE {line, list};
+
     private static final String[]  mContactItems = {
-//            "srcAvatar",
-//            "nickID",
             "name",
             "gender",
             "birth",
@@ -35,15 +41,16 @@ public class ContactCardAdapter extends BaseAdapter {
             "remark"
     };
 
-    private Contact mContact;
     private Context mContext;
+    private Contact mContact;
 
-    private HashMap<String, HashMap<String, Object>> mContactMap = new HashMap<>();
+    private static HashMap<String, HashMap<String, Object>> mContactMap = new HashMap<>();
 
     public ContactCardAdapter(Context context, Contact contact) {
         mContact = contact;
         mContext = context;
         refreshContactDataHolder();
+        Log.v(TAG, "");
     }
 
     private void refreshContactDataHolder() {
@@ -51,12 +58,12 @@ public class ContactCardAdapter extends BaseAdapter {
         //名称
         HashMap<String, Object> nameHolder = mContactMap.get(mContactItems[0]);
         if ( nameHolder != null) {
-            nameHolder.put(VALUE, mContact.getNickID());
+            nameHolder.put(VALUE, mContact.getName());
         }
         else {
             nameHolder = new HashMap<>();
             nameHolder.put(NAME, "名称");
-            nameHolder.put(VALUE, mContact.getNickID());
+            nameHolder.put(VALUE, mContact.getName());
             nameHolder.put(TYPE, ITEM_TYPE.line);
             mContactMap.put(mContactItems[0], nameHolder);
 
@@ -64,27 +71,49 @@ public class ContactCardAdapter extends BaseAdapter {
 
         //性别
         HashMap<String, Object> genderHolder = mContactMap.get(mContactItems[1]);
+        final byte gender = mContact.getGender();
+        String genderStr = "";
+        switch(gender) {
+            case 1 :
+                genderStr = "男";
+                break;
+            case 2:
+                genderStr = "女";
+                break;
+            default:
+                genderStr = "-";
+        }
         if ( genderHolder != null) {
-            genderHolder.put(VALUE, mContact.getGender()  == '1' ? "男": "女");
+            genderHolder.put(VALUE,genderStr);
         }
         else {
             genderHolder = new HashMap<>();
             genderHolder.put(NAME, "性别");
-            genderHolder.put(VALUE, mContact.getGender()  == '1' ? "男": "女");
+            genderHolder.put(VALUE, genderStr);
             genderHolder.put(TYPE, ITEM_TYPE.line);
             mContactMap.put(mContactItems[1], genderHolder);
-
         }
 
         //生日
         HashMap<String, Object> birthHolder = mContactMap.get(mContactItems[2]);
+
+        long birth = mContact.getBirth();
+        String birthStr = "-";
+        if (birth != 0)
+        {
+            Time birthTime  = new Time();
+            birthTime.set(birth);
+            birthStr = birthTime.format("%Y-%m-%d");
+        }
+
         if ( birthHolder != null) {
-            birthHolder.put(VALUE, mContact.getBirth());
+            birthHolder.put(VALUE, birthStr);
         }
         else {
             birthHolder = new HashMap<>();
             birthHolder.put(NAME, "生日");
-            birthHolder.put(VALUE, mContact.getPhones());
+
+            birthHolder.put(VALUE, birthStr);
             birthHolder.put(TYPE, ITEM_TYPE.line);
             mContactMap.put(mContactItems[2], birthHolder);
 
@@ -140,10 +169,10 @@ public class ContactCardAdapter extends BaseAdapter {
         }
         else {
             remarkHolder = new HashMap<>();
-            remarkHolder.put(NAME, "个性签名");
+            remarkHolder.put(NAME, "备注");
             remarkHolder.put(VALUE, mContact.getRemark());
             remarkHolder.put(TYPE, ITEM_TYPE.line);
-            mContactMap.put(mContactItems[5], remarkHolder);
+            mContactMap.put(mContactItems[6], remarkHolder);
         }
 
     }
@@ -166,48 +195,55 @@ public class ContactCardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         HashMap<String, Object> item = (HashMap)getItem(position);
-        ViewHolder viewHolder;
-
+        View result;
         if (convertView == null) {
-             viewHolder = new ViewHolder();
-            if (item.get(TYPE) == ITEM_TYPE.line) {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contact_card_line_item, null);
-                viewHolder.tvContactCardItemName = (AppCompatTextView) convertView.findViewById(R.id.tvContactCardLineItemName);
-                viewHolder.tvContactCardItemName.setText(item.get(NAME) == null? "" : item.get(NAME).toString());
-                viewHolder.tvContactCardLineItemValue = (AppCompatTextView) convertView.findViewById(R.id.tvContactCardLineItemValue);
-                viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE) == null ? "" : item.get(VALUE).toString());
-                viewHolder.type = ITEM_TYPE.line;
-            }
-            else {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contact_card_list_item, null);
-
-                viewHolder.tvContactCardItemName = (AppCompatTextView) convertView.findViewById(R.id.tvContactCardListItemName);
-                viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "": item.get(NAME).toString());
-                viewHolder.lvContactCardListItemValue = (ListViewCompat) convertView.findViewById(R.id.lvContactCardListItemValue);
-                if (item.get(VALUE) != null)
-                    viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>)item.get(VALUE)));
-                viewHolder.type = ITEM_TYPE.list;
-            }
-            convertView.setTag(viewHolder);
+            result = createNewItemView(item);
         }
         else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            if (((ViewHolder)convertView.getTag()).type == item.get(TYPE)) {
+                ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 
-            if ((item.get(TYPE) == ITEM_TYPE.line)  && (viewHolder.type == ITEM_TYPE.line)) {
-                viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE).toString());
-            }
-            else if ((item.get(TYPE) == ITEM_TYPE.list)  && (viewHolder.type == ITEM_TYPE.list)){
-                if (item.get(VALUE) != null)
-                    viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>)item.get(VALUE)));
+                if (viewHolder.type == ITEM_TYPE.line) {
+                    viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE).toString());
+                    viewHolder.tvContactCardItemName.setText(item.get(NAME).toString());
+                } else {
+                    viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>) item.get(VALUE)));
 
+                }
+                result = convertView;
             }
             else {
-
+                result = createNewItemView(item);
             }
-
         }
+        return result;
+    }
 
-        return convertView;
+    private View createNewItemView(HashMap item) {
+        ViewHolder viewHolder;
+        View newItemView;
+
+        viewHolder = new ViewHolder();
+        if (item.get(TYPE) == ITEM_TYPE.line) {
+            newItemView = LayoutInflater.from(mContext).inflate(R.layout.item_contact_card_line_item, null);
+            viewHolder.tvContactCardItemName = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardLineItemName);
+            viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
+            viewHolder.tvContactCardLineItemValue = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardLineItemValue);
+            viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE) == null ? "" : item.get(VALUE).toString());
+            viewHolder.type = ITEM_TYPE.line;
+        } else {
+            newItemView = LayoutInflater.from(mContext).inflate(R.layout.item_contact_card_list_item, null);
+
+            viewHolder.tvContactCardItemName = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardListItemName);
+            viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
+            viewHolder.lvContactCardListItemValue = (ListViewCompat) newItemView.findViewById(R.id.lvContactCardListItemValue);
+            if (item.get(VALUE) != null)
+                viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>) item.get(VALUE)));
+            viewHolder.type = ITEM_TYPE.list;
+        }
+        newItemView.setTag(viewHolder);
+
+        return newItemView;
     }
 
     class ViewHolder {
