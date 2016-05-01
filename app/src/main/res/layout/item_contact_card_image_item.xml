@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:layout_margin="@dimen/common_margin_min">
     <android.support.v7.widget.AppCompatTextView
-        android:id = "@+id/tvContactCardLineItemName"
+        android:id="@+id/tvContactCardImageItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:layout_margin ="@dimen/common_padding_max"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-        android:text="@string/app_name"/>
+        android:layout_margin="@dimen/common_padding_max"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle" />
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvContactCardLineItemValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivContactCardImageItevValue"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="@dimen/common_margin_min"/>
+        android:layout_margin="@dimen/common_margin_min"
+        android:src="@drawable/ic_launcher" />
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="@dimen/common_margin_max"
         android:gravity="center"
-        android:text="〉"
-        android:layout_marginRight="@dimen/common_margin_max"/>
-
+        android:text="〉" />
 </android.support.v7.widget.LinearLayoutCompat>
