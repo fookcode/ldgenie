@@ -4,9 +4,9 @@
     <string name="app_name">轻豆</string>
     <string name="app_settings">设置</string>
     
-    <string name="message_button_name">消息</string>
-    <string name="contacts_button_name">联系人</string>
-    <string name="pandora_button_name">潘朵拉</string>
+    <string name="main_message_button_name">消息</string>
+    <string name="main_contacts_button_name">联系人</string>
+    <string name="main_pandora_button_name">潘朵拉</string>
 
     <string name="drawer_open">打开设置</string>
     <string name="drawer_close">关闭设置</string>
@@ -51,4 +51,6 @@
     <string name="forgot_password_new_password">新密码</string>
 
     <string name="busy_indicator_hint">加载中</string>
+
+    <string name="contact_card_button_text">发送消息</string>
 </resources>

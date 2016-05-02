@@ -1,4 +1,4 @@
-package com.vrv.litedood.common.sdk.utils;
+package com.vrv.litedood.common;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;

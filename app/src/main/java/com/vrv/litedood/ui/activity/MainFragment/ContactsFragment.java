@@ -8,6 +8,7 @@
 
 package com.vrv.litedood.ui.activity.MainFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
@@ -82,7 +83,7 @@ public class ContactsFragment extends Fragment {
                 //Contact contact = contactQueue.get(position);
                 Contact contact = (Contact)parent.getItemAtPosition(position);
                 BaseInfoBean bean = BaseInfoBean.contact2BaseInfo(contact);
-                ContactCardActivity.startContactCardActivity(getActivity(), bean);
+                ContactCardActivity.startContactCardActivity(getActivity(), bean, Intent.ACTION_VIEW);
             }
         });
 

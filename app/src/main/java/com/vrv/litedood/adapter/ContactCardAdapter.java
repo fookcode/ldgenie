@@ -1,6 +1,8 @@
 package com.vrv.litedood.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
@@ -145,6 +147,10 @@ public class ContactCardAdapter extends BaseAdapter {
         else {
             phoneHolder = new HashMap<>();
             phoneHolder.put(NAME, "电话");
+//            ArrayList<String> phones = new ArrayList<>();
+//            phones.add("13910260715");
+//            phones.add("18602701898");
+//            mContact.getPhones().addAll(phones);
             phoneHolder.put(VALUE, mContact.getPhones());
             phoneHolder.put(TYPE, ITEM_TYPE.list);
             mContactMap.put(mContactItems[4], phoneHolder);
@@ -159,6 +165,9 @@ public class ContactCardAdapter extends BaseAdapter {
         else {
             emailHolder = new HashMap<>();
             emailHolder.put(NAME, "电子邮件");
+//            ArrayList<String> mails = new ArrayList<>();
+//            mails.add("yanqiyang@vrvmail.com.cn");
+//            mContact.getEmails().addAll(mails);
             emailHolder.put(VALUE, mContact.getEmails());
             emailHolder.put(TYPE, ITEM_TYPE.list);
             mContactMap.put(mContactItems[5], emailHolder);
@@ -221,10 +230,10 @@ public class ContactCardAdapter extends BaseAdapter {
                 ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 
                 if (viewHolder.type == ITEM_TYPE.line) {
-                    viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE).toString());
+                    viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE) == null?"-":item.get(VALUE).toString());
                     viewHolder.tvContactCardItemName.setText(item.get(NAME).toString());
                 } else if(viewHolder.type == ITEM_TYPE.line.list){
-                    viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>) item.get(VALUE)));
+                    viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, R.layout.item_contact_card_list_item_child, (ArrayList<String>) item.get(VALUE)));
                 } else if (viewHolder.type == ITEM_TYPE.line.image) {
                     setAvatar(item, viewHolder);
                     ;
@@ -235,6 +244,14 @@ public class ContactCardAdapter extends BaseAdapter {
                 result = createNewItemView(item);
             }
         }
+        String action = ((Activity)mContext).getIntent().getAction();
+        View next = result.findViewById(R.id.tvContactCardNextIndicator);
+        if (Intent.ACTION_VIEW.equals(action))
+            next.setVisibility(View.GONE);
+        else if (Intent.ACTION_EDIT.equals(action))
+            if (next.getVisibility()!= View.VISIBLE) {
+                next.setVisibility(View.VISIBLE);
+            }
         return result;
     }
 
@@ -248,7 +265,7 @@ public class ContactCardAdapter extends BaseAdapter {
             viewHolder.tvContactCardItemName = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardLineItemName);
             viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
             viewHolder.tvContactCardLineItemValue = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardLineItemValue);
-            viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE) == null ? "" : item.get(VALUE).toString());
+            viewHolder.tvContactCardLineItemValue.setText(item.get(VALUE) == null ? "-" : item.get(VALUE).toString());
             viewHolder.type = ITEM_TYPE.line;
         } else if (item.get(TYPE) == ITEM_TYPE.list) {
             newItemView = LayoutInflater.from(mContext).inflate(R.layout.item_contact_card_list_item, null);
@@ -257,7 +274,7 @@ public class ContactCardAdapter extends BaseAdapter {
             viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
             viewHolder.lvContactCardListItemValue = (ListViewCompat) newItemView.findViewById(R.id.lvContactCardListItemValue);
             if (item.get(VALUE) != null)
-                viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, (ArrayList<String>) item.get(VALUE)));
+                viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, R.layout.item_contact_card_list_item_child, (ArrayList<String>) item.get(VALUE)));
             viewHolder.type = ITEM_TYPE.list;
         }
         else if (item.get(TYPE) == ITEM_TYPE.image) {

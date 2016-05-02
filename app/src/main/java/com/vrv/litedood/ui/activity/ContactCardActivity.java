@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.vrv.imsdk.model.Contact;
@@ -29,9 +31,10 @@ public class ContactCardActivity extends AppCompatActivity {
     private Contact mContact;
     private ContactCardAdapter mContactCardAdapter;
 
-    public static void startContactCardActivity(Activity activity, BaseInfoBean contact) {
+    public static void startContactCardActivity(Activity activity, BaseInfoBean contact, String action) {
         Intent intent = new Intent();
         intent.putExtra(ID_CONTACT, contact);
+        intent.setAction(action);
         intent.setClass(activity, ContactCardActivity.class);
         activity.startActivity(intent);
         if (!(activity instanceof MainActivity)) {
@@ -65,8 +68,11 @@ public class ContactCardActivity extends AppCompatActivity {
     }
 
     class ContactCardActivityHandler extends RequestHandler {
-        public ContactCardActivityHandler(Context context) {
-            super(context);
+        Activity mActivity;
+        public ContactCardActivityHandler(Activity activity) {
+            super(activity);
+            this.mActivity = activity;
+
         }
 
         @Override
@@ -81,6 +87,20 @@ public class ContactCardActivity extends AppCompatActivity {
 
             ListViewCompat lvContactCardItemList = (ListViewCompat)findViewById(R.id.lvContactCardItemList);
             lvContactCardItemList.setAdapter(new ContactCardAdapter(ContactCardActivity.this, mContact));
+
+            String action = mActivity.getIntent().getAction();
+            if (Intent.ACTION_EDIT.equals(action)) {
+                findViewById(R.id.btnContactCardSendMessage).setVisibility(View.GONE);
+            }
+            else if (Intent.ACTION_VIEW.equals(action)) {
+                AppCompatButton sendMessage = (AppCompatButton) findViewById(R.id.btnContactCardSendMessage);
+                sendMessage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MessageActivity.startMessageActivity(ContactCardActivity.this, BaseInfoBean.contact2BaseInfo(mContact));
+                    }
+                });
+            }
 
         }
     }

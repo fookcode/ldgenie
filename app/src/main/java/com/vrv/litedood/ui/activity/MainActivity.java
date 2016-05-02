@@ -2,8 +2,14 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -13,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -33,8 +40,10 @@ import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ConfigureAdapter;
+import com.vrv.litedood.common.GraphicUtil;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
@@ -141,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
         };
         mConfigDrawer.addDrawerListener(mConfigDrawerToggleListener);
 
-        Contact myself = LiteDoodApplication.getAppContext().getMyself();
+        final Contact myself = LiteDoodApplication.getAppContext().getMyself();
         if (myself != null) {
-            AppCompatImageView ivAvatar = (AppCompatImageView)findViewById(R.id.ivMyProfileAvatar);
+            AppCompatImageButton ivAvatar = (AppCompatImageButton) findViewById(R.id.ivMyProfileAvatar);
             String avatarPath = myself.getAvatar();
             if ((null != avatarPath) && (!avatarPath.isEmpty())) {
                 File fAvatar = new File(avatarPath);
@@ -155,12 +164,33 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    ivAvatar.setImageBitmap(bitmapAvatar);
+                    ivAvatar.setImageDrawable(new BitmapDrawable(getResources(), GraphicUtil.getRoundedCornerBitmap(bitmapAvatar, 180)));
+//                    ivAvatar.setImageBitmap(bitmapAvatar);
+//                    ArrayList<Drawable> list = new ArrayList<>();
+//                    list.add(new BitmapDrawable(getResources(), bitmapAvatar));
+//                    list.add(getResources().getDrawable(R.drawable.sp_test_item));
+//                    LayerDrawable ld = new LayerDrawable(list.toArray(new Drawable[list.size()]));
+//                    StateListDrawable sld = new StateListDrawable();
+//                    sld.addState(new int[] {}, ld);
+//                    //ivAvatar.setImageDrawable(sld);
+//                    ivAvatar.setBackgroundDrawable(sld);
+
+
                 }
             }
 
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ContactCardActivity.startContactCardActivity(MainActivity.this, BaseInfoBean.contact2BaseInfo(myself), Intent.ACTION_EDIT);
+                }
+            };
+
+            ivAvatar.setOnClickListener(listener);
+
             AppCompatTextView tvName = (AppCompatTextView)findViewById(R.id.tvMyProfileName);
             tvName.setText(myself.getName());
+            tvName.setOnClickListener(listener);
 
             String sSign = myself.getSign();
             if(!sSign.isEmpty()) {

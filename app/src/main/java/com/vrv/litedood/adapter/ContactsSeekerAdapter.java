@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
-import com.vrv.litedood.common.sdk.utils.PinYinUtil;
 
 import java.util.ArrayList;
 import java.util.List;

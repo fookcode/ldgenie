@@ -30,7 +30,7 @@
 				android:layout_height="match_parent"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/message_button_name"
+				android:text="@string/main_message_button_name"
 				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			/>
@@ -39,7 +39,7 @@
 				android:layout_height="match_parent"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/contacts_button_name"
+				android:text="@string/main_contacts_button_name"
 				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			/>
@@ -48,7 +48,7 @@
 				android:layout_height="match_parent"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/pandora_button_name"
+				android:text="@string/main_pandora_button_name"
 				android:background="@drawable/sl_main_button"
 				android:textColor="@color/white"
 			 />
@@ -68,15 +68,15 @@
 			android:layout_height="118dp"
 			android:orientation="horizontal"
             android:background="@color/LightCyan">
-			<android.support.v7.widget.AppCompatImageView
+			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/ivMyProfileAvatar"
 				android:layout_width="60dp"
 				android:layout_height="60dp"
 				android:layout_marginLeft="28dp"
-                android:src="@drawable/ic_launcher"
-                android:clickable="true"
                 android:layout_centerVertical="true"
-                />
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                android:background="@drawable/sl_main_avatar"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMyProfileName"
                 android:layout_width="wrap_content"
