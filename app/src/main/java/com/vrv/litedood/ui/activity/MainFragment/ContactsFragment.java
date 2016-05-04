@@ -11,8 +11,8 @@ package com.vrv.litedood.ui.activity.MainFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.ListViewCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,8 @@ import com.vrv.litedood.adapter.ContactsAdapter;
 import com.vrv.litedood.adapter.ContactsSeekerAdapter;
 import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 import com.vrv.litedood.ui.activity.ContactCardActivity;
-import com.vrv.litedood.ui.activity.MessageActivity;
+import com.vrv.litedood.ui.activity.ContactsGroupActivity;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,14 @@ public class ContactsFragment extends Fragment {
                 Contact contact = (Contact)parent.getItemAtPosition(position);
                 BaseInfoBean bean = BaseInfoBean.contact2BaseInfo(contact);
                 ContactCardActivity.startContactCardActivity(getActivity(), bean, Intent.ACTION_VIEW);
+            }
+        });
+
+        LinearLayoutCompat linearLayoutCompat = (LinearLayoutCompat)view.findViewById(R.id.llContactGroupBar);
+        linearLayoutCompat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContactsGroupActivity.startContactsGroupActivity(ContactsFragment.this.getActivity());
             }
         });
 

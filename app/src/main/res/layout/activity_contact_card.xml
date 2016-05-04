@@ -23,6 +23,7 @@
         android:id="@+id/btnContactCardSendMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/sl_contact_card_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:layout_margin="@dimen/common_margin_max"
         android:text="@string/contact_card_button_text"

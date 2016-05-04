@@ -4,10 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+	<android.support.v7.widget.LinearLayoutCompat
+		android:id="@+id/llContactGroupBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:clickable="true"
+		android:orientation="horizontal"
+		android:padding="@dimen/common_padding_min"
+		android:background="@drawable/sl_contact_card_button">
+		<android.support.v7.widget.AppCompatImageView
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			android:scaleType="fitCenter"
+			android:layout_margin="@dimen/common_margin_min"
+			android:src="@drawable/ic_launcher"/>
+		<android.support.v7.widget.AppCompatTextView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:gravity="center_vertical|left"
+			android:text="群/讨论组"
+			android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+	</android.support.v7.widget.LinearLayoutCompat>
     <android.support.v7.widget.ListViewCompat
 	    android:id="@+id/lvContacts"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+		android:layout_below="@id/llContactGroupBar"
+		android:layout_alignParentLeft="true"
 		android:divider="@color/LightGrey"
 		android:dividerHeight="1dp"/>
     <android.support.v7.widget.ListViewCompat
@@ -19,3 +45,4 @@
         />
 
 </RelativeLayout>
+

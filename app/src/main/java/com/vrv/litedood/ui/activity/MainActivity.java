@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Contact myself = LiteDoodApplication.getAppContext().getMyself();
         if (myself != null) {
-            AppCompatImageButton ivAvatar = (AppCompatImageButton) findViewById(R.id.ivMyProfileAvatar);
+            AppCompatImageView ivAvatar = (AppCompatImageView) findViewById(R.id.ivMyProfileAvatar);
             String avatarPath = myself.getAvatar();
             if ((null != avatarPath) && (!avatarPath.isEmpty())) {
                 File fAvatar = new File(avatarPath);

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbContactGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" />
+
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/lvContactsGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/LightGrey"
+        android:dividerHeight="1dp"/>
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/lvContactsGroupSeeker"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+
+</android.support.v7.widget.LinearLayoutCompat>
