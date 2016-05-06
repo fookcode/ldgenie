@@ -90,14 +90,14 @@ public class ContactsGroupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final ListViewCompat groupListView = (ListViewCompat)findViewById(R.id.lvContactsGroup);
-        groupListView.setAdapter(contactsGroupAdapter);
-        groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ListViewCompat lvGroupList = (ListViewCompat)findViewById(R.id.lvContactsGroup);
+        lvGroupList.setAdapter(contactsGroupAdapter);
+        lvGroupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 MessageActivity.startMessageActivity(ContactsGroupActivity.this,
-                        BaseInfoBean.group2BaseInfo((Group)groupListView.getItemAtPosition(position)));
+                        BaseInfoBean.group2BaseInfo((Group)lvGroupList.getItemAtPosition(position)));
             }
         });
 
@@ -110,7 +110,7 @@ public class ContactsGroupActivity extends AppCompatActivity {
                 if (spellFirst != null) {
                     Integer pos = mSeekPositionMap.get(spellFirst);
                     if (pos != null)
-                        groupSeekerListView.setSelection(pos);
+                        lvGroupList.setSelection(pos);
                 }
             }
         });
@@ -120,23 +120,38 @@ public class ContactsGroupActivity extends AppCompatActivity {
         if ((groups == null) || (groups.size() == 0)) return  groups;
         Character firstSpell = '#';
         ArrayList<Group> result = new ArrayList<>();
+        ArrayList<Group> specialList = new ArrayList<>();
         mSeekPositionMap.clear();
         int index = 0;
         for(Group group : groups) {
             Character nameFirstSpell = Character.toUpperCase(PinYinUtil.getFirstSpell(group.getName()).charAt(0));
-            if (!firstSpell.equals(nameFirstSpell)) {
-                firstSpell = nameFirstSpell;
-                Group c = new Group();
-                c.setId(GROUP_VIEW_HEADER_ID);
-                c.setName("#" + firstSpell);
-                result.add(c);
 
-                mSeekPositionMap.put(firstSpell, index);
-                index ++;
+            if ((nameFirstSpell<65) || (nameFirstSpell> 90)) {
+                specialList.add(group);
             }
-            index ++;
-            result.add(group);
+            else {
+                if (!firstSpell.equals(nameFirstSpell)) {
+                    firstSpell = nameFirstSpell;
+                    Group c = new Group();
+                    c.setId(GROUP_VIEW_HEADER_ID);
+                    c.setName("#" + firstSpell);
+                    result.add(c);
 
+                    mSeekPositionMap.put(firstSpell, index);
+                    index++;
+                }
+                index++;
+                result.add(group);
+            }
+
+        }
+        if (specialList.size() > 0) {
+            Group c = new Group();
+            c.setId(GROUP_VIEW_HEADER_ID);
+            c.setName("#" + "#");
+            result.add(c);
+            result.addAll(specialList);
+            mSeekPositionMap.put('#', index);
         }
         return result;
     }

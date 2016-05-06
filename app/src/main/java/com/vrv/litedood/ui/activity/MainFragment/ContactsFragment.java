@@ -41,7 +41,6 @@ public class ContactsFragment extends Fragment {
     private List<Contact> mContactQueue = new ArrayList<>();
     private ContactsAdapter mContactsAdapter;
     private ContactsSeekerAdapter mContactsSeekerAdapter;
-    private ListViewCompat mContactsList;
 
     private static HashMap<Character, Integer> mSeekPositionMap = new HashMap<>();
 
@@ -76,9 +75,9 @@ public class ContactsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-		mContactsList = (ListViewCompat)view.findViewById(R.id.lvContacts);
-        mContactsList.setAdapter(mContactsAdapter);
-        mContactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		final ListViewCompat lvContactsList = (ListViewCompat)view.findViewById(R.id.lvContacts);
+        lvContactsList.setAdapter(mContactsAdapter);
+        lvContactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Contact contact = contactQueue.get(position);
@@ -105,7 +104,7 @@ public class ContactsFragment extends Fragment {
                 if (spellFirst != null) {
                     Integer pos = mSeekPositionMap.get(spellFirst);
                     if (pos != null)
-                        mContactsList.setSelection(pos);
+                        lvContactsList.setSelection(pos);
                 }
             }
         });
@@ -114,25 +113,40 @@ public class ContactsFragment extends Fragment {
 
     private List<Contact> reorganizeContacts(List<Contact> contacts) {
         if ((contacts == null) || (contacts.size() == 0)) return  contacts;
+        ArrayList<Contact> specialList = new ArrayList<>();
         Character firstSpell = '#';
         ArrayList<Contact> result = new ArrayList<>();
         mSeekPositionMap.clear();
         int index = 0;
         for(Contact contact : contacts) {
             Character nameFirstSpell = Character.toUpperCase(contact.getPinyin().charAt(0));
-            if (!firstSpell.equals(nameFirstSpell)) {
-                firstSpell = nameFirstSpell;
-                Contact c = new Contact();
-                c.setId(CONTACTS_VIEW_HEADER_ID);
-                c.setName("#" + firstSpell);
-                result.add(c);
-
-                mSeekPositionMap.put(firstSpell, index);
-                index ++;
+            if ((nameFirstSpell<65) || (nameFirstSpell> 90)) {
+                specialList.add(contact);
             }
-            index ++;
-            result.add(contact);
+            else {
+                if (!firstSpell.equals(nameFirstSpell)) {
+                    firstSpell = nameFirstSpell;
+                    Contact c = new Contact();
+                    c.setId(CONTACTS_VIEW_HEADER_ID);
+                    c.setName("#" + firstSpell);
+                    result.add(c);
 
+                    mSeekPositionMap.put(firstSpell, index);
+                    index++;
+                }
+                index++;
+
+                result.add(contact);
+            }
+
+        }
+        if (specialList.size() > 0) {
+            Contact c = new Contact();
+            c.setId(CONTACTS_VIEW_HEADER_ID);
+            c.setName("#" + "#");
+            result.add(c);
+            result.addAll(specialList);
+            mSeekPositionMap.put('#', index);
         }
         return result;
     }

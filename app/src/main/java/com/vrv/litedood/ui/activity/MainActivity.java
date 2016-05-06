@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             String sSign = myself.getSign();
             if(!sSign.isEmpty()) {
                 AppCompatTextView tvSign = (AppCompatTextView)findViewById(R.id.tvMyProfileSign);
-                tvSign.setText(sSign);
+                tvSign.setText("”" + sSign);
             }
         }
 

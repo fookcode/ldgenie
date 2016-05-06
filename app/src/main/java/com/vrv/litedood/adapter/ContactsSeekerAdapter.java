@@ -30,10 +30,14 @@ public class ContactsSeekerAdapter extends BaseAdapter {
         super();
         this.mContacts = contacts;
         this.mContext = context;
+
+        boolean bSpecial = false;
         if (mContacts != null) {
             mNameLetters.clear();
             for (Contact contact : mContacts) {
                 Character letter = Character.toUpperCase(contact.getPinyin().charAt(0));
+                if ((letter < 65) || (letter > 90))
+                    bSpecial = true;
 //                String name = contact.getName();
 //                Character letter = Character.toUpperCase(PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]);
 //                int ascii = name.charAt(0);
@@ -44,11 +48,13 @@ public class ContactsSeekerAdapter extends BaseAdapter {
 //                    String[] letters = PinyinHelper.toHanyuPinyinStringArray(name.charAt(0));
 //                    letter = Character.toUpperCase(letters[0].charAt(0));
 //                }
-                if (!mCurrentSpell.equals(letter)) {
+                if ((letter >= 65) && (letter <= 90) && !mCurrentSpell.equals(letter)) {
                     mNameLetters.add(letter);
                     mCurrentSpell = letter;
                 }
             }
+
+            if (bSpecial) mNameLetters.add('#');
             Log.v(TAG, mNameLetters.toString());
         }
     }

@@ -8,34 +8,81 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1">
-        <android.support.v7.widget.AppCompatImageButton
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher"
-            android:layout_gravity="center"
-            />
-        <android.support.v7.widget.AppCompatImageButton
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivPandoraCanteen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_launcher"
+                android:layout_gravity="center"
+                android:background="@drawable/sl_pandora_button"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="武研加班餐"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher"
-            android:layout_gravity="center"
-            />
-        <android.support.v7.widget.AppCompatImageButton
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivPandoraMeeting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_launcher"
+                android:layout_gravity="center"
+                android:background="@drawable/sl_pandora_button"
+                />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="预定会议室"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher"
-            android:layout_gravity="center"
-            />
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivPandoraLibrary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_launcher"
+                android:layout_gravity="center"
+                android:background="@drawable/sl_pandora_button"
+                />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="武研图书馆"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1">
-        <android.support.v7.widget.AppCompatImageButton
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -49,7 +96,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1">
-        <android.support.v7.widget.AppCompatImageButton
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

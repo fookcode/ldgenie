@@ -65,48 +65,34 @@
         android:clickable="true">
 		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="130dp"
+			android:layout_height="220dp"
 			android:orientation="horizontal"
             android:background="@color/LightCyan">
 			<android.support.v7.widget.AppCompatImageView
 				android:id="@+id/ivMyProfileAvatar"
-				android:layout_width="72dp"
-				android:layout_height="72dp"
-				android:layout_marginLeft="28dp"
-                android:layout_centerVertical="true"
+				android:layout_width="108dp"
+				android:layout_height="108dp"
+				android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
                 android:scaleType="centerCrop"
                 android:clickable="true" />
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMyProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_margin_max"
-                android:layout_toRightOf="@id/ivMyProfileAvatar"
-                android:layout_centerVertical="true"
+                android:layout_below="@id/ivMyProfileAvatar"
+				android:layout_margin="@dimen/common_margin"
+                android:layout_centerHorizontal="true"
                 android:text="用户名称"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 			<android.support.v7.widget.AppCompatTextView
-				android:id="@+id/tvMyProfileComma"
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				android:layout_alignLeft="@id/ivMyProfileAvatar"
-				android:layout_below="@id/ivMyProfileAvatar"
-				android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-				android:text="”"
-				android:gravity="top"
-				android:textStyle="bold"
-				android:textSize="32dp"
-				/>
-            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMyProfileSign"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_toRightOf="@id/tvMyProfileComma"
-                android:layout_below="@id/ivMyProfileAvatar"
+                android:layout_below="@id/tvMyProfileName"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-                android:singleLine="true"
-                android:layout_marginRight="28dp"
-                />
+				android:layout_centerHorizontal="true"
+                android:singleLine="true" />
 		</RelativeLayout>
         <android.support.v7.widget.ListViewCompat
             android:id="@+id/drawerConfigListView"

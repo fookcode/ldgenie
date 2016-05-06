@@ -26,12 +26,14 @@ public class ContactsGroupSeekerAdapter extends BaseAdapter {
     public ContactsGroupSeekerAdapter(Context context, ArrayList<Group> groups) {
         this.mContext = context;
         mGroupList = groups;
+        boolean bSpecial = false;
         Character mCurrentSpell = '#';
         if (mGroupList != null) {
             mNameLetters = new ArrayList<>();
             for (Group group : mGroupList) {
                 String name = group.getName();
                 Character letter = Character.toUpperCase(PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]);
+                if ((letter < 65) || (letter > 90)) bSpecial = true;
 //                int ascii = name.charAt(0);
 //                if (((ascii>= 65) && (ascii <=90)) || ((ascii >= 97) && (ascii <= 122))) {
 //                    letter = Character.toUpperCase(name.charAt(0));
@@ -40,11 +42,12 @@ public class ContactsGroupSeekerAdapter extends BaseAdapter {
 //                    String[] letters = PinyinHelper.toHanyuPinyinStringArray(name.charAt(0));
 //                    letter = Character.toUpperCase(letters[0].charAt(0));
 //                }
-                if (!mCurrentSpell.equals(letter)) {
+                if ((letter >= 65) && (letter <= 90) && !mCurrentSpell.equals(letter)) {
                     mNameLetters.add(letter);
                     mCurrentSpell = letter;
                 }
             }
+            if(bSpecial) mNameLetters.add('#');
         }
     }
 
