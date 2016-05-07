@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="litedood_button_backgroud">#C13F2F</color>
+    <color name="litedood_button_backgroud_pressed">#A23426</color>
+
 </resources>
