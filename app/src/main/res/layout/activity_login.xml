@@ -50,7 +50,7 @@
             android:background="@drawable/sl_login_button"
             android:layout_marginTop="@dimen/common_margin_max"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"/>
+            android:textColor="@color/White"/>
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

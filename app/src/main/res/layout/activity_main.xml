@@ -43,7 +43,7 @@
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/main_message_button_name"
 				android:background="@drawable/sl_main_button"
-				android:textColor="@color/white"
+				android:textColor="@color/White"
 			/>
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/btnContacts"
@@ -52,7 +52,7 @@
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/main_contacts_button_name"
 				android:background="@drawable/sl_main_button"
-				android:textColor="@color/white"
+				android:textColor="@color/White"
 			/>
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/btnPandora"
@@ -61,7 +61,7 @@
 				style="?android:attr/borderlessButtonStyle"
 				android:text="@string/main_pandora_button_name"
 				android:background="@drawable/sl_main_button"
-				android:textColor="@color/white"
+				android:textColor="@color/White"
 			 />
 		</android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
@@ -124,10 +124,9 @@
                 />
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnLogout"
-				android:layout_marginRight="@dimen/login_button_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_margin="@dimen/login_button_margin"
+                android:layout_margin="@dimen/common_margin_max"
                 android:text="@string/logout_button_text"
                 />
         </android.support.v7.widget.LinearLayoutCompat>

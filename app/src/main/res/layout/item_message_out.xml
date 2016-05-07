@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/message_group_margin"
+    android:layout_marginTop="@dimen/common_margin_max"
     android:gravity="right"
     android:clickable="false"
     >
@@ -25,7 +25,7 @@
         android:layout_width="48dp"
         android:layout_gravity="center_vertical"
         android:layout_height="48dp"
-        android:layout_margin="@dimen/message_group_avatar_margin"/>
+        android:layout_margin="@dimen/common_margin"/>
 
 
 </android.support.v7.widget.LinearLayoutCompat>

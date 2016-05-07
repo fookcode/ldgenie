@@ -19,7 +19,7 @@
         android:layout_width="20dp"
         android:id="@+id/chatItemCountIndicator"
         android:text="99"
-        android:textColor="@color/white"
+        android:textColor="@color/White"
         android:layout_marginTop="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
         android:background="@drawable/sp_message_count_indicator"

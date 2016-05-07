@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/white">
+        android:background="@color/White">
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/ivContactGroupAdd"
             android:layout_width="wrap_content"

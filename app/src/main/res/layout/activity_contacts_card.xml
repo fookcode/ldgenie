@@ -10,13 +10,13 @@
         android:id="@+id/tbContactCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white" />
+        android:background="@color/White" />
 
     <android.support.v7.widget.ListViewCompat
         android:id="@+id/lvContactCardItemList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/White"
         android:layout_margin="@dimen/common_padding_max"/>
 
     <android.support.v7.widget.AppCompatButton

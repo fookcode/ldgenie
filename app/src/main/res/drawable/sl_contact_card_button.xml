@@ -4,6 +4,6 @@
         <color android:color="@color/LightGrey" />
     </item>
     <item>
-        <color android:color="@color/white"/>
+        <color android:color="@color/White"/>
     </item>
 </selector>
