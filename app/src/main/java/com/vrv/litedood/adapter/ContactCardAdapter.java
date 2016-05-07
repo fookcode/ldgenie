@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.ListViewCompat;
-import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
-import com.vrv.litedood.ui.activity.ContactCardActivity;
+import com.vrv.litedood.ui.activity.ContactsCardActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import java.util.HashMap;
  * Created by kinee on 2016/4/30.
  */
 public class ContactCardAdapter extends BaseAdapter {
-    private static final String TAG = ContactCardActivity.class.getSimpleName();
+    private static final String TAG = ContactsCardActivity.class.getSimpleName();
 
     private static final String NAME = "name";
     private static final String VALUE = "value";

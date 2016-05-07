@@ -61,12 +61,17 @@
         <activity android:name=".ui.activity.MessageActivity"
             android:parentActivityName=".ui.activity.MainActivity"/>
 
-        <activity android:name=".ui.activity.RegisterActivity" />
-        <activity android:name=".ui.activity.ForgotPasswordActivity"/>
-        <activity android:name=".ui.activity.ContactCardActivity"
+        <activity android:name=".ui.activity.RegisterActivity"
+            android:parentActivityName=".ui.activity.LoginActivity"/>
+        <activity android:name=".ui.activity.ForgotPasswordActivity"
+            android:parentActivityName=".ui.activity.LoginActivity"/>
+        <activity android:name=".ui.activity.ContactsCardActivity"
             android:parentActivityName=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.ContactsGroupActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
+
+        <activity android:name=".ui.activity.ContactsGroupCardActivity"
+            android:parentActivityName=".ui.activity.ContactsGroupActivity" />
     </application>
 
 </manifest>

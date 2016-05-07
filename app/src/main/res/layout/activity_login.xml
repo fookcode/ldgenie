@@ -6,28 +6,29 @@
     android:layout_height="match_parent"
     >
     <android.support.v7.widget.AppCompatImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
+        android:src="@drawable/example_header"
      />
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="@dimen/common_margin_max">
         <android.support.v7.widget.AppCompatEditText
             android:id = "@+id/edtUserCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/login_edit_padding"
             android:hint="@string/login_name_hint"
-            android:text="008618602701898"
+            android:text="18602701898"
             android:singleLine="true"/>
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/login_edit_padding"
             android:hint="@string/login_password_hint"
             android:inputType="textPassword"
             android:text="12345678"
@@ -36,8 +37,8 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/login_button_margin"
             android:text="@string/login_button_text"
+            android:layout_marginTop="@dimen/common_margin_max"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_forgot_password"
                 android:layout_alignParentLeft="true"
+                android:background="@drawable/sl_widget_common_click"
                 android:clickable="true"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvRegisterUser"
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_register"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/sl_widget_common_click"
                 android:clickable="true"/>
 
         </RelativeLayout>

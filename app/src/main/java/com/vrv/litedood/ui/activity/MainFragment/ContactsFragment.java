@@ -26,7 +26,7 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ContactsAdapter;
 import com.vrv.litedood.adapter.ContactsSeekerAdapter;
 import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
-import com.vrv.litedood.ui.activity.ContactCardActivity;
+import com.vrv.litedood.ui.activity.ContactsCardActivity;
 import com.vrv.litedood.ui.activity.ContactsGroupActivity;
 
 
@@ -83,7 +83,7 @@ public class ContactsFragment extends Fragment {
                 //Contact contact = contactQueue.get(position);
                 Contact contact = (Contact)parent.getItemAtPosition(position);
                 BaseInfoBean bean = BaseInfoBean.contact2BaseInfo(contact);
-                ContactCardActivity.startContactCardActivity(getActivity(), bean, Intent.ACTION_VIEW);
+                ContactsCardActivity.startContactCardActivity(getActivity(), bean, Intent.ACTION_VIEW);
             }
         });
 

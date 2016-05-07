@@ -11,8 +11,19 @@
 		<android.support.v7.widget.Toolbar
 			android:id="@+id/tbMain"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-		/>
+			android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivMainMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:clickable="true"
+                android:background="@drawable/sl_widget_common_click"
+                android:layout_marginRight="@dimen/common_margin_max"
+                android:src="@drawable/ic_plus_sign"
+                android:layout_gravity="right"
+                android:padding="@dimen/common_padding_max"
+                />
+        </android.support.v7.widget.Toolbar>
 		<FrameLayout
 			android:id="@+id/layoutFragmentContainer"
 			android:layout_width="fill_parent"

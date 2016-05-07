@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, R.string.login_usercode_empty_message, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                sUserCode = NATIONAL_CODE + sUserCode;
                 sPwd = ((EditText)findViewById(R.id.edtPassword)).getText().toString();
                 if (sPwd.isEmpty()) {
                     Toast.makeText(LoginActivity.this, R.string.login_password_empty_message, Toast.LENGTH_SHORT).show();

@@ -35,17 +35,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(activity, ForgotPasswordActivity.class);
         activity.startActivity(intent);
-        activity.finish();
+//        activity.finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case android.R.id.home :{
-                LoginActivity.startLoginActivity(this);
-                return true;
-            }
-        }
+//        switch(item.getItemId()) {
+//            case android.R.id.home :{
+//                LoginActivity.startLoginActivity(this);
+//                return true;
+//            }
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -68,7 +68,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbForgotPassword);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }

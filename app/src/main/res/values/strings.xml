@@ -8,6 +8,9 @@
     <string name="main_contacts_button_name">联系人</string>
     <string name="main_pandora_button_name">潘朵拉</string>
 
+    <string name="main_menu_item_add_user">添加好友</string>
+    <string name="main_menu_item_add_group">发起群聊</string>
+
     <string name="drawer_open">打开设置</string>
     <string name="drawer_close">关闭设置</string>
 
@@ -53,4 +56,14 @@
     <string name="busy_indicator_hint">加载中</string>
 
     <string name="contact_card_button_text">发送消息</string>
+
+    <string name="contacts_group_card_text_avatar">头像</string>
+    <string name="contacts_group_card_text_name">名称</string>
+    <string name="contacts_group_card_text_notice">公告</string>
+    <string name="contacts_group_card_text_member_count">当前人数</string>
+    <string name="contacts_group_card_text_creator">创建人</string>
+    <string name="contacts_group_card_text_create_date">创建时间</string>
+
+
+
 </resources>

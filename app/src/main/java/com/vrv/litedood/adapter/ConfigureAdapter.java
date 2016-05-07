@@ -37,9 +37,9 @@ public class ConfigureAdapter extends BaseAdapter {
             result.add(newItem("声音设置", TYPE_TITLE, null));
             result.add(newItem("提示音", TYPE_BOOLEAN, bSoundOn));
             result.add(newItem("震动", TYPE_BOOLEAN, bVibrationOn));
-
-            result.add(newItem("聊天设置", TYPE_TITLE, null));
-            result.add(newItem("其它", TYPE_BOOLEAN, true));
+//
+//            result.add(newItem("聊天设置", TYPE_TITLE, null));
+//            result.add(newItem("其它", TYPE_BOOLEAN, true));
 
             result.add(newItem("关于", TYPE_TITLE, null));
             result.add(newItem("关于"+ context.getResources().getString(R.string.app_name), TYPE_NULL, null));

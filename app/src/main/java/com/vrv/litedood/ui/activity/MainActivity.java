@@ -2,27 +2,24 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ListPopupWindowCompat;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,6 +30,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.ListViewCompat;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
@@ -48,6 +47,7 @@ import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ContactCardActivity.startContactCardActivity(MainActivity.this, BaseInfoBean.contact2BaseInfo(myself), Intent.ACTION_EDIT);
+                    ContactsCardActivity.startContactCardActivity(MainActivity.this, BaseInfoBean.contact2BaseInfo(myself), Intent.ACTION_EDIT);
                 }
             };
 
@@ -215,7 +215,56 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(mToobar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        AppCompatImageView ivMainMenu = (AppCompatImageView)findViewById(R.id.ivMainMenu);
+        ivMainMenu.setOnClickListener(new View.OnClickListener() {
+            private final static String TITLE ="title";
+            private final static String ICON="icon";
+
+            private HashMap<String, Object> newMenuItem(String title, int ResId) {
+                HashMap<String, Object> item = new HashMap<String, Object>();
+                item.put(TITLE, title);
+                item.put(ICON, ResId);
+                return item;
+            }
+
+            @Override
+            public void onClick(View v) {
+                final ListPopupWindow popupWindow = new ListPopupWindow(MainActivity.this);
+                List<HashMap<String, Object>> data = new ArrayList<>();
+                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_user), R.drawable.ic_launcher));
+                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_group), R.drawable.ic_launcher));
+
+                ListAdapter adapter = new SimpleAdapter(
+                        MainActivity.this,
+                        data,
+                        R.layout.item_main_activity_menu, // 数组注入的布局
+                        new String[] {TITLE, ICON}, // 布局中各视图数据源的KEY,是data中的map的key
+                        new int[] {R.id.tvMainMenuItemText, R.id.ivMainMenuItemIcon}); //布局中的视图ResId集合，这最后两个参数值一一对应
+
+
+                popupWindow.setAnchorView(v);
+                popupWindow.setAdapter(adapter);
+                popupWindow.setWidth(280);
+                popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                Toast.makeText(MainActivity.this, "item1", Toast.LENGTH_SHORT).show();
+                                if (popupWindow.isShowing()) popupWindow.dismiss();
+                                break;
+                            case 1:
+                                Toast.makeText(MainActivity.this, "item2", Toast.LENGTH_SHORT).show();
+                                if (popupWindow.isShowing()) popupWindow.dismiss();
+                                break;
+                        }
+                    }
+                });
+                popupWindow.show();
+            }
+        });
     }
 
     private void initFragment() {
@@ -260,12 +309,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

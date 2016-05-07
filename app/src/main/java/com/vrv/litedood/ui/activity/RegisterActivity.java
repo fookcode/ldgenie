@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(activity, RegisterActivity.class);
         activity.startActivity(intent);
-        activity.finish();
+        //activity.finish();
     }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +51,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home: {
-                LoginActivity.startLoginActivity(this);
-                return true;
-            }
-        }
+//        switch (item.getItemId()){
+//            case android.R.id.home: {
+//                LoginActivity.startLoginActivity(this);
+//                return true;
+//            }
+//        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGrey">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbContactsGroupCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/common_margin_max"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_avatar"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivContactsGroupCardAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src = "@drawable/ic_launcher" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:minHeight="32dp"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_name"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvContactsGroupCardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:text = "群名称" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:minHeight="32dp"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_notice"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/ivContactsGroupCardNotice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:text ="公告" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/common_margin_max"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:minHeight="32dp"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_member_count"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvContactsGroupCardMemberCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:text = "当前人数" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:minHeight="32dp"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_creator"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/ivContactsGroupCardCreator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:text ="创建人" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_margin_min"
+            android:clickable="true"
+            android:minHeight="32dp"
+            android:background="@drawable/sl_widget_common_click">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/contacts_group_card_text_create_date"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/ivContactsGroupCardCreateDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:singleLine="true"
+                android:text ="创建时间" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnContactsGroupCardSendMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sl_contact_card_button"
+        android:text="@string/contact_card_button_text"
+        android:layout_margin="@dimen/common_margin_max"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+</android.support.v7.widget.LinearLayoutCompat>

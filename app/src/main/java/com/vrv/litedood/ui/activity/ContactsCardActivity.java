@@ -1,7 +1,6 @@
 package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -23,8 +22,8 @@ import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 /**
  * Created by kinee on 2016/4/30.
  */
-public class ContactCardActivity extends AppCompatActivity {
-    public static final String TAG = ContactCardActivity.class.getSimpleName();
+public class ContactsCardActivity extends AppCompatActivity {
+    public static final String TAG = ContactsCardActivity.class.getSimpleName();
     public static final String ID_CONTACT = "CONTACT";
 
     private BaseInfoBean mContactBean;
@@ -35,7 +34,7 @@ public class ContactCardActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra(ID_CONTACT, contact);
         intent.setAction(action);
-        intent.setClass(activity, ContactCardActivity.class);
+        intent.setClass(activity, ContactsCardActivity.class);
         activity.startActivity(intent);
         if (!(activity instanceof MainActivity)) {
             activity.finish();
@@ -79,14 +78,14 @@ public class ContactCardActivity extends AppCompatActivity {
         public void handleSuccess(Message msg) {
             mContact = (Contact)msg.getData().get("data");
             //Log.v(TAG, mContact.toString());
-            setContentView(R.layout.activity_contact_card);
+            setContentView(R.layout.activity_contacts_card);
 
             Toolbar tbContactCard = (Toolbar) findViewById(R.id.tbContactCard);
             setSupportActionBar(tbContactCard);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             ListViewCompat lvContactCardItemList = (ListViewCompat)findViewById(R.id.lvContactCardItemList);
-            lvContactCardItemList.setAdapter(new ContactCardAdapter(ContactCardActivity.this, mContact));
+            lvContactCardItemList.setAdapter(new ContactCardAdapter(ContactsCardActivity.this, mContact));
 
             String action = mActivity.getIntent().getAction();
             if (Intent.ACTION_EDIT.equals(action)) {
@@ -97,7 +96,7 @@ public class ContactCardActivity extends AppCompatActivity {
                 sendMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MessageActivity.startMessageActivity(ContactCardActivity.this, BaseInfoBean.contact2BaseInfo(mContact));
+                        MessageActivity.startMessageActivity(ContactsCardActivity.this, BaseInfoBean.contact2BaseInfo(mContact));
                     }
                 });
             }
