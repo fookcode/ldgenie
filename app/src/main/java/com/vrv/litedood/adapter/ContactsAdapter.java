@@ -82,8 +82,8 @@ public class ContactsAdapter extends BaseAdapter {
 
             }
             viewHolder = new ViewHolder(ITEM_TYPE.HEADER);
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts_header, null);
-            viewHolder.tvContactHeader = (AppCompatTextView) convertView.findViewById(R.id.tvContactsHeader);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_header, null);
+            viewHolder.tvContactHeader = (AppCompatTextView) convertView.findViewById(R.id.tvListHeader);
             viewHolder.tvContactHeader.setText(String.valueOf(contact.getName().charAt(1)));
             convertView.setTag(viewHolder);
 

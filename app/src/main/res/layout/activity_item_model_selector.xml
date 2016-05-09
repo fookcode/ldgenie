@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbItemModelSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="创建群">
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnCreateGroup"
+            android:layout_width="48dp"
+            android:layout_height="32dp"
+            android:layout_gravity="right|center_vertical"
+            android:textColor="@color/White"
+            android:text="创建"
+            android:background="@drawable/sl_common_button"
+            android:layout_marginRight="@dimen/common_margin"
+            android:enabled="false"/>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/lvItemModelSelector"
+        android:layout_below="@id/tbItemModelSelector"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/LightGrey"
+        android:dividerHeight="1dp">
+    </android.support.v7.widget.ListViewCompat>
+
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/lvItemModelSelectorSeeker"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
+</RelativeLayout>

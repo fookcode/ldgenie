@@ -72,6 +72,8 @@
 
         <activity android:name=".ui.activity.ContactsGroupCardActivity"
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
+        <activity android:name=".ui.activity.MainFragment.ItemModelSelectorActivity"
+            android:parentActivityName=".ui.activity.ContactsGroupActivity" />
     </application>
 
 </manifest>

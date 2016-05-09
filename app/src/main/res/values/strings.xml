@@ -57,6 +57,8 @@
 
     <string name="contact_card_button_text">发送消息</string>
 
+    <string name="contacts_group_activity_title">群/讨论组</string>
+
     <string name="contacts_group_card_text_avatar">头像</string>
     <string name="contacts_group_card_text_name">名称</string>
     <string name="contacts_group_card_text_notice">公告</string>

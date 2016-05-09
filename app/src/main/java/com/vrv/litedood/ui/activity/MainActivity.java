@@ -39,12 +39,13 @@ import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ConfigureAdapter;
-import com.vrv.litedood.common.GraphicUtil;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 import com.vrv.litedood.common.widget.ButtonActiveFragmentOnClickListener;
 import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
+import com.vrv.litedood.ui.activity.MainFragment.ItemModelSelectorActivity;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    ivAvatar.setImageDrawable(new BitmapDrawable(getResources(), GraphicUtil.getRoundedCornerBitmap(bitmapAvatar, 180)));
+                    ivAvatar.setImageDrawable(new BitmapDrawable(getResources(), LiteDood.getRoundedCornerBitmap(bitmapAvatar, 180)));
 //                    ivAvatar.setImageBitmap(bitmapAvatar);
 //                    ArrayList<Drawable> list = new ArrayList<>();
 //                    list.add(new BitmapDrawable(getResources(), bitmapAvatar));
@@ -256,7 +257,8 @@ public class MainActivity extends AppCompatActivity {
                                 if (popupWindow.isShowing()) popupWindow.dismiss();
                                 break;
                             case 1:
-                                Toast.makeText(MainActivity.this, "item2", Toast.LENGTH_SHORT).show();
+                                ItemModelSelectorActivity.startItemModelSelectorActivity(MainActivity.this);
+                                //Toast.makeText(MainActivity.this, "item2", Toast.LENGTH_SHORT).show();
                                 if (popupWindow.isShowing()) popupWindow.dismiss();
                                 break;
                         }

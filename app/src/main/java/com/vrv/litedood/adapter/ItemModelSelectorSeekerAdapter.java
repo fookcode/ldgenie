@@ -1,6 +1,5 @@
 package com.vrv.litedood.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -8,31 +7,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.vrv.imsdk.model.Group;
+import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.R;
-import com.vrv.litedood.common.PinYinUtil;
+import com.vrv.litedood.common.LiteDood;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by kinee on 2016/5/6.
  */
-public class ContactsGroupSeekerAdapter extends BaseAdapter {
+public class ItemModelSelectorSeekerAdapter<T extends ItemModel> extends BaseAdapter {
     private Context mContext;
-    private ArrayList<Group> mGroupList;
+    private ArrayList<T> mItemList;
     private ArrayList<Character> mNameLetters;
 
-    public ContactsGroupSeekerAdapter(Context context, ArrayList<Group> groups) {
+    public ItemModelSelectorSeekerAdapter(Context context, ArrayList<T> items) {
         this.mContext = context;
-        mGroupList = groups;
+        mItemList = items;
         boolean bSpecial = false;
         Character mCurrentSpell = '#';
-        if (mGroupList != null) {
+        if (mItemList != null) {
             mNameLetters = new ArrayList<>();
-            for (Group group : mGroupList) {
-                String name = group.getName();
-                Character letter = Character.toUpperCase(PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]);
+            for (T item : mItemList) {
+                String name = item.getName();
+                Character letter = Character.toUpperCase(LiteDood.PinYinUtil.getFirstSpell(String.valueOf(name.charAt(0))).toCharArray()[0]);
                 if ((letter < 65) || (letter > 90)) bSpecial = true;
 //                int ascii = name.charAt(0);
 //                if (((ascii>= 65) && (ascii <=90)) || ((ascii >= 97) && (ascii <= 122))) {

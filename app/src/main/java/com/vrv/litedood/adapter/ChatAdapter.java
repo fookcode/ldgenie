@@ -167,7 +167,7 @@ public class ChatAdapter extends BaseAdapter {
         }
 
 
-    public class ViewHolder {
+    class ViewHolder {
 
         public AppCompatImageView avatar;
 

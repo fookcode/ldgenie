@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Group;
 import com.vrv.litedood.R;
-import com.vrv.litedood.ui.activity.ContactsGroupActivity;
+import com.vrv.litedood.common.LiteDood;
 
 import java.io.File;
 import java.util.List;
@@ -24,7 +24,6 @@ public class ContactsGroupAdapter extends BaseAdapter {
     private Context mContext;
     private List<Group> mGroupList;
     private enum ITEM_TYPE {HEADER, GROUP};
-    private Character mSpellTitle = '#';
 
     public ContactsGroupAdapter(Context context, List<Group> listGroup) {
         this.mContext = context;
@@ -56,7 +55,7 @@ public class ContactsGroupAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         ITEM_TYPE result = ITEM_TYPE.GROUP;
         Group group = mGroupList.get(position);
-        if ((group.getName().charAt(0) == '#') && (group.getId() == ContactsGroupActivity.GROUP_VIEW_HEADER_ID)) {
+        if ((group.getName().charAt(0) == '#') && (group.getId() == LiteDood.LIST_VIEW_HEADER_ITEM)) {
             result = ITEM_TYPE.HEADER;
         }
         return result.ordinal();
@@ -76,15 +75,15 @@ public class ContactsGroupAdapter extends BaseAdapter {
         if (getItemViewType(position) == ITEM_TYPE.HEADER.ordinal()) {
             if (viewHolder != null) {
                 if (viewHolder.mType == ITEM_TYPE.HEADER) {
-                    viewHolder.tvContactHeader.setText(String.valueOf(group.getName().charAt(1)));
+                    viewHolder.tvListHeader.setText(String.valueOf(group.getName().charAt(1)));
                     return convertView;
                 }
 
             }
             viewHolder = new ViewHolder(ITEM_TYPE.HEADER);
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_contacts_header, null);
-            viewHolder.tvContactHeader = (AppCompatTextView) convertView.findViewById(R.id.tvContactsHeader);
-            viewHolder.tvContactHeader.setText(String.valueOf(group.getName().charAt(1)));
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_header, null);
+            viewHolder.tvListHeader = (AppCompatTextView) convertView.findViewById(R.id.tvListHeader);
+            viewHolder.tvListHeader.setText(String.valueOf(group.getName().charAt(1)));
             convertView.setTag(viewHolder);
 
         }
@@ -124,7 +123,7 @@ public class ContactsGroupAdapter extends BaseAdapter {
 
         AppCompatImageView ivGroupAvatar;
         AppCompatTextView tvGroupName;
-        AppCompatTextView tvContactHeader;
+        AppCompatTextView tvListHeader;
 
         public ViewHolder(ITEM_TYPE type) {
             this.mType = type;
