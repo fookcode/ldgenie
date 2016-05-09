@@ -1,8 +1,8 @@
 package com.vrv.litedood;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.VIMClient;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.common.LiteDood;
@@ -12,15 +12,17 @@ import com.vrv.litedood.common.LiteDood;
  */
 public class LiteDoodApplication extends Application {
 
-    private static LiteDoodApplication appContext;
+    private static LiteDoodApplication mAppContext;
+
+    private static Activity mMainActivity;
 
     private Contact myself = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        appContext = this;
-        VIMClient.init(appContext, LiteDood.APP_ID);
+        mAppContext = this;
+        VIMClient.init(mAppContext, LiteDood.APP_ID);
 
     }
 
@@ -33,7 +35,15 @@ public class LiteDoodApplication extends Application {
     }
 
     public static LiteDoodApplication getAppContext() {
-        return appContext;
+        return mAppContext;
+    }
+
+    public static void setMainActivity(Activity activity) {
+        mMainActivity = activity;
+    }
+
+    public static Activity getMainActivity() {
+        return mMainActivity;
     }
 
 }

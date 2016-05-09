@@ -11,8 +11,15 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.model.Group;
+import com.vrv.imsdk.model.GroupList;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.common.LiteDood;
+import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 import com.vrv.litedood.dto.MessageDTO;
+import com.vrv.litedood.ui.activity.MainActivity;
+import com.vrv.litedood.ui.activity.MessageActivity;
 
 /**
  * Created by kinee on 2016/4/6.
@@ -60,6 +67,21 @@ public class LiteDoodMessageProvider extends ContentProvider {
     public boolean onCreate() {
         dbhelper = new DatabaseHelper(getContext());
 
+
+        SDKManager.instance().getGroupList().setOperateListener(new GroupList.OnOperateListener() {
+            @Override
+            public void operate(byte b, Group group) {
+                Log.v(TAG, String.valueOf(b));
+                switch(b) {
+                    case (byte)1:
+                        MessageActivity.startMessageActivity(LiteDoodApplication.getMainActivity(), BaseInfoBean.group2BaseInfo(group));
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
         return true;
     }
 

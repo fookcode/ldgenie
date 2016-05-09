@@ -2,6 +2,7 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -65,13 +66,14 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    public static void startMessageActivity(Activity activity, BaseInfoBean bean) {
+    public static void startMessageActivity(Context context, BaseInfoBean bean) {
         Intent intent = new Intent();
         intent.putExtra(ID_USER_INFO, bean);
-        intent.setClass(activity, MessageActivity.class);
-        activity.startActivity(intent);
-        if (!(activity instanceof MainActivity)) {
-            activity.finish();
+        intent.setClass(context, MessageActivity.class);
+        context.startActivity(intent);
+        if (!(context instanceof MainActivity)) {
+            if (context instanceof AppCompatActivity)
+                ((AppCompatActivity)context).finish();
         }
     }
 

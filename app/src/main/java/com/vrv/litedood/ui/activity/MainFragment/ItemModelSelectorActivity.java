@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Contact;
@@ -146,12 +147,7 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
         }
         @Override
         public void handleSuccess(Message msg) {
-            Log.v(TAG, msg.toString());
-
-
-
-
-
+            Toast.makeText(ItemModelSelectorActivity.this, "群创建成功", Toast.LENGTH_SHORT);
 
         }
     }

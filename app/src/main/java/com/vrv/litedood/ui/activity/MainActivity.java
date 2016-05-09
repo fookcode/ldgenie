@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        LiteDoodApplication.setMainActivity(this);
+
 		super.onCreate(savedInstanceState);
         //使用Theme,以下两个设置由Theme完成
 		//无标题栏
