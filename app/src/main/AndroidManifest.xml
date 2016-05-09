@@ -72,7 +72,7 @@
 
         <activity android:name=".ui.activity.ContactsGroupCardActivity"
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
-        <activity android:name=".ui.activity.MainFragment.ItemModelSelectorActivity"
+        <activity android:name=".ui.activity.ItemModelSelectorActivity"
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
     </application>
 

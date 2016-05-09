@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.ListViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +19,7 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ContactsGroupAdapter;
 import com.vrv.litedood.adapter.ItemModelSelectorSeekerAdapter;
 import com.vrv.litedood.common.LiteDood;
-import com.vrv.litedood.ui.activity.MainFragment.ItemModelSelectorActivity;
+import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,10 +89,10 @@ public class ContactsGroupActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                MessageActivity.startMessageActivity(ContactsGroupActivity.this,
-//                        BaseInfoBean.group2BaseInfo((Group)lvGroupList.getItemAtPosition(position)));
-                ContactsGroupCardActivity.startContactGroupCardActivity(ContactsGroupActivity.this,
-                        ((Group)lvGroupList.getItemAtPosition(position)).getId());
+                MessageActivity.startMessageActivity(ContactsGroupActivity.this,
+                        BaseInfoBean.group2BaseInfo((Group)lvGroupList.getItemAtPosition(position)));
+//                ContactsGroupCardActivity.startContactGroupCardActivity(ContactsGroupActivity.this,
+//                        ((Group)lvGroupList.getItemAtPosition(position)).getId());
             }
         });
 

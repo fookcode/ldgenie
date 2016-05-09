@@ -1,4 +1,4 @@
-package com.vrv.litedood.ui.activity.MainFragment;
+package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -71,10 +70,11 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
                         if (viewHolder.mType == ItemModelSelectorAdapter.ITEM_TYPE.ITEM) {
 
                             final AppCompatCheckBox checker = (AppCompatCheckBox) view.findViewById(R.id.cbItemModelChecker);
-                            AppCompatButton btnCreateGroup = (AppCompatButton)parent.findViewById(R.id.btnCreateGroup);
+                            AppCompatButton btnCreateGroup = (AppCompatButton)findViewById(R.id.btnCreateGroup);
                             if (!checker.isChecked()) {
                                 checker.setChecked(true);
-                                mItemSelectedList.add(id);
+                                if (!mItemSelectedList.contains(id))
+                                    mItemSelectedList.add(id);
 
                                 btnCreateGroup.setEnabled(true);
                             }
@@ -115,17 +115,14 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
     public void setSelectedItem(long id, boolean isSelected) {
         AppCompatButton btnCreateGroup = (AppCompatButton) findViewById(R.id.btnCreateGroup);
         if (isSelected) {
-            mItemSelectedList.add(id);
+            if (!mItemSelectedList.contains(id))
+                mItemSelectedList.add(id);
             if (!btnCreateGroup.isEnabled()) btnCreateGroup.setEnabled(true);
         }
         else {
             mItemSelectedList.remove(id);
             if (mItemSelectedList.size() <= 1) btnCreateGroup.setEnabled(false);
         }
-    }
-
-    public ArrayList<Long> getSelectedItem() {
-        return mItemSelectedList;
     }
 
     private void setCreateGroupAction() {

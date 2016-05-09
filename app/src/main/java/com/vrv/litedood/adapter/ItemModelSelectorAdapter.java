@@ -15,7 +15,7 @@ import android.widget.CompoundButton;
 import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
-import com.vrv.litedood.ui.activity.MainFragment.ItemModelSelectorActivity;
+import com.vrv.litedood.ui.activity.ItemModelSelectorActivity;
 
 import java.io.File;
 import java.util.ArrayList;
