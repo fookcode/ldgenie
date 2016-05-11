@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.util.TimeUtils;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.format.DateUtils;
 import android.text.format.Time;
@@ -21,12 +19,8 @@ import com.vrv.imsdk.model.Chat;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
-import com.vrv.litedood.ui.activity.MainFragment.ChatFragment;
 
 import java.io.File;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -68,17 +62,17 @@ public class ChatAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_chat, null);
             viewHolder = new ViewHolder();
 
-            viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.chatItemAvatar);
+            viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.ivChatItemAvatar);
 //            ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
 //            layoutParams.width = CHAT_AVATAR_SIZE;
 //            layoutParams.height = CHAT_AVATAR_SIZE;
 //            viewHolder.avatar.setLayoutParams(layoutParams);
 
-            viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.chatItemCountIndicator);
-            viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.chatItemName);
-            viewHolder.time = (AppCompatTextView)convertView.findViewById(R.id.chatItemTime);
-            viewHolder.status = (ContentLoadingProgressBar)convertView.findViewById(R.id.chatItemSendingSatusIndicator);
-            viewHolder.recentMessage = (AppCompatTextView)convertView.findViewById(R.id.chatItemRecentMessage);
+            viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemCountIndicator);
+            viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemName);
+            viewHolder.time = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemTime);
+            viewHolder.status = (ContentLoadingProgressBar)convertView.findViewById(R.id.clpbChatItemSendingSatusIndicator);
+            viewHolder.recentMessage = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemRecentMessage);
             convertView.setTag(viewHolder);
         }
         else {

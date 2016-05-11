@@ -28,11 +28,17 @@
 			android:text="群/讨论组"
 			android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 	</android.support.v7.widget.LinearLayoutCompat>
+	<android.support.v7.widget.LinearLayoutCompat
+		android:id="@+id/llDivider"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/Gainsboro"
+		android:layout_below="@id/llContactGroupBar"/>
     <android.support.v7.widget.ListViewCompat
 	    android:id="@+id/lvContacts"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-		android:layout_below="@id/llContactGroupBar"
+		android:layout_below="@id/llDivider"
 		android:layout_alignParentLeft="true"
 		android:divider="@color/LightGrey"
 		android:dividerHeight="1dp"/>

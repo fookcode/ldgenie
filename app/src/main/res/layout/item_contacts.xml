@@ -18,12 +18,14 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/contactAvatar"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/common_margin_min"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:singleLine="true"/>
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/contactSign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_margin_min"
         android:layout_toRightOf="@id/contactAvatar"
         android:layout_below="@id/contactName"
         android:layout_alignParentBottom="true"

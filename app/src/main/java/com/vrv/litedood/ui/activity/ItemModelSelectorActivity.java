@@ -60,6 +60,7 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
 
         if (userList != null) {
             ItemModelSelectorAdapter<Contact> adapter = new ItemModelSelectorAdapter<>(this, LiteDood.reorganizeGroups(userList, Contact.class));
+            adapter.setCheckBoxVisibility(View.VISIBLE);
             final ListViewCompat lvItemModelSelector = (ListViewCompat) findViewById(R.id.lvItemModelSelector);
             adapter.setCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
                 @Override

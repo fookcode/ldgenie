@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/ivGroupAvatar"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_margin_min"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:singleLine="true"/>
 </RelativeLayout>

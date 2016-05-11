@@ -31,6 +31,7 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
 
     private Context mContext;
     private ArrayList<T> mList;
+    private int mCheckBoxVisibility = View.GONE;
 
     private CompoundButton.OnCheckedChangeListener mCheckedChangeListener = null;
 
@@ -42,6 +43,10 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
 
     public void setCheckedChangeListener(CompoundButton.OnCheckedChangeListener mCheckedChangeListener) {
         this.mCheckedChangeListener = mCheckedChangeListener;
+    }
+
+    public void setCheckBoxVisibility(int mCheckBoxVisibility) {
+        this.mCheckBoxVisibility = mCheckBoxVisibility;
     }
 
     @Override
@@ -103,9 +108,9 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
                 viewHolder.ivItemModelAvatar = (AppCompatImageView) convertView.findViewById(R.id.ivItemModelAvatar);
                 viewHolder.tvItemModelName = (AppCompatTextView) convertView.findViewById(R.id.tvItemModelName);
                 viewHolder.cbItemModelChecker = (AppCompatCheckBox) convertView.findViewById((R.id.cbItemModelChecker));
-                if (mCheckedChangeListener != null)
-                viewHolder.cbItemModelChecker.setOnCheckedChangeListener(mCheckedChangeListener);
                 convertView.setTag(viewHolder);
+
+
             }
 
             //设置头像
@@ -122,8 +127,14 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
                     viewHolder.ivItemModelAvatar.setImageBitmap(bitmapAvatar);
                 }
             }
+            //通用组件头像及名称设置
             viewHolder.tvItemModelName.setText(item.getName());
             viewHolder.cbItemModelChecker.setTag(item.getId());
+
+            //非通用组件CheckBox设置
+            viewHolder.cbItemModelChecker.setVisibility(mCheckBoxVisibility);
+            if (mCheckedChangeListener != null)
+                viewHolder.cbItemModelChecker.setOnCheckedChangeListener(mCheckedChangeListener);
         }
         return convertView;
     }
