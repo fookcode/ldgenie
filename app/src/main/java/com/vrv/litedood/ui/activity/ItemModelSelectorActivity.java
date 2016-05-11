@@ -108,7 +108,7 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
                     if (spellFirst != null) {
                         Integer pos = LiteDood.getSeekPositionMap().get(spellFirst);
                         if (pos != null)
-                            lvItemModelSelectorSeeker.setSelection(pos);
+                            lvItemModelSelector.setSelection(pos);
                     }
                 }
             });

@@ -1,8 +1,6 @@
 package com.vrv.litedood.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -15,9 +13,7 @@ import android.widget.CompoundButton;
 import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
-import com.vrv.litedood.ui.activity.ItemModelSelectorActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -114,19 +110,8 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
             }
 
             //设置头像
-            String avatarPath = item.getAvatar();
-            if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-                File fAvatar = new File(avatarPath);
-                if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
+            viewHolder.ivItemModelAvatar.setImageBitmap(LiteDood.getAvatarBitmap(item.getAvatar()));
 
-                    viewHolder.ivItemModelAvatar.setImageResource(R.drawable.ic_launcher);
-                    //boolean result = RequestHelper.getUserInfo(chat.getId(), new ChatRequlestHandler(context, viewHolder, TYPE_GET_USER));
-                    //if (!result) {Log.v(TAG, "获取用户数据失败");}
-                } else {
-                    Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    viewHolder.ivItemModelAvatar.setImageBitmap(bitmapAvatar);
-                }
-            }
             //通用组件头像及名称设置
             viewHolder.tvItemModelName.setText(item.getName());
             viewHolder.cbItemModelChecker.setTag(item.getId());

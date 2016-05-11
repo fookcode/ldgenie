@@ -59,6 +59,8 @@
 
     <string name="contacts_group_activity_title">群/讨论组</string>
 
+    <string name="contacts_add_contacts_verify_message_hint">输入好友验证消息</string>
+
     <string name="contacts_group_card_text_avatar">头像</string>
     <string name="contacts_group_card_text_name">名称</string>
     <string name="contacts_group_card_text_notice">公告</string>

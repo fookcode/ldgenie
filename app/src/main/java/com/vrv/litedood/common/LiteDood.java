@@ -1,6 +1,8 @@
 package com.vrv.litedood.common;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -9,7 +11,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.vrv.imsdk.model.ItemModel;
+import com.vrv.litedood.LiteDoodApplication;
+import com.vrv.litedood.R;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -683,6 +688,21 @@ public final class LiteDood {
             // 字母 转 ascii
             System.out.println(PinYinUtil.getCnAscii('0'));
         }*/
+    }
+
+    public static Bitmap getAvatarBitmap(String avatarFilePath) {
+
+        Bitmap result = null;
+        if ((null != avatarFilePath) && (!avatarFilePath.isEmpty())) {
+            File fAvatar = new File(avatarFilePath);
+            if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
+                result = BitmapFactory.decodeResource(LiteDoodApplication.getMainActivity().getResources(), R.drawable.ic_launcher);
+            }
+            else {
+                result = BitmapFactory.decodeFile(avatarFilePath);
+            }
+        }
+        return result;
     }
 
 }

@@ -1,8 +1,6 @@
 package com.vrv.litedood.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import com.vrv.imsdk.model.Group;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -100,17 +97,7 @@ public class ContactsGroupAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
 
-            String avatarPath = group.getAvatar();
-            Bitmap bitmapAvatar;
-            if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-                File fAvatar = new File(avatarPath);
-                if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
-                    viewHolder.ivGroupAvatar.setImageResource(R.drawable.ic_launcher);
-                else {
-                    bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    viewHolder.ivGroupAvatar.setImageBitmap(bitmapAvatar);
-                }
-            }
+            viewHolder.ivGroupAvatar.setImageBitmap(LiteDood.getAvatarBitmap(group.getAvatar()));
             viewHolder.tvGroupName.setText(group.getName());
 
         }

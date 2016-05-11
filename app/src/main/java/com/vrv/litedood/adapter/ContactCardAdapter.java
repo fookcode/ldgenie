@@ -3,8 +3,6 @@ package com.vrv.litedood.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.ListViewCompat;
@@ -18,9 +16,9 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.ui.activity.ContactsCardActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -234,7 +232,7 @@ public class ContactCardAdapter extends BaseAdapter {
                 } else if(viewHolder.type == ITEM_TYPE.line.list){
                     viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, R.layout.item_contact_card_list_item_child, (ArrayList<String>) item.get(VALUE)));
                 } else if (viewHolder.type == ITEM_TYPE.line.image) {
-                    setAvatar(item, viewHolder);
+                    viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getAvatarBitmap(item.get(VALUE).toString()));
                     ;
                 }
                 result = convertView;
@@ -281,26 +279,11 @@ public class ContactCardAdapter extends BaseAdapter {
             viewHolder.tvContactCardItemName = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardImageItemName);
             viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
             viewHolder.ivContactCardImageItemValue = (AppCompatImageView)newItemView.findViewById(R.id.ivContactCardImageItevValue);
-            setAvatar(item, viewHolder);
-
+            viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getAvatarBitmap(item.get(VALUE).toString()));
         }
         newItemView.setTag(viewHolder);
 
         return newItemView;
-    }
-
-    private void setAvatar(HashMap item, ViewHolder viewHolder) {
-        Bitmap bitmapAvatar;
-        String avatarPath = item.get(VALUE).toString();
-        if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-            File fAvatar = new File(avatarPath);
-            if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
-                viewHolder.ivContactCardImageItemValue.setImageResource(R.drawable.ic_launcher);
-            else {
-                bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                viewHolder.ivContactCardImageItemValue.setImageBitmap(bitmapAvatar);
-            }
-        }
     }
 
     class ViewHolder {

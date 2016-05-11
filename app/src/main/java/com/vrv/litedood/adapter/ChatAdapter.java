@@ -2,7 +2,6 @@ package com.vrv.litedood.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Message;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.format.DateUtils;
@@ -17,10 +16,10 @@ import android.support.v7.widget.AppCompatTextView;
 
 import com.vrv.imsdk.model.Chat;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -92,20 +91,7 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         //设置头像
-        String avatarPath = chat.getAvatar();
-        if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-           File fAvatar = new File(avatarPath);
-            if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
-
-                viewHolder.avatar.setImageResource(R.drawable.ic_launcher);
-                //boolean result = RequestHelper.getUserInfo(chat.getId(), new ChatRequlestHandler(context, viewHolder, TYPE_GET_USER));
-                //if (!result) {Log.v(TAG, "获取用户数据失败");}
-            }
-            else {
-                bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                viewHolder.avatar.setImageBitmap(bitmapAvatar);
-            }
-        }
+        viewHolder.avatar.setImageBitmap(LiteDood.getAvatarBitmap(chat.getAvatar()));
 
         //设置聊天对方名称
         viewHolder.name.setText(chat.getName());

@@ -1,8 +1,6 @@
 package com.vrv.litedood.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -12,9 +10,9 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -102,17 +100,7 @@ public class ContactsAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
 
-            String avatarPath = contact.getAvatar();
-            Bitmap bitmapAvatar;
-            if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-                File fAvatar = new File(avatarPath);
-                if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
-                    viewHolder.ivContactAvatar.setImageResource(R.drawable.ic_launcher);
-                else {
-                    bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    viewHolder.ivContactAvatar.setImageBitmap(bitmapAvatar);
-                }
-            }
+            viewHolder.ivContactAvatar.setImageBitmap(LiteDood.getAvatarBitmap(contact.getAvatar()));
             viewHolder.tvContactName.setText(contact.getName());
             viewHolder.tvContactSign.setText(contact.getSign());
 

@@ -1,8 +1,6 @@
 package com.vrv.litedood.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -15,8 +13,8 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.LiteDood;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -90,18 +88,7 @@ public class MessageAdapter extends BaseAdapter {
             }
         }
 
-
-        String avatarPath = chatMsg.getAvatar();
-        if ((null != avatarPath) && (!avatarPath.isEmpty())) {
-            File fAvatar = new File(avatarPath);
-            if ((fAvatar.isDirectory()) || (!fAvatar.exists()))
-                viewHolder.imgAvatar.setImageResource(R.drawable.ic_launcher);
-            else {
-                Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                viewHolder.imgAvatar.setImageBitmap(bitmapAvatar);
-            }
-        }
-
+        viewHolder.imgAvatar.setImageBitmap(LiteDood.getAvatarBitmap(chatMsg.getAvatar()));
 
         switch (chatMsg.getMessageType()) {
             case ChatMsgApi.TYPE_TEXT:

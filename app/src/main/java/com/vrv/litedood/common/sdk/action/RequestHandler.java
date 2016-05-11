@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
+import com.vrv.litedood.ui.activity.MainActivity;
 
 
 /**
@@ -81,7 +83,20 @@ public abstract class RequestHandler extends Handler {
         if ((dialog != null)&&(dialog.isShowing())) {
             dialog.dismiss();
         }
-        Toast.makeText(context, code + ":" + message, Toast.LENGTH_SHORT).show();
+        switch (code) {
+            case 100:
+                message = "加友失败，不能添加自己为好友";
+                Toast.makeText(LiteDoodApplication.getMainActivity(), code + ":" + message, Toast.LENGTH_SHORT).show();
+                break;
+            case 134:
+                message = "加友失败，对方已经是您的好友";
+                Toast.makeText(LiteDoodApplication.getMainActivity(), code + ":" + message, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                if ((null == message) || (message.isEmpty())) message = "出现一个未知错误";
+                Toast.makeText(LiteDoodApplication.getMainActivity(), code + ":" + message, Toast.LENGTH_SHORT).show();
+
+        }
     }
 //
 //    public static class BusyIndicatorDialog extends DialogFragment {
