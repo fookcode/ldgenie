@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -17,15 +18,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.vrv.imsdk.SDKManager;
-import com.vrv.imsdk.model.Contact;
 import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ItemModelSelectorAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 
-import java.text.Format;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +48,7 @@ public class FindContactsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppCompatButton btnFindAction = (AppCompatButton)findViewById(R.id.btnFindContactsAction);
+        final ListViewCompat lvFindContactsResult = (ListViewCompat)findViewById(R.id.lvFindContactsResult);
         btnFindAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,10 +61,28 @@ public class FindContactsActivity extends AppCompatActivity {
                     Toast.makeText(FindContactsActivity.this, "请输入正确的手机号/豆豆号", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    RequestHelper.searchNet(code, new FindContactsRequestHandler());
+                    setFindBusy(true);
+                    lvFindContactsResult.setAdapter(null);
+                    try {
+                        RequestHelper.searchNet(code, new FindContactsRequestHandler());
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        setFindBusy(false);
+                    }
                 }
             }
         });
+    }
+
+    private void setFindBusy(boolean isBusy) {
+        ContentLoadingProgressBar clpbBusyIndicator = (ContentLoadingProgressBar)findViewById(R.id.clpbFindContactsBusyIndicator);
+        if (isBusy) {
+            clpbBusyIndicator.setVisibility(View.VISIBLE);
+        }
+        else {
+            clpbBusyIndicator.setVisibility(View.GONE);
+        }
     }
 
     class FindContactsRequestHandler extends RequestHandler {
@@ -95,12 +112,11 @@ public class FindContactsActivity extends AppCompatActivity {
                         dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                              dialog.dismiss();
                             }
                         });
                         AlertDialog dialog =  dialogBuilder.create();
                         dialog.show();
-                        Log.v(TAG, "dialog show");
 //                        if (dialog.)
 //
                     }
@@ -112,8 +128,14 @@ public class FindContactsActivity extends AppCompatActivity {
                 Toast.makeText(FindContactsActivity.this, "没有找到相关的信源豆豆账号信息",Toast.LENGTH_SHORT).show();
                 //lvFindContactsResult.removeAllViews();
             }
-            Log.v(TAG, String.valueOf(contacts.size()));
 
+            setFindBusy(false);
+        }
+
+        @Override
+        public void handleFailure(int code, String message) {
+            super.handleFailure(code, message);
+            setFindBusy(false);
         }
     }
 

@@ -29,6 +29,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/Gainsboro" />
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/clpbFindContactsBusyIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        style="?android:attr/progressBarStyleInverse"
+        android:indeterminateOnly="true"
+        android:visibility="gone"/>
     <android.support.v7.widget.ListViewCompat
         android:id="@+id/lvFindContactsResult"
         android:layout_width="match_parent"

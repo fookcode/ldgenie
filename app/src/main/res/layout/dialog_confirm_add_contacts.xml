@@ -6,8 +6,8 @@
         android:id="@+id/tvConfirmAddContacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:hint="@string/contacts_add_contacts_verify_message_hint"/>
 
 </LinearLayout>
