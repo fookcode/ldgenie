@@ -30,40 +30,45 @@
 			android:layout_height="0dp"
 			android:layout_weight="1">
 		</FrameLayout>
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/Gainsboro"/>
 		<android.support.v7.widget.LinearLayoutCompat
-			android:id="@+id/actionBar"
+			android:id="@+id/llActionBar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			>
-			<android.support.v7.widget.AppCompatButton
+            android:background="@color/litedood_button_bar_backgroud">
+			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/btnMessage"
-				android:layout_height="match_parent"
+				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/main_message_button_name"
-				android:background="@drawable/sl_main_button"
-				android:textColor="@color/White"
-			/>
-			<android.support.v7.widget.AppCompatButton
+                android:src="@drawable/ic_message"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:text="@string/main_message_button_text"/>
+			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/btnContacts"
 				android:layout_height="match_parent"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/main_contacts_button_name"
-				android:background="@drawable/sl_main_button"
-				android:textColor="@color/White"
-			/>
-			<android.support.v7.widget.AppCompatButton
+                android:src="@drawable/ic_contacts"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+				android:text="@string/main_contacts_button_text" />
+			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/btnPandora"
 				android:layout_height="match_parent"
 				android:layout_width="wrap_content"
 				style="?android:attr/borderlessButtonStyle"
-				android:text="@string/main_pandora_button_name"
-				android:background="@drawable/sl_main_button"
-				android:textColor="@color/White"
-			 />
-		</android.support.v7.widget.LinearLayoutCompat>
+                android:src="@drawable/ic_pandora"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+				android:text="@string/main_pandora_button_text" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
 
     <android.support.v7.widget.LinearLayoutCompat

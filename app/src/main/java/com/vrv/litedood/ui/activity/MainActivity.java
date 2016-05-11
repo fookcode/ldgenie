@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -48,6 +49,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+//mainid:4328622264
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -244,13 +248,14 @@ public class MainActivity extends AppCompatActivity {
 
                 popupWindow.setAnchorView(v);
                 popupWindow.setAdapter(adapter);
-                popupWindow.setWidth(280);
+                popupWindow.setWidth(320);
                 popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         switch (position) {
                             case 0:
-                                Toast.makeText(MainActivity.this, "item1", Toast.LENGTH_SHORT).show();
+                                FindContactsActivity.startFindContactsActivity(MainActivity.this);
+                                //Toast.makeText(MainActivity.this, "item1", Toast.LENGTH_SHORT).show();
                                 if (popupWindow.isShowing()) popupWindow.dismiss();
                                 break;
                             case 1:
@@ -280,27 +285,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void initActionBar() {
         //设置下部动作条高度
-        mMainActionBar = (LinearLayoutCompat) findViewById(R.id.actionBar);
+        mMainActionBar = (LinearLayoutCompat) findViewById(R.id.llActionBar);
         //width = mMainActionBar.getHeight();
         LayoutParams actionBarParams = mMainActionBar.getLayoutParams();
         actionBarParams.height = clientHeight * 8 / 90;
         mMainActionBar.setLayoutParams(actionBarParams);
 
         //设置动作按钮位置、大小
-        List<AppCompatButton> buttons = new ArrayList<AppCompatButton>();
-        AppCompatButton btnMessage = (AppCompatButton) findViewById(R.id.btnMessage);
+        List<AppCompatImageButton> buttons = new ArrayList<AppCompatImageButton>();
+        AppCompatImageButton btnMessage = (AppCompatImageButton) findViewById(R.id.btnMessage);
         btnMessage.setTag(TAG_MESSAGE_FRAGMENT);
         buttons.add(btnMessage);
 
-        AppCompatButton btnContacts = (AppCompatButton) findViewById(R.id.btnContacts);
+        AppCompatImageButton btnContacts = (AppCompatImageButton) findViewById(R.id.btnContacts);
         btnContacts.setTag(TAG_CONTACTS_FRAGMENT);
         buttons.add(btnContacts);
 
-        AppCompatButton btnPandora = (AppCompatButton) findViewById(R.id.btnPandora);
+        AppCompatImageButton btnPandora = (AppCompatImageButton) findViewById(R.id.btnPandora);
         btnPandora.setTag(TAG_PANDORA_FRAGMENT);
         buttons.add(btnPandora);
 
-        for(AppCompatButton btn: buttons) {
+        for(AppCompatImageButton btn: buttons) {
             LayoutParams layoutParams = btn.getLayoutParams();
             layoutParams.width = clientWidth / 3;
             btn.setLayoutParams(layoutParams);
@@ -318,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up sl_main_button, so long
+		// automatically handle clicks on the Home/Up sl_main_message_button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
         if (mConfigDrawerToggleListener.onOptionsItemSelected(item)) {          //当HOME健点击时自动显示Drawer
             return true;

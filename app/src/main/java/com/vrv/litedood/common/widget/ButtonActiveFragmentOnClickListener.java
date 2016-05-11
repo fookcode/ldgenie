@@ -3,6 +3,7 @@ package com.vrv.litedood.common.widget;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,7 +28,7 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Button button = (Button) v;
+        AppCompatImageButton button = (AppCompatImageButton) v;
         Fragment currentFragment = fragments.get(MainActivity.TAG_CURRENT_FRAGMENT);        //获取当前视图，准备切换
         Fragment selectedFragment = fragments.get(button.getTag());
         if (selectedFragment == currentFragment) return;                   //点击当前功能的按钮，不做任何切换动作，返回
@@ -53,8 +54,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
     /*
         //以上是onClick新逻辑，2016/3/21
         //以下是onClick原逻辑，2016/3/20
-        if (sl_main_button.getTag() == MainActivity.TAG_CHAT_FRAGMENT) {
-            Fragment chatFragment = fragments.get(sl_main_button.getTag());
+        if (sl_main_message_button.getTag() == MainActivity.TAG_CHAT_FRAGMENT) {
+            Fragment chatFragment = fragments.get(sl_main_message_button.getTag());
             if (chatFragment == currentFragment) {
                 return;
             }
@@ -69,8 +70,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
             fragments.put(MainActivity.TAG_CURRENT_FRAGMENT, chatFragment);
         }
 
-        if (sl_main_button.getTag() == MainActivity.TAG_CONTACTS_FRAGMENT) {
-            Fragment contactsFragment = fragments.get(sl_main_button.getTag());
+        if (sl_main_message_button.getTag() == MainActivity.TAG_CONTACTS_FRAGMENT) {
+            Fragment contactsFragment = fragments.get(sl_main_message_button.getTag());
             if (contactsFragment == currentFragment) {
                 return;
             }
@@ -90,8 +91,8 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
             fragments.put(MainActivity.TAG_CURRENT_FRAGMENT, contactsFragment);
         }
 
-        if (sl_main_button.getTag() == MainActivity.TAG_PANDORA_FRAGMENT) {
-            Fragment pandoraFragment = fragments.get(sl_main_button.getTag());
+        if (sl_main_message_button.getTag() == MainActivity.TAG_PANDORA_FRAGMENT) {
+            Fragment pandoraFragment = fragments.get(sl_main_message_button.getTag());
             if (pandoraFragment == currentFragment) {
                 return;
             }

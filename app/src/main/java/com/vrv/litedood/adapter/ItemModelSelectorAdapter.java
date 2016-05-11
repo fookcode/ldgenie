@@ -32,10 +32,16 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
     private Context mContext;
     private ArrayList<T> mList;
 
+    private CompoundButton.OnCheckedChangeListener mCheckedChangeListener = null;
+
     public ItemModelSelectorAdapter(Context context, ArrayList<T> itemList) {
         super();
         this.mContext = context;
         mList = itemList;
+    }
+
+    public void setCheckedChangeListener(CompoundButton.OnCheckedChangeListener mCheckedChangeListener) {
+        this.mCheckedChangeListener = mCheckedChangeListener;
     }
 
     @Override
@@ -97,12 +103,8 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
                 viewHolder.ivItemModelAvatar = (AppCompatImageView) convertView.findViewById(R.id.ivItemModelAvatar);
                 viewHolder.tvItemModelName = (AppCompatTextView) convertView.findViewById(R.id.tvItemModelName);
                 viewHolder.cbItemModelChecker = (AppCompatCheckBox) convertView.findViewById((R.id.cbItemModelChecker));
-                viewHolder.cbItemModelChecker.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        ((ItemModelSelectorActivity)mContext).setSelectedItem(item.getId(), isChecked);
-                    }
-                });
+                if (mCheckedChangeListener != null)
+                viewHolder.cbItemModelChecker.setOnCheckedChangeListener(mCheckedChangeListener);
                 convertView.setTag(viewHolder);
             }
 
@@ -121,6 +123,7 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
                 }
             }
             viewHolder.tvItemModelName.setText(item.getName());
+            viewHolder.cbItemModelChecker.setTag(item.getId());
         }
         return convertView;
     }

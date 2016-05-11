@@ -23,7 +23,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_logo"
+        android:icon="@mipmap/ic_litedood_launcher"
         android:supportsRtl="true"
         android:name=".LiteDoodApplication"
         android:label="@string/app_name"
@@ -74,6 +74,10 @@
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
         <activity android:name=".ui.activity.ItemModelSelectorActivity"
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
+        <activity android:name=".ui.activity.FindContactsActivity"
+            android:parentActivityName=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.FindContactsResultActivity"
+            android:parentActivityName=".ui.activity.FindContactsActivity"/>
     </application>
 
 </manifest>

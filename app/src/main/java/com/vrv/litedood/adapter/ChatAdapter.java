@@ -37,7 +37,7 @@ public class ChatAdapter extends BaseAdapter {
     public static final String TAG = ChatAdapter.class.getSimpleName();
     public static final int TYPE_GET_USER = 1;
 
-    private static final int CHAT_AVATAR_SIZE = 72;
+//    private static final int CHAT_AVATAR_SIZE = 72;
 
     private Context context;
     private  List<Chat> chatList;
@@ -69,10 +69,10 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.chatItemAvatar);
-            ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
-            layoutParams.width = CHAT_AVATAR_SIZE;
-            layoutParams.height = CHAT_AVATAR_SIZE;
-            viewHolder.avatar.setLayoutParams(layoutParams);
+//            ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
+//            layoutParams.width = CHAT_AVATAR_SIZE;
+//            layoutParams.height = CHAT_AVATAR_SIZE;
+//            viewHolder.avatar.setLayoutParams(layoutParams);
 
             viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.chatItemCountIndicator);
             viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.chatItemName);

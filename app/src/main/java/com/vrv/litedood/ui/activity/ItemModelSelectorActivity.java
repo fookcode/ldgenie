@@ -12,6 +12,7 @@ import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
@@ -60,6 +61,12 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
         if (userList != null) {
             ItemModelSelectorAdapter<Contact> adapter = new ItemModelSelectorAdapter<>(this, LiteDood.reorganizeGroups(userList, Contact.class));
             final ListViewCompat lvItemModelSelector = (ListViewCompat) findViewById(R.id.lvItemModelSelector);
+            adapter.setCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    setSelectedItem((Long)buttonView.getTag(), isChecked);
+                }
+            });
             lvItemModelSelector.setAdapter(adapter);
             lvItemModelSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

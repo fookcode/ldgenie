@@ -4,11 +4,11 @@
     <string name="app_name">轻豆</string>
     <string name="app_settings">设置</string>
     
-    <string name="main_message_button_name">消息</string>
-    <string name="main_contacts_button_name">联系人</string>
-    <string name="main_pandora_button_name">潘朵拉</string>
+    <string name="main_message_button_text">消息</string>
+    <string name="main_contacts_button_text">联系人</string>
+    <string name="main_pandora_button_text">应用盒子</string>
 
-    <string name="main_menu_item_add_user">添加好友</string>
+    <string name="main_menu_item_add_user">添加好友/群</string>
     <string name="main_menu_item_add_group">发起群聊</string>
 
     <string name="drawer_open">打开设置</string>
@@ -48,7 +48,7 @@
 
     <string name="forgot_password_title">找回密码</string>
     <string name="forgot_password_step_button_text">下一步</string>
-    <string name="forgot_password_finished">完成</string>
+    <string name="action_finished_text">完成</string>
     <string name="forgot_password_authcode_hint">输入获取到的验证码</string>
     <string name="forgot_password_getauthcode">获取验证码</string>
     <string name="forgot_password_new_password">新密码</string>

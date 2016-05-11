@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbFindContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnFindContactsAction"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_gravity="right|center_vertical"
+        android:textColor="@color/White"
+        android:text="查找"
+        android:background="@drawable/sl_common_button"
+        android:layout_marginRight="@dimen/common_margin"
+        android:enabled="true"/>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etFindContactsCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_margin_max"
+        android:hint="@string/login_name_hint"
+        android:singleLine="true"/>
+    <android.support.v7.widget.ListViewCompat
+        android:id="@+id/lvFindContactsResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/common_margin_max"
+        android:dividerHeight="1dp"
+        android:divider="@color/LightGrey">
+
+    </android.support.v7.widget.ListViewCompat>
+</LinearLayout>

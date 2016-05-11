@@ -8,6 +8,5 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 		android:dividerHeight="1dp"
-		android:divider="@color/LightGrey"
-	     />
+		android:divider="@color/LightGrey" />
 </FrameLayout>
