@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_name_hint"
-            android:text="18602701898"
+            android:text="13910260715"
             android:singleLine="true"/>
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edtPassword"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/login_password_hint"
             android:inputType="textPassword"
-            android:text="12345678"
+            android:text="123456"
             android:singleLine="true"/>
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnLogin"

@@ -22,12 +22,23 @@
         android:background="@drawable/sl_message_out_bubble"
         android:clickable="true"
         />
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/imgMessageOutAvatar"
-        android:layout_width="48dp"
-        android:layout_gravity="center_vertical"
-        android:layout_height="48dp"
-        android:layout_margin="@dimen/common_margin"/>
+    <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imgMessageOutAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/common_margin"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvItemMessageOutName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+    </android.support.v7.widget.LinearLayoutCompat>
 
 
 </android.support.v7.widget.LinearLayoutCompat>

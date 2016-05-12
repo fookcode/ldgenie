@@ -44,6 +44,8 @@ public class MessageActivity extends AppCompatActivity {
     private static final int TYPE_GET_HISTORY_MESSAGE = 1;
     private static final int TYPE_SEND_MESSAGE = 2;
 
+    private static final int DEFAULT_MESSAGE_COUNT = 15;
+
     private Toolbar toolbarMessage;
 //    private BaseInfoBean userInfo;
     private List<ChatMsg> chatMsgQueue = new ArrayList<>();
@@ -164,7 +166,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private int getShowedMessageCount(int unReadCount) {
-        return unReadCount == 0 ? 3 : unReadCount;
+        return unReadCount == 0 ? DEFAULT_MESSAGE_COUNT : unReadCount;
     }
 
     @Override

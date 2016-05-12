@@ -14,6 +14,7 @@ import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
 
 import java.util.List;
 
@@ -77,6 +78,7 @@ public class MessageAdapter extends BaseAdapter {
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageIn);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageInAvatar);
+                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvItemMessageInName);
                 break;
             }
             case MESSAGE_OUT: {
@@ -84,11 +86,13 @@ public class MessageAdapter extends BaseAdapter {
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOut);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageOutAvatar);
+                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvItemMessageOutName);
                 break;
             }
         }
 
         viewHolder.imgAvatar.setImageBitmap(LiteDood.getAvatarBitmap(chatMsg.getAvatar()));
+        //viewHolder.tvName.setText(chatMsg.getSendID());
 
         switch (chatMsg.getMessageType()) {
             case ChatMsgApi.TYPE_TEXT:
@@ -127,7 +131,7 @@ public class MessageAdapter extends BaseAdapter {
     class ViewHolder {
         AppCompatImageView imgAvatar;
         AppCompatTextView tvMessage;
-
+        AppCompatTextView tvName;
         public ViewHolder() {};
     }
 

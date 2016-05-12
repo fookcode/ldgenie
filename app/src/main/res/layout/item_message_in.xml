@@ -4,12 +4,24 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/common_margin_max">
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/imgMessageInAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_margin"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imgMessageInAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/common_margin_min"
+            android:layout_gravity="center_horizontal"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvItemMessageInName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+    </android.support.v7.widget.LinearLayoutCompat>
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
