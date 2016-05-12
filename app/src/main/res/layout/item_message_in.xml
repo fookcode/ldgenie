@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/common_margin_max"
-    android:clickable="false">
+    android:layout_marginTop="@dimen/common_margin_max">
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgMessageInAvatar"
         android:layout_width="48dp"
@@ -15,11 +14,12 @@
         android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="35dp"
-        android:padding="3dp"
+        android:minHeight="32dp"
+        android:padding="12dp"
+        android:textSize="16dp"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="58dp"
-        android:background="@drawable/sp_message_bubble"
+        android:background="@drawable/sl_message_in_bubble"
         android:clickable="true"/>
 </android.support.v7.widget.LinearLayoutCompat>

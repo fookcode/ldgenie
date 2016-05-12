@@ -13,11 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="116dp"
-        android:minHeight="35dp"
-        android:padding="3dp"
+        android:minHeight="32dp"
+        android:padding="12dp"
+        android:textColor="@color/White"
+        android:textSize="16dp"
         android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/sp_message_bubble"
+        android:background="@drawable/sl_message_out_bubble"
         android:clickable="true"
         />
     <android.support.v7.widget.AppCompatImageView

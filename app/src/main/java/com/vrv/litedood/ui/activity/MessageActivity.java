@@ -20,6 +20,7 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
+import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
@@ -35,7 +36,8 @@ import java.util.List;
 public class MessageActivity extends AppCompatActivity {
     private static final String TAG = MessageActivity.class.getSimpleName();
 
-    private static final String ID_USER_INFO="USER_INFO";
+    private static final String ID_USER_ID = "USER_ID";
+    private static final String ID_USER_NAME = "USER_NAME";
     private static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
     private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
 
@@ -43,7 +45,7 @@ public class MessageActivity extends AppCompatActivity {
     private static final int TYPE_SEND_MESSAGE = 2;
 
     private Toolbar toolbarMessage;
-    private BaseInfoBean userInfo;
+//    private BaseInfoBean userInfo;
     private List<ChatMsg> chatMsgQueue = new ArrayList<>();
     private ChatMsgList chatMsgList;
     private ListViewCompat lvMessage;
@@ -51,38 +53,39 @@ public class MessageActivity extends AppCompatActivity {
 
     private ContentResolver resolver;
 
-
-
-    public static void startMessageActivity(Activity activity, Chat chat) {
+    public static <T extends ItemModel> void startMessageActivity(Activity activity, T item) {
         Intent intent = new Intent();
-        intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
-        intent.putExtra(ID_LAST_MESSAGE_ID, chat.getLastMsgID());
-        intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, chat.getUnReadNum());
+        //intent.putExtra(ID_USER_INFO, BaseInfoBean.chat2BaseInfo(chat));
+        intent.putExtra(ID_USER_ID, item.getId());
+        intent.putExtra(ID_USER_NAME, item.getName());
+        if (item instanceof Chat) {
+            intent.putExtra(ID_LAST_MESSAGE_ID, ((Chat)item).getLastMsgID());
+            intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, ((Chat)item).getUnReadNum());
+        }
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
         if (!(activity instanceof MainActivity)) {
             activity.finish();
         }
-
     }
 
-    public static void startMessageActivity(Context context, BaseInfoBean bean) {
-        Intent intent = new Intent();
-        intent.putExtra(ID_USER_INFO, bean);
-        intent.setClass(context, MessageActivity.class);
-        context.startActivity(intent);
-        if (!(context instanceof MainActivity)) {
-            if (context instanceof AppCompatActivity)
-                ((AppCompatActivity)context).finish();
-        }
-    }
+//    public static void startMessageActivity(Context context, BaseInfoBean bean) {
+//        Intent intent = new Intent();
+//        intent.putExtra(ID_USER_INFO, bean);
+//        intent.setClass(context, MessageActivity.class);
+//        context.startActivity(intent);
+//        if (!(context instanceof MainActivity)) {
+//            if (context instanceof AppCompatActivity)
+//                ((AppCompatActivity)context).finish();
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        userInfo = getIntent().getParcelableExtra(MessageActivity.ID_USER_INFO);
+//        userInfo = getIntent().getParcelableExtra(MessageActivity.ID_USER_INFO);
         resolver = getContentResolver();
 
         initToolbar();
@@ -95,7 +98,7 @@ public class MessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbarMessage);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(userInfo.getName());
+        actionBar.setTitle(getIntent().getStringExtra(ID_USER_NAME));
 
     }
 
@@ -106,11 +109,11 @@ public class MessageActivity extends AppCompatActivity {
         lvMessage.setAdapter(messageAdapter);
 
         chatMsgList = SDKManager.instance().getChatMsgList();
-        chatMsgList.setReceiveListener(userInfo.getID(), new ChatMsgList.OnReceiveChatMsgListener() {
+        chatMsgList.setReceiveListener(getIntent().getLongExtra(ID_USER_ID, 0), new ChatMsgList.OnReceiveChatMsgListener() {
             @Override
             public void onReceive(ChatMsg msg) {
                 if (msg == null) return;
-                if((msg.getTargetID() == userInfo.getID()) && (chatMsgQueue != null)) {
+                if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (chatMsgQueue != null)) {
                     //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
                     chatMsgQueue.add(msg);
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
@@ -140,7 +143,7 @@ public class MessageActivity extends AppCompatActivity {
         //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
         //获取未读记录
         int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
-        RequestHelper.getChatHistory(userInfo.getID(),
+        RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
                 0,
                 getShowedMessageCount(count),
                 new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
@@ -153,7 +156,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String txt = edtMessage.getText().toString();
                 if (!txt.isEmpty()) {
-                    RequestHelper.sendTxt(userInfo.getID(), txt, null, new MessageRequestHandler(TYPE_SEND_MESSAGE));
+                    RequestHelper.sendTxt(getIntent().getLongExtra(ID_USER_ID, 0), txt, null, new MessageRequestHandler(TYPE_SEND_MESSAGE));
                     edtMessage.getText().clear();
                 }
             }

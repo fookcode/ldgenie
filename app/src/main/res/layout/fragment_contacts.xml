@@ -25,6 +25,7 @@
 			android:layout_height="match_parent"
 			android:layout_weight="1"
 			android:gravity="center_vertical|left"
+			android:layout_marginLeft="@dimen/common_margin_min"
 			android:text="群/讨论组"
 			android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 	</android.support.v7.widget.LinearLayoutCompat>

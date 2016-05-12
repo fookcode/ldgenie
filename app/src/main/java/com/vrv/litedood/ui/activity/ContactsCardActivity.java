@@ -96,7 +96,7 @@ public class ContactsCardActivity extends AppCompatActivity {
                 sendMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MessageActivity.startMessageActivity(ContactsCardActivity.this, BaseInfoBean.contact2BaseInfo(mContact));
+                        MessageActivity.startMessageActivity(ContactsCardActivity.this, mContact);
                     }
                 });
             }

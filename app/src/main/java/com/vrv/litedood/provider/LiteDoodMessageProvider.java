@@ -74,7 +74,7 @@ public class LiteDoodMessageProvider extends ContentProvider {
                 Log.v(TAG, String.valueOf(b));
                 switch(b) {
                     case (byte)1:
-                        MessageActivity.startMessageActivity(LiteDoodApplication.getMainActivity(), BaseInfoBean.group2BaseInfo(group));
+                        MessageActivity.startMessageActivity(LiteDoodApplication.getMainActivity(), group);
 
                         break;
                     default:

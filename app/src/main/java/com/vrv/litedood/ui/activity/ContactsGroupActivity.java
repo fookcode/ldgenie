@@ -90,7 +90,7 @@ public class ContactsGroupActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 MessageActivity.startMessageActivity(ContactsGroupActivity.this,
-                        BaseInfoBean.group2BaseInfo((Group)lvGroupList.getItemAtPosition(position)));
+                        (Group)lvGroupList.getItemAtPosition(position));
 //                ContactsGroupCardActivity.startContactGroupCardActivity(ContactsGroupActivity.this,
 //                        ((Group)lvGroupList.getItemAtPosition(position)).getId());
             }
