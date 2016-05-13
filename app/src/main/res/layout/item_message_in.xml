@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/common_margin_max">
+    android:paddingTop="12dp">
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/llMessageInAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/common_margin"
-        android:layout_gravity="top"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:clickable="false">
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imgMessageInAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="@dimen/common_margin_min"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginRight="@dimen/common_margin" />
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvItemMessageInName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
     </android.support.v7.widget.LinearLayoutCompat>
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="32dp"
         android:padding="12dp"
         android:textSize="16dp"
         android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@id/llMessageInAvatar"
         android:background="@drawable/sl_message_in_bubble"
         android:clickable="true"/>
-</android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>
