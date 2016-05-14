@@ -94,7 +94,7 @@ public class MessageAdapter extends BaseAdapter {
         viewHolder.imgAvatar.setImageBitmap(LiteDood.getAvatarBitmap(chatMsg.getAvatar()));
 
         String name = chatMsg.getName().trim();
-        if (name.equals("")) {
+        if ((name.equals("") || name.equals("0"))) {
             name = ContactsFragment.getContactName(chatMsg.getSendID());
         }
         if (!name.equals("")) {
