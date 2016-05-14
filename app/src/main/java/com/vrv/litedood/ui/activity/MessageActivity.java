@@ -1,8 +1,8 @@
 package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -20,12 +20,14 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
+import com.vrv.imsdk.model.Contact;
+import com.vrv.imsdk.model.Group;
 import com.vrv.imsdk.model.ItemModel;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
-import com.vrv.litedood.common.sdk.utils.BaseInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,21 +38,31 @@ import java.util.List;
 public class MessageActivity extends AppCompatActivity {
     private static final String TAG = MessageActivity.class.getSimpleName();
 
-    private static final String ID_USER_ID = "USER_ID";
-    private static final String ID_USER_NAME = "USER_NAME";
-    private static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
-    private static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
+    public static final String ID_MESSAGE_TYPE = "ID_MESSAGE_TYPE";
+    public static final String ID_USER_ID = "USER_ID";
+    public static final String ID_USER_NAME = "USER_NAME";
+    public static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
+    public static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
 
-    private static final int TYPE_GET_HISTORY_MESSAGE = 1;
-    private static final int TYPE_SEND_MESSAGE = 2;
+    private static final int TYPE_HANDLER_GET_HISTORY_MESSAGE = 1;
+    private static final int TYPE_HANDLER_SEND_MESSAGE = 2;
+    private static final int TYPE_HANDLER_GET_GROUP = 3;
+    private static final int TYPE_HANDLER_GET_GROUP_MEMBER = 4;
+
+    public static final int TYPE_MESSAGE_CHAT = 1;
+    public static final int TYPE_MESSAGE_GROUP = 2;
+    public static final int TYPE_MESSAGE_UNKNOWN = 0;
 
     private static final int DEFAULT_MESSAGE_COUNT = 15;
 
+    private static List<Contact> mMemberContacts = null;         //两个表态变量，临时用作处理Group中的发言人名字
+    private static Group mGroup = null;
+
     private Toolbar toolbarMessage;
-//    private BaseInfoBean userInfo;
     private List<ChatMsg> chatMsgQueue = new ArrayList<>();
     private ChatMsgList chatMsgList;
     private ListViewCompat lvMessage;
+
     private MessageAdapter messageAdapter;
 
     private ContentResolver resolver;
@@ -63,7 +75,12 @@ public class MessageActivity extends AppCompatActivity {
         if (item instanceof Chat) {
             intent.putExtra(ID_LAST_MESSAGE_ID, ((Chat)item).getLastMsgID());
             intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, ((Chat)item).getUnReadNum());
+            intent.putExtra(ID_MESSAGE_TYPE, (int)((Chat) item).getType());  //type=1个人消息 type=2群消息
         }
+        else if (item instanceof Group){
+            intent.putExtra(ID_MESSAGE_TYPE, TYPE_MESSAGE_GROUP);
+        }
+        else intent.putExtra(ID_MESSAGE_TYPE, TYPE_MESSAGE_UNKNOWN);
         intent.setClass(activity, MessageActivity.class);
         activity.startActivity(intent);
         if (!(activity instanceof MainActivity)) {
@@ -71,23 +88,11 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
-//    public static void startMessageActivity(Context context, BaseInfoBean bean) {
-//        Intent intent = new Intent();
-//        intent.putExtra(ID_USER_INFO, bean);
-//        intent.setClass(context, MessageActivity.class);
-//        context.startActivity(intent);
-//        if (!(context instanceof MainActivity)) {
-//            if (context instanceof AppCompatActivity)
-//                ((AppCompatActivity)context).finish();
-//        }
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-//        userInfo = getIntent().getParcelableExtra(MessageActivity.ID_USER_INFO);
         resolver = getContentResolver();
 
         initToolbar();
@@ -109,6 +114,10 @@ public class MessageActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(MessageActivity.this, chatMsgQueue);
         lvMessage = (ListViewCompat)findViewById(R.id.listMessage);
         lvMessage.setAdapter(messageAdapter);
+
+        if (getIntent().getIntExtra(ID_MESSAGE_TYPE, 0) == TYPE_MESSAGE_GROUP) {           //如果是群，取回群中所有人员放入静态变量，用作adapter展现时获取发言人名字
+            RequestHelper.getGroupInfo(getIntent().getLongExtra(ID_USER_ID, 0), new MessageRequestHandler(TYPE_HANDLER_GET_GROUP));
+        }
 
         chatMsgList = SDKManager.instance().getChatMsgList();
         chatMsgList.setReceiveListener(getIntent().getLongExtra(ID_USER_ID, 0), new ChatMsgList.OnReceiveChatMsgListener() {
@@ -148,7 +157,7 @@ public class MessageActivity extends AppCompatActivity {
         RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
                 0,
                 getShowedMessageCount(count),
-                new MessageRequestHandler(TYPE_GET_HISTORY_MESSAGE));
+                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
@@ -158,7 +167,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String txt = edtMessage.getText().toString();
                 if (!txt.isEmpty()) {
-                    RequestHelper.sendTxt(getIntent().getLongExtra(ID_USER_ID, 0), txt, null, new MessageRequestHandler(TYPE_SEND_MESSAGE));
+                    RequestHelper.sendTxt(getIntent().getLongExtra(ID_USER_ID, 0), txt, null, new MessageRequestHandler(TYPE_HANDLER_SEND_MESSAGE));
                     edtMessage.getText().clear();
                 }
             }
@@ -184,6 +193,10 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+        if (mMemberContacts != null) {
+            mMemberContacts.clear();
+            mMemberContacts = null;
+        }
     }
 
     /*private void setMessageHistory(long targetID) {
@@ -230,6 +243,23 @@ public class MessageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static String getMemberName(long id) {
+        String result = "";
+        if (mMemberContacts == null) return result;
+        long myid = LiteDoodApplication.getAppContext().getMyself().getId();
+        if (myid != id) {
+            for (Contact item : mMemberContacts) {
+                if (item.getId() == id) {
+                    result = item.getName();
+                    break;
+                }
+            }
+
+        }
+        return  result;
+
+    }
+
     class MessageRequestHandler extends RequestHandler {
         private int nType;
 
@@ -239,7 +269,7 @@ public class MessageActivity extends AppCompatActivity {
         @Override
         public void handleSuccess(Message msg) {
             switch (nType){
-                case TYPE_GET_HISTORY_MESSAGE:
+                case TYPE_HANDLER_GET_HISTORY_MESSAGE:
                     ArrayList<ChatMsg> chatMsgArray = msg.getData().getParcelableArrayList("data");
                     if (chatMsgArray.size() > 0) {
                         chatMsgQueue.clear();
@@ -250,10 +280,20 @@ public class MessageActivity extends AppCompatActivity {
                         lvMessage.setSelection(chatMsgArray.size() -1);
                     }
                     break;
-                case TYPE_SEND_MESSAGE:
+                case TYPE_HANDLER_SEND_MESSAGE:
 
                     break;
+                case TYPE_HANDLER_GET_GROUP:
+                    mGroup = msg.getData().getParcelable("data");
+                    if (mGroup != null)
+                        RequestHelper.getGroupMembers(mGroup, new MessageRequestHandler(TYPE_HANDLER_GET_GROUP_MEMBER));
+                    break;
+                case TYPE_HANDLER_GET_GROUP_MEMBER:
+                    if (mMemberContacts == null) {
+                        mMemberContacts = msg.getData().getParcelableArrayList("data");
+                    }
 
+                    break;
 
             }
         }

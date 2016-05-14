@@ -157,23 +157,4 @@ public class ContactsFragment extends Fragment {
         return result;
     }
 
-    //临时获取聊天对方名称处理办法
-    public static String getContactName(long id) {
-        String result = "";
-        long myid = LiteDoodApplication.getAppContext().getMyself().getId();
-        if (myid != id) {
-            for (Contact item : mContactList) {
-                if (item.getId() == id) {
-                    result = item.getName();
-                    break;
-                }
-            }
-            if (result.equals("")) {
-//                Contact contact = SDKManager.instance().getMemberList().findItemByID(id);
-//                if (contact != null) result = contact.getName();
-            }
-        }
-        return  result;
-
-    }
 }

@@ -1,6 +1,5 @@
 package com.vrv.litedood.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -15,6 +14,7 @@ import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
+import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.List;
 
@@ -27,11 +27,11 @@ public class MessageAdapter extends BaseAdapter {
     private static final int MESSAGE_IN = 1;
     private static final int MESSAGE_OUT = 2;
 
-    private Context context;
+    private MessageActivity mMessageActivity;
     private List<ChatMsg> chatMsgList;
 
-    public MessageAdapter(Context context, List<ChatMsg> chatMsgList) {
-        this.context = context;
+    public MessageAdapter(MessageActivity mMessageActivity, List<ChatMsg> chatMsgList) {
+        this.mMessageActivity = mMessageActivity;
         this.chatMsgList = chatMsgList;
     }
 
@@ -74,7 +74,7 @@ public class MessageAdapter extends BaseAdapter {
         convertView = null;
         switch (type) {
             case MESSAGE_IN: {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_message_in, null);
+                convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_in, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageIn);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageInAvatar);
@@ -82,7 +82,7 @@ public class MessageAdapter extends BaseAdapter {
                 break;
             }
             case MESSAGE_OUT: {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_message_out, null);
+                convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_out, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOut);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageOutAvatar);
@@ -93,15 +93,25 @@ public class MessageAdapter extends BaseAdapter {
 
         viewHolder.imgAvatar.setImageBitmap(LiteDood.getAvatarBitmap(chatMsg.getAvatar()));
 
-        String name = chatMsg.getName().trim();
-        if ((name.equals("") || name.equals("0"))) {
-            name = ContactsFragment.getContactName(chatMsg.getSendID());
-        }
-        if (!name.equals("")) {
-            viewHolder.tvName.setText(name);
-        }
-        else {
-            viewHolder.tvName.setVisibility(View.GONE);
+        switch (mMessageActivity.getIntent().getIntExtra(MessageActivity.ID_MESSAGE_TYPE, 0)) {
+            case MessageActivity.TYPE_MESSAGE_GROUP:
+                String name = chatMsg.getName().trim();
+                if ((name.equals("") || name.equals("0"))) {
+                    name = MessageActivity.getMemberName(chatMsg.getSendID());
+                }
+                if (!name.equals("")) {
+                    viewHolder.tvName.setText(name);
+                }
+                else {
+                    viewHolder.tvName.setVisibility(View.GONE);
+                }
+                break;
+            case MessageActivity.TYPE_MESSAGE_CHAT:
+                viewHolder.tvName.setVisibility(View.GONE);
+                break;
+            default:
+                viewHolder.tvName.setVisibility(View.GONE);
+                break;
         }
 
         switch (chatMsg.getMessageType()) {

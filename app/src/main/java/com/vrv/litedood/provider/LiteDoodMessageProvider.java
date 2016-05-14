@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.model.Auth;
 import com.vrv.imsdk.model.Group;
 import com.vrv.imsdk.model.GroupList;
 import com.vrv.litedood.LiteDoodApplication;
@@ -80,6 +81,13 @@ public class LiteDoodMessageProvider extends ContentProvider {
                     default:
                         break;
                 }
+            }
+        });
+
+        SDKManager.instance().getAuth().setReLoginListener(new Auth.ReLoginListener() {
+            @Override
+            public void onReLogin(int i) {
+                Log.v(TAG, String.valueOf(i));
             }
         });
         return true;
