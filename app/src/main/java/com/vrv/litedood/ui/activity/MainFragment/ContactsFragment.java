@@ -22,6 +22,7 @@ import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.imsdk.model.ContactList;
 import com.vrv.imsdk.model.ListModel;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ContactsAdapter;
 import com.vrv.litedood.adapter.ContactsSeekerAdapter;
@@ -38,22 +39,27 @@ public class ContactsFragment extends Fragment {
 
     public static final int CONTACTS_VIEW_HEADER_ID = -30;
 
+    private static List<Contact> mContactList;
     private List<Contact> mContactQueue = new ArrayList<>();
     private ContactsAdapter mContactsAdapter;
     private ContactsSeekerAdapter mContactsSeekerAdapter;
 
     private static HashMap<Character, Integer> mSeekPositionMap = new HashMap<>();
 
+    static {
+        mContactList = SDKManager.instance().getContactList().getList();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ContactList contactList = SDKManager.instance().getContactList();
 
-        List<Contact> list = contactList.getList();
-        mContactQueue.addAll(reorganizeContacts(list));
+
+        mContactQueue.addAll(reorganizeContacts(mContactList));
 
         mContactsAdapter = new ContactsAdapter(getActivity(), mContactQueue);
 
-        mContactsSeekerAdapter = new ContactsSeekerAdapter(getActivity(), list);
+        mContactsSeekerAdapter = new ContactsSeekerAdapter(getActivity(), mContactList);
 
         contactList.setListener(new ListModel.OnChangeListener() {
             @Override
@@ -149,5 +155,25 @@ public class ContactsFragment extends Fragment {
             mSeekPositionMap.put('#', index);
         }
         return result;
+    }
+
+    //临时获取聊天对方名称处理办法
+    public static String getContactName(long id) {
+        String result = "";
+        long myid = LiteDoodApplication.getAppContext().getMyself().getId();
+        if (myid != id) {
+            for (Contact item : mContactList) {
+                if (item.getId() == id) {
+                    result = item.getName();
+                    break;
+                }
+            }
+            if (result.equals("")) {
+//                Contact contact = SDKManager.instance().getMemberList().findItemByID(id);
+//                if (contact != null) result = contact.getName();
+            }
+        }
+        return  result;
+
     }
 }

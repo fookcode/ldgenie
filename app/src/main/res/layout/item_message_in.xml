@@ -4,37 +4,32 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="12dp">
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/llMessageInAvatar"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgMessageInAvatar"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvMessageInName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical"
-        android:clickable="false">
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/imgMessageInAvatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/common_margin"
-            android:layout_marginRight="@dimen/common_margin" />
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tvItemMessageInName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+        android:layout_toRightOf="@id/imgMessageInAvatar"
+        android:textSize="11dp"
+        android:text="名称" />
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:padding="9dp"
         android:textSize="16dp"
-        android:gravity="center_vertical"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="50dp"
-        android:layout_toRightOf="@id/llMessageInAvatar"
+        android:lineSpacingExtra="2dp"
+        android:layout_below="@id/tvMessageInName"
+        android:layout_marginRight="48dp"
+        android:layout_toRightOf="@id/imgMessageInAvatar"
         android:background="@drawable/sl_message_in_bubble"
         android:clickable="true"/>
 </RelativeLayout>

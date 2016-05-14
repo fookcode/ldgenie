@@ -14,7 +14,7 @@ import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
-import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class MessageAdapter extends BaseAdapter {
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageIn);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageInAvatar);
-                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvItemMessageInName);
+                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvMessageInName);
                 break;
             }
             case MESSAGE_OUT: {
@@ -86,13 +86,23 @@ public class MessageAdapter extends BaseAdapter {
                 viewHolder = new ViewHolder();
                 viewHolder.tvMessage = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOut);
                 viewHolder.imgAvatar = (AppCompatImageView)convertView.findViewById(R.id.imgMessageOutAvatar);
-                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvItemMessageOutName);
+                viewHolder.tvName = (AppCompatTextView)convertView.findViewById(R.id.tvMessageOutName);
                 break;
             }
         }
 
         viewHolder.imgAvatar.setImageBitmap(LiteDood.getAvatarBitmap(chatMsg.getAvatar()));
-        //viewHolder.tvName.setText(chatMsg.getSendID());
+
+        String name = chatMsg.getName().trim();
+        if (name.equals("")) {
+            name = ContactsFragment.getContactName(chatMsg.getSendID());
+        }
+        if (!name.equals("")) {
+            viewHolder.tvName.setText(name);
+        }
+        else {
+            viewHolder.tvName.setVisibility(View.GONE);
+        }
 
         switch (chatMsg.getMessageType()) {
             case ChatMsgApi.TYPE_TEXT:
