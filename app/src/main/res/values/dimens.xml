@@ -14,6 +14,8 @@
     <dimen name="login_image_cover_margin">40dp</dimen>
     <dimen name="login_app_name_margin">16dp</dimen>
 
-    <dimen name="list_item_margin">8dp</dimen>
+    <dimen name="message_avatar_size">38dp</dimen>
+    <dimen name="message_body_side_margin">48dp</dimen>
+    <dimen name="message_body_inside_padding">9dp</dimen>
 
 </resources>

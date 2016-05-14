@@ -6,8 +6,8 @@
     android:paddingTop="16dp">
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgMessageOutAvatar"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="@dimen/message_avatar_size"
+        android:layout_height="@dimen/message_avatar_size"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_gravity="center_horizontal"
@@ -26,8 +26,8 @@
         android:id="@+id/tvMessageOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:padding="9dp"
+        android:layout_marginLeft="@dimen/message_body_side_margin"
+        android:padding="@dimen/message_body_inside_padding"
         android:textSize="16dp"
         android:lineSpacingExtra="2dp"
         android:textColor="@color/White"

@@ -6,8 +6,8 @@
     android:paddingTop="16dp">
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgMessageInAvatar"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="@dimen/message_avatar_size"
+        android:layout_height="@dimen/message_avatar_size"
         android:layout_marginLeft="@dimen/common_margin"
         android:layout_marginRight="@dimen/common_margin"
         android:layout_alignParentTop="true"
@@ -24,11 +24,11 @@
         android:id="@+id/tvMessageIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="9dp"
+        android:padding="@dimen/message_body_inside_padding"
         android:textSize="16dp"
         android:lineSpacingExtra="2dp"
         android:layout_below="@id/tvMessageInName"
-        android:layout_marginRight="48dp"
+        android:layout_marginRight="@dimen/message_body_side_margin"
         android:layout_toRightOf="@id/imgMessageInAvatar"
         android:background="@drawable/sl_message_in_bubble"
         android:clickable="true"/>
