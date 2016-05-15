@@ -1,5 +1,6 @@
 package com.vrv.litedood.common;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.format.DateUtils;
+import android.text.format.Time;
 
 import com.vrv.imsdk.model.ItemModel;
 import com.vrv.litedood.LiteDoodApplication;
@@ -705,4 +708,67 @@ public final class LiteDood {
         return result;
     }
 
+    public static String convertTimeForChat(Context context, long sendTime) {
+        String result = "";
+        Time time = new Time();
+        time.set(sendTime);
+        int msg_year = time.year;
+        int msg_day = time.yearDay;
+
+        time.set(System.currentTimeMillis());
+        int now_year = time.year;
+        int now_day = time.yearDay;
+        int now_weekday = time.weekDay;
+
+        if (DateUtils.isToday(sendTime)) {
+            result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_TIME);
+        }
+        else if (msg_year == now_year) {
+            if (now_day - msg_day == 1) {
+                result = "昨天";
+            } else if (now_day - msg_day == 2) {
+                result = "前天";
+            }
+            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
+                result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_WEEKDAY);
+            }
+            else result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_DATE);
+        }
+        else {
+            result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_DATE);
+        }
+        return result;
+    }
+
+    public static String convertTimeForMessage(Context context, long sendTime) {
+        String result = "";
+        Time time = new Time();
+        time.set(sendTime);
+        int msg_year = time.year;
+        int msg_day = time.yearDay;
+
+        time.set(System.currentTimeMillis());
+        int now_year = time.year;
+        int now_day = time.yearDay;
+        int now_weekday = time.weekDay;
+
+        if (DateUtils.isToday(sendTime)) {
+            result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_TIME);
+        }
+        else if (msg_year == now_year) {
+            if (now_day - msg_day == 1) {
+                result = "昨天 " + DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_TIME);;
+            } else if (now_day - msg_day == 2) {
+                result = "前天 " + DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_TIME);;
+            }
+            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
+                result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME);
+            }
+            else result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+        }
+        else {
+            result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_DATE);
+        }
+        return result;
+    }
 }

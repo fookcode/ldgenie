@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
+import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
@@ -31,8 +32,6 @@ public class MessageAdapter extends BaseAdapter {
 
     private MessageActivity mMessageActivity;
     private List<ChatMsg> chatMsgList;
-
-    private long mMessageTime = 0;
 
     public MessageAdapter(MessageActivity mMessageActivity, List<ChatMsg> chatMsgList) {
         this.mMessageActivity = mMessageActivity;
@@ -79,101 +78,110 @@ public class MessageAdapter extends BaseAdapter {
                 msg = "[网页]";
                 break;
             case ChatMsgApi.TYPE_TEXT:
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                if ((convertView != null) && (((ViewHolder)convertView.getTag()).mMsgDirection == direction) &&(((ViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_TEXT)) {
+                    if (!(isShowTimeWeakHint(position) && (((ViewHolder) convertView.getTag()).tvWeakHint != null))) {
+                        convertView = inflateTextView(position, chatMsg, convertView);
+                    }
+                }
+                else {
+                    convertView = inflateTextView(position, chatMsg, convertView);
+
+                }
+
                 msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
                 ((ViewHolder)convertView.getTag()).mMsgType = ChatMsgApi.TYPE_TEXT;
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_AUDIO:
                 msg = "[音频]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_POSITION:
                 msg = "[位置]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_IMAGE:
                 msg = "[图片]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_FILE:
                 msg = "[文件]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_CARD:
                 msg = "[名片]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_WEAK_HINT:
                 //msg = "[弱提示]";
-                msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
-                if (msg.equals("")) msg = "[弱提示]";
-                convertView = inflateWeakHintView(ChatMsgApi.TYPE_WEAK_HINT, convertView);
-                ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
+                msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage()).trim();
+                if (!msg.equals("")) {
+                    convertView = inflateWeakHintView(ChatMsgApi.TYPE_WEAK_HINT, convertView);
+                    ((ViewHolder) convertView.getTag()).tvMessage.setText(msg);
+                }
                 break;
             case ChatMsgApi.TYPE_TO_APP:
                 msg = "[TYPE_TO_APP]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_APP_PUSH:
                 msg = "[TYPE_APP_PUSH]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_INSTRUCTION:
                 msg = "[TYPE_INSTRUCTION]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_NEWS:
                 msg = "[TYPE_NEWS]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_MULTI:
                 msg = "[组合消息]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.MESSAGE_TYPE_VIDEO:
                 msg = "[视频]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.MESSAGE_TYPE_VOICE:
                 msg = "[音频]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_TASK:
                 msg = "[任务]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_REVOKE:
                 msg = "[TYPE_REVOKE]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_DYNAMIC:
                 msg = "[TYPE_DYNAMIC]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_RED_ENVELOPE:
                 msg = "[红包]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             default:
                 msg = "[未知消息]";
-                convertView = inflateTextView(ChatMsgApi.TYPE_TEXT, direction, convertView);
+                convertView = inflateTextView(position, chatMsg, convertView);
                 ((ViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
         }
@@ -209,37 +217,45 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     //注入普通文字聊天视图
-    private View inflateTextView(int msgType, int msgDirection,View convertView) {
-        if ((convertView != null) && (((ViewHolder)convertView.getTag()).mMsgDirection == msgDirection) &&(((ViewHolder)convertView.getTag()).mMsgType == msgType)) {
-            return convertView;
-        }
-        else {
+    private View inflateTextView(int position, ChatMsg chatMsg, View convertView) {
+
             ViewHolder viewHolder = new ViewHolder();
-            switch (msgDirection) {
-                case MESSAGE_IN: {
-                    convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_in, null);
-                    viewHolder = new ViewHolder();
+            switch (getItemViewType(position)) {
+                case MESSAGE_IN:
+                    if (isShowTimeWeakHint(position)) {
+                        convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_in_with_time, null);
+                        viewHolder.tvWeakHint = (AppCompatTextView)convertView.findViewById(R.id.tvMessageExtra);
+                        viewHolder.tvWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));
+                    }
+                    else {
+                        convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_in, null);
+                    }
                     viewHolder.tvMessage = (AppCompatTextView) convertView.findViewById(R.id.tvMessageIn);
                     viewHolder.imgAvatar = (AppCompatImageView) convertView.findViewById(R.id.imgMessageInAvatar);
                     viewHolder.tvName = (AppCompatTextView) convertView.findViewById(R.id.tvMessageInName);
-
                     break;
-                }
-                case MESSAGE_OUT: {
-                    convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_out, null);
-                    viewHolder = new ViewHolder();
+
+                case MESSAGE_OUT:
+                    if (isShowTimeWeakHint(position)) {
+                        convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_out_with_time, null);
+                        viewHolder.tvWeakHint = (AppCompatTextView)convertView.findViewById(R.id.tvMessageExtra);
+                        viewHolder.tvWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));
+                    }
+                    else {
+                        convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_out, null);
+                    }
                     viewHolder.tvMessage = (AppCompatTextView) convertView.findViewById(R.id.tvMessageOut);
                     viewHolder.imgAvatar = (AppCompatImageView) convertView.findViewById(R.id.imgMessageOutAvatar);
                     viewHolder.tvName = (AppCompatTextView) convertView.findViewById(R.id.tvMessageOutName);
                     viewHolder.mMsgDirection = MESSAGE_OUT;
                     break;
-                }
+
             }
-            viewHolder.mMsgDirection = msgDirection;
-            viewHolder.mMsgType = msgType;
+            viewHolder.mMsgDirection = getItemViewType(position);
+            viewHolder.mMsgType = chatMsg.getMessageType();
             convertView.setTag(viewHolder);
             return convertView;
-        }
+
 
     }
 
@@ -258,23 +274,29 @@ public class MessageAdapter extends BaseAdapter {
         }
     }
 
-    private boolean isShowTimeWeakHint(long time) {
+    private boolean isShowTimeWeakHint(int position) {
         boolean result = false;
-        if (mMessageTime == 0) {
+        if (position == 0) {
             result = true;
-            mMessageTime = time;
         }
         else {
             Time prevTime = new Time();
-            prevTime.set(mMessageTime);
+            ChatMsg prevMsg = (ChatMsg)getItem(position -1);
+            prevTime.set(prevMsg.getSendTime());
             Time curTime = new Time();
-            curTime.set(time);
+            ChatMsg curMsg = (ChatMsg)getItem(position);
+            curTime.set(curMsg.getSendTime());
 
             if ((prevTime.year == curTime.year) && (prevTime.month == curTime.month) && (prevTime.monthDay == curTime.monthDay) && (prevTime.hour == curTime.hour)) {
-                if ((curTime.minute = prevTime.minute) > TIME_INTERVAL) result = true;
+                if (Math.abs(curTime.minute - prevTime.minute) > TIME_INTERVAL) {
+                    result = true;
+                }
             }
-            else result = true;
+            else {
+                result = true;
+            }
         }
+
         return result;
     }
 

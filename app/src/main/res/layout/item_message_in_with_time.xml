@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp">
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvMessageExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/common_margin_max"
+        android:background="@drawable/sl_message_item_extra"
+        android:textSize="@dimen/message_weekhint_text_size"
+        android:layout_centerHorizontal="true"/>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgMessageInAvatar"
+        android:layout_width="@dimen/message_avatar_size"
+        android:layout_height="@dimen/message_avatar_size"
+        android:layout_marginLeft="@dimen/common_margin"
+        android:layout_marginRight="@dimen/common_margin"
+        android:layout_below="@id/tvMessageExtra"
+        android:layout_alignParentLeft="true"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvMessageInName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMessageExtra"
+        android:layout_toRightOf="@id/imgMessageInAvatar"
+        android:textSize="11dp"
+        android:text="名称" />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvMessageIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/message_body_inside_padding"
+        android:textSize="16dp"
+        android:lineSpacingExtra="2dp"
+        android:layout_below="@id/tvMessageInName"
+        android:layout_marginRight="@dimen/message_body_side_margin"
+        android:layout_toRightOf="@id/imgMessageInAvatar"
+        android:background="@drawable/sl_message_in_bubble"
+        android:clickable="true"/>
+</RelativeLayout>

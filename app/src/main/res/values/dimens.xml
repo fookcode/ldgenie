@@ -17,5 +17,6 @@
     <dimen name="message_avatar_size">38dp</dimen>
     <dimen name="message_body_side_margin">48dp</dimen>
     <dimen name="message_body_inside_padding">9dp</dimen>
+    <dimen name="message_weekhint_text_size">11dp</dimen>
 
 </resources>

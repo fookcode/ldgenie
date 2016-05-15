@@ -97,33 +97,34 @@ public class ChatAdapter extends BaseAdapter {
         viewHolder.name.setText(chat.getName());
 
         //设置发送时间
-        Time time = new Time();
-        time.set(chat.getTime());
-        int msg_year = time.year;
-        int msg_day = time.yearDay;
-
-        time.set(System.currentTimeMillis());
-        int now_year = time.year;
-        int now_day = time.yearDay;
-        int now_weekday = time.weekDay;
-
-        if (DateUtils.isToday(chat.getTime())) {
-            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_TIME));
-        }
-        else if (msg_year == now_year) {
-            if (now_day - msg_day == 1) {
-                viewHolder.time.setText("昨天");
-            } else if (now_day - msg_day == 2) {
-                viewHolder.time.setText("前天");
-            }
-            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
-                viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY));
-            }
-            else viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
-        }
-        else {
-            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
-        }
+        viewHolder.time.setText(LiteDood.convertTimeForChat(context, chat.getTime()));
+//        Time time = new Time();
+//        time.set(chat.getTime());
+//        int msg_year = time.year;
+//        int msg_day = time.yearDay;
+//
+//        time.set(System.currentTimeMillis());
+//        int now_year = time.year;
+//        int now_day = time.yearDay;
+//        int now_weekday = time.weekDay;
+//
+//        if (DateUtils.isToday(chat.getTime())) {
+//            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_TIME));
+//        }
+//        else if (msg_year == now_year) {
+//            if (now_day - msg_day == 1) {
+//                viewHolder.time.setText("昨天");
+//            } else if (now_day - msg_day == 2) {
+//                viewHolder.time.setText("前天");
+//            }
+//            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
+//                viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY));
+//            }
+//            else viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
+//        }
+//        else {
+//            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
+//        }
 
 
         //设置消息发送状态

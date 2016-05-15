@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:paddingTop="@dimen/common_margin_max">
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/message_body_inside_padding">
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMessageExtra"
+        android:textSize="@dimen/message_weekhint_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/common_padding_min"
         android:background="@drawable/sl_message_item_extra"/>
-
 </android.support.v7.widget.LinearLayoutCompat>
