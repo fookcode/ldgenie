@@ -1,7 +1,6 @@
 package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -119,9 +116,10 @@ public class MessageActivity extends AppCompatActivity {
         lvMessage = (ListViewCompat)findViewById(R.id.listMessage);
         lvMessage.setAdapter(messageAdapter);
 
-        if (getIntent().getIntExtra(ID_MESSAGE_TYPE, 0) == TYPE_MESSAGE_GROUP) {           //如果是群，取回群中所有人员放入静态变量，用作adapter展现时获取发言人名字
+        if (getIntent().getIntExtra(ID_MESSAGE_TYPE, 0) == TYPE_MESSAGE_GROUP) {           //如果是群，由于chatMsg中没有给name字段赋值，所以先取回群中所有人员放入静态变量，用作adapter展现时获取发言人名字，在成员名称获取成功后setMessageHistory(异步handler中)
             RequestHelper.getGroupInfo(getIntent().getLongExtra(ID_USER_ID, 0), new MessageRequestHandler(TYPE_HANDLER_GET_GROUP));
         }
+        else setMessageHistory();                 //如果是点对点就直接取消息，不存在群友名称问题
 
         chatMsgList = SDKManager.instance().getChatMsgList();
         chatMsgList.setReceiveListener(getIntent().getLongExtra(ID_USER_ID, 0), new ChatMsgList.OnReceiveChatMsgListener() {
@@ -129,10 +127,6 @@ public class MessageActivity extends AppCompatActivity {
             public void onReceive(ChatMsg msg) {
                 if (msg == null) return;
                 if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (chatMsgQueue != null)) {
-                    //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
-//                    Time time = new Time();
-//                    time.set(msg.getSendTime());
-//                    DateUtils.formatDateTime(MessageActivity.this, msg.getSendTime(), DateUtils.FORMAT_ABBREV_ALL);
                     if (msg.getMessageType() == ChatMsgApi.TYPE_IMAGE) {
                         RequestHelper.downloadThumbImg(msg,new MessageRequestHandler(MessageActivity.TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE));
                     }
@@ -161,13 +155,13 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
-        //获取未读记录
-        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
-        RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
-                0,
-                getShowedMessageCount(count),
-                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
+//        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
+//        //获取未读记录
+//        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
+//        RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
+//                0,
+//                getShowedMessageCount(count),
+//                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
 
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
@@ -182,6 +176,16 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setMessageHistory() {
+        //setMessageHistory(userInfo.getID(), getIntent().getLongExtra(ID_LAST_MESSAGE_ID, -1));
+        //获取未读记录
+        int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
+        RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
+                0,
+                getShowedMessageCount(count),
+                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
     }
 
     private int getShowedMessageCount(int unReadCount) {
@@ -301,7 +305,9 @@ public class MessageActivity extends AppCompatActivity {
                 case TYPE_HANDLER_GET_GROUP_MEMBER:
                     if (mMemberContacts == null) {
                         mMemberContacts = msg.getData().getParcelableArrayList("data");
+                        setMessageHistory();
                     }
+
                     break;
                 case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
                     Log.v(TAG, msg.toString());
