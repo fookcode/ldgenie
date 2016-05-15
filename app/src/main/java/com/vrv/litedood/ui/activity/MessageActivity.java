@@ -58,6 +58,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private static List<Contact> mMemberContacts = null;         //两个表态变量，临时用作处理Group中的发言人名字
     private static Group mGroup = null;
+    private static long mPrevGroupID = 0;
 
     private Toolbar toolbarMessage;
     private List<ChatMsg> chatMsgQueue = new ArrayList<>();
@@ -117,7 +118,12 @@ public class MessageActivity extends AppCompatActivity {
         lvMessage.setAdapter(messageAdapter);
 
         if (getIntent().getIntExtra(ID_MESSAGE_TYPE, 0) == TYPE_MESSAGE_GROUP) {           //如果是群，由于chatMsg中没有给name字段赋值，所以先取回群中所有人员放入静态变量，用作adapter展现时获取发言人名字，在成员名称获取成功后setMessageHistory(异步handler中)
-            RequestHelper.getGroupInfo(getIntent().getLongExtra(ID_USER_ID, 0), new MessageRequestHandler(TYPE_HANDLER_GET_GROUP));
+            long groupID = getIntent().getLongExtra(ID_USER_ID, 0);
+            if ((mPrevGroupID != groupID)) {
+                RequestHelper.getGroupInfo(getIntent().getLongExtra(ID_USER_ID, 0), new MessageRequestHandler(TYPE_HANDLER_GET_GROUP));
+                mPrevGroupID = groupID;
+            }
+            else setMessageHistory();
         }
         else setMessageHistory();                 //如果是点对点就直接取消息，不存在群友名称问题
 
@@ -207,10 +213,6 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-        if (mMemberContacts != null) {
-            mMemberContacts.clear();
-            mMemberContacts = null;
-        }
     }
 
     /*private void setMessageHistory(long targetID) {
