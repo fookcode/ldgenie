@@ -12,11 +12,14 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
@@ -48,6 +51,7 @@ public class MessageActivity extends AppCompatActivity {
     private static final int TYPE_HANDLER_SEND_MESSAGE = 2;
     private static final int TYPE_HANDLER_GET_GROUP = 3;
     private static final int TYPE_HANDLER_GET_GROUP_MEMBER = 4;
+    private static final int TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE = 5;
 
     public static final int TYPE_MESSAGE_CHAT = 1;
     public static final int TYPE_MESSAGE_GROUP = 2;
@@ -126,6 +130,12 @@ public class MessageActivity extends AppCompatActivity {
                 if (msg == null) return;
                 if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (chatMsgQueue != null)) {
                     //Log.v(TAG, "in add, MsgQueueSize: " + String.valueOf(chatMsgQueue.size()));
+//                    Time time = new Time();
+//                    time.set(msg.getSendTime());
+//                    DateUtils.formatDateTime(MessageActivity.this, msg.getSendTime(), DateUtils.FORMAT_ABBREV_ALL);
+                    if (msg.getMessageType() == ChatMsgApi.TYPE_IMAGE) {
+                        RequestHelper.downloadThumbImg(msg,new MessageRequestHandler(MessageActivity.TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE));
+                    }
                     chatMsgQueue.add(msg);
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
                     messageAdapter.notifyDataSetChanged();
@@ -260,7 +270,7 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    class MessageRequestHandler extends RequestHandler {
+    public class MessageRequestHandler extends RequestHandler {
         private int nType;
 
         public MessageRequestHandler(int type) {
@@ -281,7 +291,7 @@ public class MessageActivity extends AppCompatActivity {
                     }
                     break;
                 case TYPE_HANDLER_SEND_MESSAGE:
-
+                    Log.v(TAG, msg.toString());
                     break;
                 case TYPE_HANDLER_GET_GROUP:
                     mGroup = msg.getData().getParcelable("data");
@@ -292,7 +302,10 @@ public class MessageActivity extends AppCompatActivity {
                     if (mMemberContacts == null) {
                         mMemberContacts = msg.getData().getParcelableArrayList("data");
                     }
-
+                    break;
+                case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
+                    Log.v(TAG, msg.toString());
+                    //Bundle[{data=/storage/sdcard0/litedood/4328622264/image/a_RvRX_adfd00000bfd2a01.jpg}]
                     break;
 
             }

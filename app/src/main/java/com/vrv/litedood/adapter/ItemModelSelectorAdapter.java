@@ -110,7 +110,7 @@ public class ItemModelSelectorAdapter <T extends ItemModel> extends BaseAdapter 
             }
 
             //设置头像
-            viewHolder.ivItemModelAvatar.setImageBitmap(LiteDood.getAvatarBitmap(item.getAvatar()));
+            viewHolder.ivItemModelAvatar.setImageBitmap(LiteDood.getBitmapFromFile(item.getAvatar()));
 
             //通用组件头像及名称设置
             viewHolder.tvItemModelName.setText(item.getName());

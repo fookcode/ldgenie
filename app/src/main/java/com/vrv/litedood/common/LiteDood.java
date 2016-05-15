@@ -693,7 +693,7 @@ public final class LiteDood {
         }*/
     }
 
-    public static Bitmap getAvatarBitmap(String avatarFilePath) {
+    public static Bitmap getBitmapFromFile(String avatarFilePath) {
 
         Bitmap result = null;
         if ((null != avatarFilePath) && (!avatarFilePath.isEmpty())) {

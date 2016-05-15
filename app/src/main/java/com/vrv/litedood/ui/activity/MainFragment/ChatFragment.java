@@ -18,11 +18,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatList;
 import com.vrv.imsdk.model.ListModel;
 import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.ChatAdapter;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.common.sdk.utils.ChatMsgUtil;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.util.ArrayList;
@@ -53,6 +56,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void notifyDataChange() {
                 ArrayList<Chat> chatList = mChatList.getList();
+
                 mChatQueue.clear();
                 mChatQueue.addAll(chatList);
 

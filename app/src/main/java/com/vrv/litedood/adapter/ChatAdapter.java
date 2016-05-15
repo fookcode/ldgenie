@@ -1,11 +1,8 @@
 package com.vrv.litedood.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Message;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,16 +53,11 @@ public class ChatAdapter extends BaseAdapter {
         if (context == null) return null;
 
         ViewHolder viewHolder;
-        Bitmap bitmapAvatar;
         if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_chat, null);
             viewHolder = new ViewHolder();
 
             viewHolder.avatar = (AppCompatImageView)convertView.findViewById(R.id.ivChatItemAvatar);
-//            ViewGroup.LayoutParams layoutParams = viewHolder.avatar.getLayoutParams();
-//            layoutParams.width = CHAT_AVATAR_SIZE;
-//            layoutParams.height = CHAT_AVATAR_SIZE;
-//            viewHolder.avatar.setLayoutParams(layoutParams);
 
             viewHolder.count = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemCountIndicator);
             viewHolder.name = (AppCompatTextView)convertView.findViewById(R.id.tvChatItemName);
@@ -91,49 +83,26 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         //设置头像
-        viewHolder.avatar.setImageBitmap(LiteDood.getAvatarBitmap(chat.getAvatar()));
+        viewHolder.avatar.setImageBitmap(LiteDood.getBitmapFromFile(chat.getAvatar()));
 
         //设置聊天对方名称
         viewHolder.name.setText(chat.getName());
 
         //设置发送时间
         viewHolder.time.setText(LiteDood.convertTimeForChat(context, chat.getTime()));
-//        Time time = new Time();
-//        time.set(chat.getTime());
-//        int msg_year = time.year;
-//        int msg_day = time.yearDay;
-//
-//        time.set(System.currentTimeMillis());
-//        int now_year = time.year;
-//        int now_day = time.yearDay;
-//        int now_weekday = time.weekDay;
-//
-//        if (DateUtils.isToday(chat.getTime())) {
-//            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_TIME));
-//        }
-//        else if (msg_year == now_year) {
-//            if (now_day - msg_day == 1) {
-//                viewHolder.time.setText("昨天");
-//            } else if (now_day - msg_day == 2) {
-//                viewHolder.time.setText("前天");
-//            }
-//            else if (((now_day - msg_day) >2) && ((now_day - msg_day)< now_weekday)) {
-//                viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_WEEKDAY));
-//            }
-//            else viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
-//        }
-//        else {
-//            viewHolder.time.setText(DateUtils.formatDateTime(context, chat.getTime(), DateUtils.FORMAT_SHOW_DATE));
-//        }
-
 
         //设置消息发送状态
         if(chat.getMsgType() != 2) {
             viewHolder.status.setVisibility(View.VISIBLE);
         }
         else viewHolder.status.setVisibility(View.GONE);
+
         //设置消息体
-        viewHolder.recentMessage.setText(ChatMsgUtil.lastMsgBrief(context, chat.getMsgType(), chat.getLastMsg()));
+        String prefix = "";
+        if (chat.getWhereFrom() != null) {
+            prefix = chat.getWhereFrom().trim().equals("") ? "" : chat.getWhereFrom() + ": ";
+        }
+        viewHolder.recentMessage.setText(prefix + ChatMsgUtil.lastMsgBrief(context, chat.getMsgType(), chat.getLastMsg()));
 
         return convertView;
     }
@@ -148,7 +117,7 @@ public class ChatAdapter extends BaseAdapter {
         }
 
 
-    class ViewHolder {
+    private class ViewHolder {
 
         public AppCompatImageView avatar;
 

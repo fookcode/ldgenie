@@ -97,7 +97,7 @@ public class ContactsGroupAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
 
-            viewHolder.ivGroupAvatar.setImageBitmap(LiteDood.getAvatarBitmap(group.getAvatar()));
+            viewHolder.ivGroupAvatar.setImageBitmap(LiteDood.getBitmapFromFile(group.getAvatar()));
             viewHolder.tvGroupName.setText(group.getName());
 
         }

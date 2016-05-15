@@ -100,7 +100,7 @@ public class ContactsAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
 
-            viewHolder.ivContactAvatar.setImageBitmap(LiteDood.getAvatarBitmap(contact.getAvatar()));
+            viewHolder.ivContactAvatar.setImageBitmap(LiteDood.getBitmapFromFile(contact.getAvatar()));
             viewHolder.tvContactName.setText(contact.getName());
             viewHolder.tvContactSign.setText(contact.getSign());
 

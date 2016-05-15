@@ -232,7 +232,7 @@ public class ContactCardAdapter extends BaseAdapter {
                 } else if(viewHolder.type == ITEM_TYPE.line.list){
                     viewHolder.lvContactCardListItemValue.setAdapter(new ArrayAdapter<String>(mContext, R.layout.item_contact_card_list_item_child, (ArrayList<String>) item.get(VALUE)));
                 } else if (viewHolder.type == ITEM_TYPE.line.image) {
-                    viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getAvatarBitmap(item.get(VALUE).toString()));
+                    viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getBitmapFromFile(item.get(VALUE).toString()));
                     ;
                 }
                 result = convertView;
@@ -279,7 +279,7 @@ public class ContactCardAdapter extends BaseAdapter {
             viewHolder.tvContactCardItemName = (AppCompatTextView) newItemView.findViewById(R.id.tvContactCardImageItemName);
             viewHolder.tvContactCardItemName.setText(item.get(NAME) == null ? "" : item.get(NAME).toString());
             viewHolder.ivContactCardImageItemValue = (AppCompatImageView)newItemView.findViewById(R.id.ivContactCardImageItevValue);
-            viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getAvatarBitmap(item.get(VALUE).toString()));
+            viewHolder.ivContactCardImageItemValue.setImageBitmap(LiteDood.getBitmapFromFile(item.get(VALUE).toString()));
         }
         newItemView.setTag(viewHolder);
 
