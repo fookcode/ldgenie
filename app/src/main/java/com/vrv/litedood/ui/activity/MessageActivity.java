@@ -305,11 +305,8 @@ public class MessageActivity extends AppCompatActivity {
                         RequestHelper.getGroupMembers(mGroup, new MessageRequestHandler(TYPE_HANDLER_GET_GROUP_MEMBER));
                     break;
                 case TYPE_HANDLER_GET_GROUP_MEMBER:
-                    if (mMemberContacts == null) {
-                        mMemberContacts = msg.getData().getParcelableArrayList("data");
-                        setMessageHistory();
-                    }
-
+                    mMemberContacts = msg.getData().getParcelableArrayList("data");
+                    setMessageHistory();
                     break;
                 case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
                     Log.v(TAG, msg.toString());
