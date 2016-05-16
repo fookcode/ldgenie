@@ -44,11 +44,12 @@ public class MessageActivity extends AppCompatActivity {
     public static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
     public static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
 
+
     private static final int TYPE_HANDLER_GET_HISTORY_MESSAGE = 1;
     private static final int TYPE_HANDLER_SEND_MESSAGE = 2;
     private static final int TYPE_HANDLER_GET_GROUP = 3;
     private static final int TYPE_HANDLER_GET_GROUP_MEMBER = 4;
-    private static final int TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE = 5;
+//    private static final int TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE = 5;
 
     public static final int TYPE_MESSAGE_CHAT = 1;
     public static final int TYPE_MESSAGE_GROUP = 2;
@@ -93,6 +94,9 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_message);
 
         resolver = getContentResolver();
@@ -133,9 +137,6 @@ public class MessageActivity extends AppCompatActivity {
             public void onReceive(ChatMsg msg) {
                 if (msg == null) return;
                 if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (chatMsgQueue != null)) {
-                    if (msg.getMessageType() == ChatMsgApi.TYPE_IMAGE) {
-                        RequestHelper.downloadThumbImg(msg,new MessageRequestHandler(MessageActivity.TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE));
-                    }
                     chatMsgQueue.add(msg);
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
                     messageAdapter.notifyDataSetChanged();
@@ -179,6 +180,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (!txt.isEmpty()) {
                     RequestHelper.sendTxt(getIntent().getLongExtra(ID_USER_ID, 0), txt, null, new MessageRequestHandler(TYPE_HANDLER_SEND_MESSAGE));
                     edtMessage.getText().clear();
+                    lvMessage.setSelection(lvMessage.getCount() -1);
                 }
             }
         });
@@ -308,10 +310,10 @@ public class MessageActivity extends AppCompatActivity {
                     mMemberContacts = msg.getData().getParcelableArrayList("data");
                     setMessageHistory();
                     break;
-                case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
-                    Log.v(TAG, msg.toString());
-                    //Bundle[{data=/storage/sdcard0/litedood/4328622264/image/a_RvRX_adfd00000bfd2a01.jpg}]
-                    break;
+//                case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
+//                    Log.v(TAG, msg.toString());
+//                    //Bundle[{data=/storage/sdcard0/litedood/4328622264/image/a_RvRX_adfd00000bfd2a01.jpg}]
+//                   break;
 
             }
         }

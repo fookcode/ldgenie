@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 	public static final String TAG_PANDORA_FRAGMENT = "PANDORA_FRAGMENT";
     public static final String TAG_CURRENT_FRAGMENT = "CURRENT_FRAGMENT";
 
+    private static final int TYPE_HANDLER_LOGOUT = 1;
+
     private Map<String, Fragment> mFragmentsMap = new HashMap<String, Fragment>();
 
     private int clientWidth, clientHeight;
@@ -93,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         LiteDoodApplication.setMainActivity(this);
-
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         //使用Theme,以下两个设置由Theme完成
 		//无标题栏
 		//this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestHelper.logout(new LogoutRequestHandler(MainActivity.this));
+                RequestHelper.logout(new MainRequestHandler(TYPE_HANDLER_LOGOUT));
                 SDKManager.instance().destroy();
             }
         });
@@ -370,30 +371,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class LogoutRequestHandler extends RequestHandler {
-        private Activity activity;
+    class MainRequestHandler extends RequestHandler {
 
-        public LogoutRequestHandler(Activity activity) {
-            this.activity = activity;
+        private int mType;
+
+        public MainRequestHandler(int type) {
+            mType = type;
         }
 
         @Override
         public void handleSuccess(Message msg) {
-            LoginActivity.startLoginActivity(activity, true);
-            LiteDoodApplication.getAppContext().setMyself(null);
+            switch (mType) {
+                case TYPE_HANDLER_LOGOUT:
+                    LoginActivity.startLoginActivity(MainActivity.this, true);
+                    LiteDoodApplication.getAppContext().setMyself(null);
+                    break;
+
+                default:
+                    break;
+
+            }
         }
 
         @Override
         public void handleFailure(int code, String message) {
-            Log.v(TAG, "退出异常 " + code + ": " + message);
+            super.handleFailure(code, message);
+            switch (mType) {
+                case TYPE_HANDLER_LOGOUT:
+                    Log.v(TAG, "退出异常 " + code + ": " + message);
 
-            String hint = "退出异常";
-            if ((message != null) && (!message.isEmpty())) {
-                hint = hint + ": " + message;
-            } else {
-                hint = hint + ", 请与管理员联系";
+                    String hint = "退出异常";
+                    if ((message != null) && (!message.isEmpty())) {
+                        hint = hint + ": " + message;
+                    } else {
+                        hint = hint + ", 请与管理员联系";
+                    }
+                    Toast.makeText(MainActivity.this, hint, Toast.LENGTH_SHORT).show();
+                    break;
+
             }
-            Toast.makeText(activity, hint, Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -1,5 +1,7 @@
 package com.vrv.litedood.adapter;
 
+import android.graphics.Bitmap;
+import android.os.Message;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.format.Time;
@@ -11,13 +13,17 @@ import android.widget.BaseAdapter;
 
 import com.vrv.imsdk.SDKManager;
 import com.vrv.imsdk.api.ChatMsgApi;
+import com.vrv.imsdk.api.ConfigApi;
 import com.vrv.imsdk.api.MsgImage;
 import com.vrv.imsdk.model.ChatMsg;
+import com.vrv.imsdk.util.SDKFileUtils;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -30,6 +36,8 @@ public class MessageAdapter extends BaseAdapter {
     private static final int MESSAGE_OUT = 2;
 
     private static final int TIME_INTERVAL = 15;       //间隔时间大于15分钟的消息显示一个时间弱提示
+
+    private static final int TYPE_HANDLER_GET_PICTURE_THUMB = 1;
 
     private final MessageActivity mMessageActivity;
     private List<ChatMsg> chatMsgList;
@@ -114,10 +122,6 @@ public class MessageAdapter extends BaseAdapter {
                         ((convertView.getTag() instanceof ImageMsgViewHolder)) &&
                         (((ImageMsgViewHolder)convertView.getTag()).mMsgDirection == direction) &&
                         (((ImageMsgViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)) {
-//                    if (!(isShowTimeWeakHint(position) && (((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint != null))) {
-//                        convertView = inflateImageView(position, chatMsg, convertView);
-//                    }
-//                    else
                     if (isShowTimeWeakHint(position)) {
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));  //重用
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setVisibility(View.VISIBLE);
@@ -133,8 +137,16 @@ public class MessageAdapter extends BaseAdapter {
                 }
 
                 MsgImage image = ChatMsgApi.parseImgJson(chatMsg.getMessage());
-                String imageName = image.getThumbShowPath();
-                ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageBitmap(LiteDood.getBitmapFromFile(imageName));
+                String imageName = ConfigApi.decryptFile(image.getEncDecKey(), image.getThumbShowPath());
+                File file = new File(imageName);
+                if (file.exists()) {
+                    Bitmap picture = LiteDood.getBitmapFromFile(imageName);
+                    ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageBitmap(picture);
+                }
+                else {
+                    RequestHelper.downloadThumbImg(chatMsg, new MessageAdapterRequestHandler(TYPE_HANDLER_GET_PICTURE_THUMB, ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage));
+                }
+
                 break;
             case ChatMsgApi.TYPE_FILE:
                 msg = "[文件]";
@@ -147,8 +159,8 @@ public class MessageAdapter extends BaseAdapter {
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_WEAK_HINT:
-                //msg = "[弱提示]";
                 msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
+//                ConfigApi.decryptFile()
                 if (msg.equals("")) msg = "[弱提示]";
                 convertView = inflateWeakHintView(ChatMsgApi.TYPE_WEAK_HINT, convertView);
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
@@ -391,6 +403,39 @@ public class MessageAdapter extends BaseAdapter {
 
     private class ImageMsgViewHolder extends BaseViewHolder {
         AppCompatImageView ivImageMessage;
+    }
+
+    class MessageAdapterRequestHandler extends RequestHandler {
+
+        private int mType;
+        private View mView;
+
+        public MessageAdapterRequestHandler(int type, View imageMessageView) {
+            mType = type;
+            mView = imageMessageView;
+        }
+
+        @Override
+        public void handleSuccess(Message msg) {
+            switch (mType) {
+                case TYPE_HANDLER_GET_PICTURE_THUMB:
+                    Bitmap picture = LiteDood.getBitmapFromFile(msg.getData().toString());
+                    if (mView != null)
+                        ((AppCompatImageView)mView).setImageBitmap(picture);
+                    break;
+
+            }
+        }
+
+        @Override
+        public void handleFailure(int code, String message) {
+            super.handleFailure(code, message);
+            switch (mType) {
+                case TYPE_HANDLER_GET_PICTURE_THUMB:
+                    if(mView != null) ((AppCompatImageView)mView).setImageResource(R.drawable.ic_launcher);
+                    break;
+            }
+        }
     }
 
 }

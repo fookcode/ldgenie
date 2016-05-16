@@ -2,10 +2,13 @@ package com.vrv.litedood;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Message;
 
 import com.vrv.imsdk.VIMClient;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.common.LiteDood;
+import com.vrv.litedood.common.sdk.action.RequestHandler;
+import com.vrv.litedood.common.sdk.action.RequestHelper;
 
 /**
  * Created by kinee on 2016/3/24.
@@ -22,7 +25,9 @@ public class LiteDoodApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mAppContext = this;
+
         VIMClient.init(mAppContext, LiteDood.APP_ID);
+
 
     }
 
@@ -45,5 +50,6 @@ public class LiteDoodApplication extends Application {
     public static Activity getMainActivity() {
         return mMainActivity;
     }
+
 
 }
