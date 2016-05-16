@@ -88,9 +88,8 @@ public class MessageAdapter extends BaseAdapter {
                 break;
             case ChatMsgApi.TYPE_TEXT:
                 if ((convertView != null) &&
-                        ((convertView.getTag() instanceof TextMsgViewHolder)) &&
-                        (((TextMsgViewHolder)convertView.getTag()).mMsgDirection == direction) &&
-                        (((TextMsgViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_TEXT)) {
+                        (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_TEXT)&&
+                            (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {
                     if (!(isShowTimeWeakHint(position) && (((TextMsgViewHolder) convertView.getTag()).tvTimeWeakHint != null))) {  //
                         convertView = inflateTextView(position, chatMsg);
                     }
@@ -119,9 +118,8 @@ public class MessageAdapter extends BaseAdapter {
 //                msg = "[图片]";
 
                 if ((convertView != null) &&
-                        ((convertView.getTag() instanceof ImageMsgViewHolder)) &&
-                        (((ImageMsgViewHolder)convertView.getTag()).mMsgDirection == direction) &&
-                        (((ImageMsgViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)) {
+                        (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)  &&
+                                (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {
                     if (isShowTimeWeakHint(position)) {
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));  //重用
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setVisibility(View.VISIBLE);
@@ -256,6 +254,22 @@ public class MessageAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //弱提示
+    private View inflateWeakHintView(int msgType, View convertView) {
+        if ((convertView != null) && (((BaseViewHolder)convertView.getTag()).mMsgType == msgType)) {
+            return convertView;
+        }
+        else {
+            TextMsgViewHolder textMsgViewHolder = new TextMsgViewHolder();
+            convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_extra, null);
+            textMsgViewHolder.tvMessage = (AppCompatTextView) convertView.findViewById(R.id.tvMessageExtra);
+            textMsgViewHolder.mMsgType = msgType;
+            convertView.setTag(textMsgViewHolder);
+
+            return convertView;
+        }
+    }
+
     //注入普通文字聊天视图
     private View inflateTextView(int position, ChatMsg chatMsg) {
             View result = null;
@@ -298,21 +312,6 @@ public class MessageAdapter extends BaseAdapter {
             return result;
 
 
-    }
-
-    private View inflateWeakHintView(int msgType, View convertView) {
-        if ((convertView != null) && (((TextMsgViewHolder)convertView.getTag()).mMsgType == msgType)) {
-            return convertView;
-        }
-        else {
-            TextMsgViewHolder textMsgViewHolder = new TextMsgViewHolder();
-            convertView = LayoutInflater.from(mMessageActivity).inflate(R.layout.item_message_extra, null);
-            textMsgViewHolder.tvMessage = (AppCompatTextView) convertView.findViewById(R.id.tvMessageExtra);
-            textMsgViewHolder.mMsgType = msgType;
-            convertView.setTag(textMsgViewHolder);
-
-            return convertView;
-        }
     }
 
     private View inflateImageView(int position, ChatMsg chatMsg) {

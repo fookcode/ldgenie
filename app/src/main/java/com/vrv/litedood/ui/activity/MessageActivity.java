@@ -140,6 +140,7 @@ public class MessageActivity extends AppCompatActivity {
                     chatMsgQueue.add(msg);
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
                     messageAdapter.notifyDataSetChanged();
+                    lvMessage.setSelection(lvMessage.getCount() -1);
                     //saveMessageToDB(chatMsg);
                 }
             }
