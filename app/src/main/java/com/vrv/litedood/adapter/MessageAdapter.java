@@ -120,6 +120,7 @@ public class MessageAdapter extends BaseAdapter {
                 if ((convertView != null) &&
                         (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)  &&
                                 (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {
+                    ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageResource(R.drawable.ic_image);
                     if (isShowTimeWeakHint(position)) {
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));  //重用
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setVisibility(View.VISIBLE);
@@ -423,7 +424,7 @@ public class MessageAdapter extends BaseAdapter {
             switch (mType) {
                 case TYPE_HANDLER_GET_PICTURE_THUMB:
                     Log.v(TAG, msg.getData().toString());
-                    String imageName = ConfigApi.decryptFile(mDecKey, msg.getData().toString());
+                    String imageName = ConfigApi.decryptFile(mDecKey, String.valueOf(msg.getData()));
                     Log.v(TAG, imageName);
                     File file = new File(imageName);
                     Log.v(TAG, file.toString());
