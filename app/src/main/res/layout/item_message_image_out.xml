@@ -41,7 +41,17 @@
         android:layout_toLeftOf="@id/imgMessageOutAvatar"
         android:gravity="center_vertical"
         android:background="@drawable/sl_message_out_bubble"
-        android:clickable="true"
-        />
+        android:src="@drawable/ic_image"
+        android:clickable="true"/>
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clpbImageOutLoading"
+        android:background="@android:color/transparent"
+        android:indeterminateOnly="true"
+        android:layout_toLeftOf="@id/imgMessageOutAvatar"
+        android:layout_alignBottom="@id/ivMessageOut"
+        style="?android:attr/progressBarStyleSmall"
+        android:visibility="gone" />
 
 </RelativeLayout>

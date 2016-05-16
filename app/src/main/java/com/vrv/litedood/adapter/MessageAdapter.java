@@ -135,6 +135,7 @@ public class MessageAdapter extends BaseAdapter {
                 }
 
                 MsgImage image = ChatMsgApi.parseImgJson(chatMsg.getMessage());
+
                 String imageName = ConfigApi.decryptFile(image.getEncDecKey(), image.getThumbShowPath());
                 File file = new File(imageName);
                 if (file.exists()) {
@@ -142,7 +143,8 @@ public class MessageAdapter extends BaseAdapter {
                     ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageBitmap(picture);
                 }
                 else {
-                    RequestHelper.downloadThumbImg(chatMsg, new MessageAdapterRequestHandler(TYPE_HANDLER_GET_PICTURE_THUMB, ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage));
+                    RequestHelper.downloadThumbImg(chatMsg, new MessageAdapterRequestHandler(TYPE_HANDLER_GET_PICTURE_THUMB,
+                            ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage, image.getEncDecKey()));
                 }
 
                 break;
@@ -208,7 +210,7 @@ public class MessageAdapter extends BaseAdapter {
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_DYNAMIC:
-                msg = "[TYPE_DYNAMIC]";
+                msg = "[动态表情]";
                 convertView = inflateTextView(position, chatMsg);
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
@@ -408,19 +410,29 @@ public class MessageAdapter extends BaseAdapter {
 
         private int mType;
         private View mView;
+        private String mDecKey;
 
-        public MessageAdapterRequestHandler(int type, View imageMessageView) {
+        public MessageAdapterRequestHandler(int type, View imageMessageView, String decKey) {
             mType = type;
             mView = imageMessageView;
+            mDecKey = decKey;
         }
 
         @Override
         public void handleSuccess(Message msg) {
             switch (mType) {
                 case TYPE_HANDLER_GET_PICTURE_THUMB:
-                    Bitmap picture = LiteDood.getBitmapFromFile(msg.getData().toString());
-                    if (mView != null)
-                        ((AppCompatImageView)mView).setImageBitmap(picture);
+                    Log.v(TAG, msg.getData().toString());
+                    String imageName = ConfigApi.decryptFile(mDecKey, msg.getData().toString());
+                    Log.v(TAG, imageName);
+                    File file = new File(imageName);
+                    Log.v(TAG, file.toString());
+                    if (file.exists()) {
+                        Bitmap picture = LiteDood.getBitmapFromFile(imageName);
+
+                        if (mView != null)
+                            ((AppCompatImageView) mView).setImageBitmap(picture);
+                    }
                     break;
 
             }
@@ -431,7 +443,7 @@ public class MessageAdapter extends BaseAdapter {
             super.handleFailure(code, message);
             switch (mType) {
                 case TYPE_HANDLER_GET_PICTURE_THUMB:
-                    if(mView != null) ((AppCompatImageView)mView).setImageResource(R.drawable.ic_launcher);
+                    if(mView != null) ((AppCompatImageView)mView).setImageResource(R.drawable.ic_image_failure);
                     break;
             }
         }

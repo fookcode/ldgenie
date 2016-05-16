@@ -29,6 +29,7 @@
         android:layout_toRightOf="@id/imgMessageInAvatar"
         android:textSize="11dp"
         android:text="名称" />
+
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ivMessageIn"
         android:layout_width="wrap_content"
@@ -38,5 +39,16 @@
         android:layout_marginRight="@dimen/message_body_side_margin"
         android:layout_toRightOf="@id/imgMessageInAvatar"
         android:background="@drawable/sl_message_in_bubble"
-        android:clickable="true"/>
+        android:src="@drawable/ic_image"
+        android:clickable="true" />
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clpbImageInLoading"
+        android:background="@android:color/transparent"
+        android:indeterminateOnly="true"
+        android:layout_toRightOf="@id/imgMessageInAvatar"
+        android:layout_alignBottom="@id/ivMessageIn"
+        style="?android:attr/progressBarStyleSmallInverse"
+        android:visibility="gone" />
 </RelativeLayout>
