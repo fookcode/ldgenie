@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
 import android.widget.Button;
 
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.ui.activity.MainActivity;
 import com.vrv.litedood.R;
 import com.vrv.litedood.ui.activity.MainFragment.ContactsFragment;
@@ -51,6 +52,32 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
 
         fragments.put(MainActivity.TAG_CURRENT_FRAGMENT, selectedFragment);                 //设置当前视图，以便下次切换时使用
 
+        setButtonImage(button.getTag().toString());
+
+    }
+
+    private void setButtonImage(String selected) {
+        AppCompatImageButton btnMessage = (AppCompatImageButton) LiteDoodApplication.getMainActivity().findViewById(R.id.btnMessage);
+        AppCompatImageButton btnContacts = (AppCompatImageButton) LiteDoodApplication.getMainActivity().findViewById(R.id.btnContacts);
+        AppCompatImageButton btnPandora = (AppCompatImageButton) LiteDoodApplication.getMainActivity().findViewById(R.id.btnPandora);
+        switch (selected) {
+            case MainActivity.TAG_MESSAGE_FRAGMENT:
+                btnMessage.setImageResource(R.drawable.ic_message_focused);
+                btnContacts.setImageResource(R.drawable.ic_contacts);
+                btnPandora.setImageResource(R.drawable.ic_pandora);
+                break;
+            case MainActivity.TAG_CONTACTS_FRAGMENT:
+                btnMessage.setImageResource(R.drawable.ic_message);
+                btnContacts.setImageResource(R.drawable.ic_contacts_focused);
+                btnPandora.setImageResource(R.drawable.ic_pandora);
+                break;
+            case MainActivity.TAG_PANDORA_FRAGMENT:
+                btnMessage.setImageResource(R.drawable.ic_message);
+                btnContacts.setImageResource(R.drawable.ic_contacts);
+                btnPandora.setImageResource(R.drawable.ic_pandora_focused);
+                break;
+        }
+    }
     /*
         //以上是onClick新逻辑，2016/3/21
         //以下是onClick原逻辑，2016/3/20
@@ -114,5 +141,5 @@ public class ButtonActiveFragmentOnClickListener implements View.OnClickListener
         fragmentTransaction.commit();
     }
     */
-    }
+
 }

@@ -43,6 +43,7 @@ public class MessageActivity extends AppCompatActivity {
     public static final String ID_MESSAGE_TYPE = "ID_MESSAGE_TYPE";
     public static final String ID_USER_ID = "USER_ID";
     public static final String ID_USER_NAME = "USER_NAME";
+    public static final String ID_USER_AVATAR = "USER_AVATAR";
     public static final String ID_LAST_MESSAGE_ID = "LAST_MESSAGE_ID";
     public static final String ID_UNREAD_MESSAGE_NUMBER = "UNREAD_NUMBER";
 
@@ -83,6 +84,7 @@ public class MessageActivity extends AppCompatActivity {
             intent.putExtra(ID_LAST_MESSAGE_ID, ((Chat)item).getLastMsgID());
             intent.putExtra(ID_UNREAD_MESSAGE_NUMBER, ((Chat)item).getUnReadNum());
             intent.putExtra(ID_MESSAGE_TYPE, (int)((Chat) item).getType());  //type=1个人消息 type=2群消息
+            intent.putExtra(ID_USER_AVATAR, ((Chat)item).getAvatar());
         }
         else if (item instanceof Group){
             intent.putExtra(ID_MESSAGE_TYPE, TYPE_MESSAGE_GROUP);
@@ -325,6 +327,23 @@ public class MessageActivity extends AppCompatActivity {
             for (Contact item : mMemberContacts) {
                 if (item.getId() == id) {
                     result = item.getName();
+                    break;
+                }
+            }
+
+        }
+        return  result;
+
+    }
+
+    public static String getMemberAvatar(long id) {
+        String result = "";
+        if (mMemberContacts == null) return result;
+        long myid = LiteDoodApplication.getAppContext().getMyself().getId();
+        if (myid != id) {
+            for (Contact item : mMemberContacts) {
+                if (item.getId() == id) {
+                    result = item.getAvatar();
                     break;
                 }
             }

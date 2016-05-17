@@ -21,7 +21,6 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
-import com.vrv.litedood.ui.activity.MainActivity;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.io.File;
@@ -44,9 +43,13 @@ public class MessageAdapter extends BaseAdapter {
     private final MessageActivity mMessageActivity;
     private List<ChatMsg> mChatMsgList;
 
+    private static final Bitmap mMyAvatar = LiteDood.getBitmapFromFile(LiteDoodApplication.getAppContext().getMyself().getAvatar());
+    private static Bitmap mMemberAvatar = null;
+
     public MessageAdapter(MessageActivity mMessageActivity, List<ChatMsg> chatMsgList) {
         this.mMessageActivity = mMessageActivity;
         this.mChatMsgList = chatMsgList;
+        mMemberAvatar = LiteDood.getBitmapFromFile(mMessageActivity.getIntent().getStringExtra(MessageActivity.ID_USER_AVATAR));
     }
 
     @Override
@@ -234,10 +237,20 @@ public class MessageAdapter extends BaseAdapter {
         BaseViewHolder baseViewHolder = ((BaseViewHolder) convertView.getTag());
         //不是弱提示，那么肯定是对话，一定会有头像和名称组件
         if (chatMsg.getMessageType() != ChatMsgApi.TYPE_WEAK_HINT) {
-            baseViewHolder.imgAvatar.setImageBitmap(LiteDood.getBitmapFromFile(chatMsg.getAvatar()));
+            //baseViewHolder.imgAvatar.setImageBitmap(LiteDood.getBitmapFromFile(chatMsg.getAvatar()));
+
 
             switch (mMessageActivity.getIntent().getIntExtra(MessageActivity.ID_MESSAGE_TYPE, 0)) {
                 case MessageActivity.TYPE_MESSAGE_GROUP:              //群显示名称
+                    final Bitmap friendAvatar = LiteDood.getBitmapFromFile(MessageActivity.getMemberAvatar(chatMsg.getSendID()));
+                    switch (baseViewHolder.mMsgDirection) {
+                        case MESSAGE_IN:
+                            baseViewHolder.imgAvatar.setImageBitmap(friendAvatar);
+                            break;
+                        case MESSAGE_OUT:
+                            baseViewHolder.imgAvatar.setImageBitmap(mMyAvatar);
+                            break;
+                    }
                     String name = chatMsg.getName().trim();
                     if ((name.equals("") || name.equals("0"))) {
                         name = MessageActivity.getMemberName(chatMsg.getSendID());
@@ -250,6 +263,15 @@ public class MessageAdapter extends BaseAdapter {
                     }
                     break;
                 case MessageActivity.TYPE_MESSAGE_CHAT:              //点对点聊天不显示
+                    switch (baseViewHolder.mMsgDirection) {
+                        case MESSAGE_IN:
+
+                            baseViewHolder.imgAvatar.setImageBitmap(mMemberAvatar); //chatMsg.getAvatar()));
+                            break;
+                        case MESSAGE_OUT:
+                            baseViewHolder.imgAvatar.setImageBitmap(mMyAvatar);     //自己
+                            break;
+                    }
                     baseViewHolder.tvName.setVisibility(View.GONE);
                     break;
                 default:
