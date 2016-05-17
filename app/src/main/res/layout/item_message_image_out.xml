@@ -38,6 +38,7 @@
         android:layout_marginLeft="@dimen/message_body_side_margin"
         android:padding="2dp"
         android:layout_below="@id/tvMessageOutName"
+        android:scaleType="fitCenter"
         android:layout_toLeftOf="@id/imgMessageOutAvatar"
         android:gravity="center_vertical"
         android:background="@drawable/sl_message_out_bubble"

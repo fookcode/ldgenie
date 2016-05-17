@@ -9,6 +9,13 @@
         android:id="@+id/toolbarMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/clpbMessageHistoryLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleSmallTitle"
+        android:visibility="gone"
+        android:background="@color/GhostWhite"/>
     <android.support.v7.widget.ListViewCompat
         android:id="@+id/listMessage"
         android:layout_width="match_parent"

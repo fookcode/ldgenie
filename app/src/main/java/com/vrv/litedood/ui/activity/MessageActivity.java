@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -14,9 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
-import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.model.Chat;
 import com.vrv.imsdk.model.ChatMsg;
 import com.vrv.imsdk.model.ChatMsgList;
@@ -49,7 +51,7 @@ public class MessageActivity extends AppCompatActivity {
     private static final int TYPE_HANDLER_SEND_MESSAGE = 2;
     private static final int TYPE_HANDLER_GET_GROUP = 3;
     private static final int TYPE_HANDLER_GET_GROUP_MEMBER = 4;
-//    private static final int TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE = 5;
+    private static final int TYPE_HANDLER_LOAD_HISTORY_MESSAGE = 5;
 
     public static final int TYPE_MESSAGE_CHAT = 1;
     public static final int TYPE_MESSAGE_GROUP = 2;
@@ -61,14 +63,16 @@ public class MessageActivity extends AppCompatActivity {
     private static Group mGroup = null;
     private static long mPrevGroupID = 0;
 
-    private Toolbar toolbarMessage;
-    private List<ChatMsg> chatMsgQueue = new ArrayList<>();
-    private ChatMsgList chatMsgList;
-    private ListViewCompat lvMessage;
+    private Toolbar mToolbarMessage;
+    private List<ChatMsg> mChatMsgQueue = new ArrayList<>();
+    private ChatMsgList mChatMsgList;
+    private ListViewCompat mListViewMessage;
 
-    private MessageAdapter messageAdapter;
+    private MessageAdapter mMessageAdapter;
 
-    private ContentResolver resolver;
+    private boolean isGettingHistoryMessage = false;
+
+    private ContentResolver mLiteDoodContentResolver;
 
     public static <T extends ItemModel> void startMessageActivity(Activity activity, T item) {
         Intent intent = new Intent();
@@ -95,20 +99,17 @@ public class MessageActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_message);
 
-        resolver = getContentResolver();
+        mLiteDoodContentResolver = getContentResolver();
 
         initToolbar();
         initMessageData();
-
     }
 
     private void initToolbar() {
-        toolbarMessage = (Toolbar)findViewById(R.id.toolbarMessage);
-        setSupportActionBar(toolbarMessage);
+        mToolbarMessage = (Toolbar)findViewById(R.id.toolbarMessage);
+        setSupportActionBar(mToolbarMessage);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(getIntent().getStringExtra(ID_USER_NAME));
@@ -117,9 +118,63 @@ public class MessageActivity extends AppCompatActivity {
 
     private void initMessageData() {
 
-        messageAdapter = new MessageAdapter(MessageActivity.this, chatMsgQueue);
-        lvMessage = (ListViewCompat)findViewById(R.id.listMessage);
-        lvMessage.setAdapter(messageAdapter);
+        mMessageAdapter = new MessageAdapter(MessageActivity.this, mChatMsgQueue);
+        mListViewMessage = (ListViewCompat)findViewById(R.id.listMessage);
+        mListViewMessage.setOnScrollListener(new AbsListView.OnScrollListener() {
+            final ContentLoadingProgressBar indicator = (ContentLoadingProgressBar) findViewById(R.id.clpbMessageHistoryLoading);
+            private int mPrevPos;
+            int posAwayTop =1;
+            private boolean ListIsAtTop()   {
+                if(mListViewMessage.getChildCount() == 0) return true;
+                return mListViewMessage.getChildAt(0).getTop() == 0;
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {//scrollstate 1:开始滚动 2:正在滚动;0:停止
+                if (scrollState == SCROLL_STATE_IDLE) {
+                    if (isGettingHistoryMessage) return;
+                    indicator.setVisibility(View.VISIBLE);
+
+                    posAwayTop = mListViewMessage.getChildAt(0).getTop();
+
+                    if (ListIsAtTop() && (mPrevPos <= posAwayTop)) {
+                        if (!isGettingHistoryMessage) {
+                            isGettingHistoryMessage = true;
+
+                            RequestHelper.getChatHistory(MessageActivity.this.getIntent().getLongExtra(ID_USER_ID, 0),
+                                    ((ChatMsg) mListViewMessage.getItemAtPosition(mListViewMessage.getCount() - 1)).getMessageID(),
+                                    DEFAULT_MESSAGE_COUNT + mListViewMessage.getCount(),
+                                    new MessageRequestHandler(TYPE_HANDLER_LOAD_HISTORY_MESSAGE));
+                        }
+
+                    } else {
+                        indicator.setVisibility(View.GONE);
+                    }
+                    mPrevPos = posAwayTop;
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                Log.v(TAG, "firstVisibleItem:" + String.valueOf(firstVisibleItem) +
+//                            " visibleItemCount: " + String.valueOf(visibleItemCount) +
+//                            " totalItemCount : " + String.valueOf(totalItemCount));
+
+            }
+        });
+//        mListViewMessage.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                Log.v(TAG, "scrollX" + String.valueOf(scrollX) +
+//                        " scrollY" + String.valueOf(scrollY) +
+//                        " oldScrollX" + String.valueOf(oldScrollX) +
+//                        " oldScrollY" + String.valueOf(oldScrollY) );
+//            }
+//        });
+
+
+        mListViewMessage.setAdapter(mMessageAdapter);
 
         if (getIntent().getIntExtra(ID_MESSAGE_TYPE, 0) == TYPE_MESSAGE_GROUP) {           //如果是群，由于chatMsg中没有给name字段赋值，所以先取回群中所有人员放入静态变量，用作adapter展现时获取发言人名字，在成员名称获取成功后setMessageHistory(异步handler中)
             long groupID = getIntent().getLongExtra(ID_USER_ID, 0);
@@ -131,16 +186,16 @@ public class MessageActivity extends AppCompatActivity {
         }
         else setMessageHistory();                 //如果是点对点就直接取消息，不存在群友名称问题
 
-        chatMsgList = SDKManager.instance().getChatMsgList();
-        chatMsgList.setReceiveListener(getIntent().getLongExtra(ID_USER_ID, 0), new ChatMsgList.OnReceiveChatMsgListener() {
+        mChatMsgList = SDKManager.instance().getChatMsgList();
+        mChatMsgList.setReceiveListener(getIntent().getLongExtra(ID_USER_ID, 0), new ChatMsgList.OnReceiveChatMsgListener() {
             @Override
             public void onReceive(ChatMsg msg) {
                 if (msg == null) return;
-                if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (chatMsgQueue != null)) {
-                    chatMsgQueue.add(msg);
+                if((msg.getTargetID() == getIntent().getLongExtra(ID_USER_ID, 0)) && (mChatMsgQueue != null)) {
+                    mChatMsgQueue.add(msg);
                     RequestHelper.setMsgRead(msg.getTargetID(), msg.getMessageID());
-                    messageAdapter.notifyDataSetChanged();
-                    lvMessage.setSelection(lvMessage.getCount() -1);
+                    mMessageAdapter.notifyDataSetChanged();
+                    mListViewMessage.setSelection(mListViewMessage.getCount() -1);
                     //saveMessageToDB(chatMsg);
                 }
             }
@@ -151,12 +206,12 @@ public class MessageActivity extends AppCompatActivity {
                 if (msg == null) {
                     return;
                 }
-                int size = chatMsgQueue.size();
+                int size = mChatMsgQueue.size();
                 Log.v(TAG, "in Update, MsgQueueSize: " + String.valueOf(size));
                 for (int i = size - 1; i >= 0; i--) {
-                    if (msg.getLocalID() == chatMsgQueue.get(i).getLocalID()) {
-                        chatMsgQueue.set(i, msg);
-                        messageAdapter.notifyDataSetChanged();
+                    if (msg.getLocalID() == mChatMsgQueue.get(i).getLocalID()) {
+                        mChatMsgQueue.set(i, msg);
+                        mMessageAdapter.notifyDataSetChanged();
                         return;
                     }
                 }
@@ -181,7 +236,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (!txt.isEmpty()) {
                     RequestHelper.sendTxt(getIntent().getLongExtra(ID_USER_ID, 0), txt, null, new MessageRequestHandler(TYPE_HANDLER_SEND_MESSAGE));
                     edtMessage.getText().clear();
-                    lvMessage.setSelection(lvMessage.getCount() -1);
+                    mListViewMessage.setSelection(mListViewMessage.getCount() -1);
                 }
             }
         });
@@ -205,7 +260,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //清除消息点对点接收监听函数，否则此Activity就算消毁，过程依然继续后台执行
-        chatMsgList.setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener(){
+        mChatMsgList.setReceiveListener(-99, new ChatMsgList.OnReceiveChatMsgListener(){
             @Override
             public void onReceive(ChatMsg chatMsg) {
 
@@ -222,11 +277,11 @@ public class MessageActivity extends AppCompatActivity {
         String uriString = LiteDoodMessageProvider.SCHEME + LiteDoodMessageProvider.AUTHORITY + "/" + MessageDTO.TABLE_NAME;
         Uri uri = Uri.parse(uriString);
         Log.v(TAG, "receive ID: " + String.valueOf(receiveID));
-        Cursor temp = resolver.query(uri, MessageDTO.getAllColumns(), null, null, null);
+        Cursor temp = mLiteDoodContentResolver.query(uri, MessageDTO.getAllColumns(), null, null, null);
         ArrayList<ChatMsg> tempList = MessageDTO.toChatMsg(temp);
 
 
-        Cursor chatMsgHistory = resolver.query(uri,
+        Cursor chatMsgHistory = mLiteDoodContentResolver.query(uri,
                 MessageDTO.getAllColumns(),
                 MessageDTO.TABLE_MESSAGE_COLUMN_RECEIVEID
                     + "=? or "
@@ -239,8 +294,8 @@ public class MessageActivity extends AppCompatActivity {
             Log.v(TAG, msg.toString() + " id:" + msg.getId());
         }
         if ((oldMsg != null) && (oldMsg.size() > 0)) {
-            chatMsgQueue.addAll(oldMsg);
-            messageAdapter.notifyDataSetChanged();
+            mChatMsgQueue.addAll(oldMsg);
+            mMessageAdapter.notifyDataSetChanged();
         };
     }*/
 
@@ -248,7 +303,7 @@ public class MessageActivity extends AppCompatActivity {
 //
 //        String uriString = LiteDood.URI + "/" + MessageDTO.TABLE_NAME;
 //        Uri insertUri = Uri.parse(uriString);
-//        resolver.insert(insertUri, MessageDTO.convertChatMessage(chatMsg));
+//        mLiteDoodContentResolver.insert(insertUri, MessageDTO.convertChatMessage(chatMsg));
 //    }
 
 
@@ -291,12 +346,12 @@ public class MessageActivity extends AppCompatActivity {
                 case TYPE_HANDLER_GET_HISTORY_MESSAGE:
                     ArrayList<ChatMsg> chatMsgArray = msg.getData().getParcelableArrayList("data");
                     if (chatMsgArray.size() > 0) {
-                        chatMsgQueue.clear();
-                        chatMsgQueue.addAll(chatMsgArray);
-                        messageAdapter.notifyDataSetChanged();
+                        mChatMsgQueue.clear();
+                        mChatMsgQueue.addAll(chatMsgArray);
+                        mMessageAdapter.notifyDataSetChanged();
+                        mListViewMessage.setSelection(chatMsgArray.size() -1);
                         ChatMsg lastMsg = chatMsgArray.get(chatMsgArray.size()-1);
                         RequestHelper.setMsgRead(lastMsg.getTargetID(), lastMsg.getMessageID());
-                        lvMessage.setSelection(chatMsgArray.size() -1);
                     }
                     break;
                 case TYPE_HANDLER_SEND_MESSAGE:
@@ -311,11 +366,35 @@ public class MessageActivity extends AppCompatActivity {
                     mMemberContacts = msg.getData().getParcelableArrayList("data");
                     setMessageHistory();
                     break;
-//                case TYPE_HANDLER_DOWNLOAD_THUMB_IMAGE:
-//                    Log.v(TAG, msg.toString());
-//                    //Bundle[{data=/storage/sdcard0/litedood/4328622264/image/a_RvRX_adfd00000bfd2a01.jpg}]
-//                   break;
+                case TYPE_HANDLER_LOAD_HISTORY_MESSAGE:
+                    ArrayList<ChatMsg> nextChatMsgArray = msg.getData().getParcelableArrayList("data");
+                    if (nextChatMsgArray.size() > mChatMsgQueue.size()) {
+                        mChatMsgQueue.clear();
+                        mChatMsgQueue.addAll(nextChatMsgArray);
+                        mMessageAdapter.notifyDataSetChanged();
+                        //mListViewMessage.smoothScrollToPosition(DEFAULT_MESSAGE_COUNT );
 
+                    }
+                    else {
+                        Toast.makeText(MessageActivity.this, "没有更多的记录了", Toast.LENGTH_SHORT).show();
+                    }
+                    isGettingHistoryMessage = false;
+                    ContentLoadingProgressBar clpbHistory = (ContentLoadingProgressBar)MessageActivity.this.findViewById(R.id.clpbMessageHistoryLoading);
+                    clpbHistory.setVisibility(View.GONE);
+                    break;
+
+            }
+        }
+
+        @Override
+        public void handleFailure(int code, String message) {
+            super.handleFailure(code, message);
+            switch (nType) {
+                case TYPE_HANDLER_LOAD_HISTORY_MESSAGE:
+                    ContentLoadingProgressBar clpbHistory = (ContentLoadingProgressBar)MessageActivity.this.findViewById(R.id.clpbMessageHistoryLoading);
+                    clpbHistory.setVisibility(View.GONE);
+                    isGettingHistoryMessage = false;
+                    break;
             }
         }
     }

@@ -16,11 +16,12 @@ import com.vrv.imsdk.api.ChatMsgApi;
 import com.vrv.imsdk.api.ConfigApi;
 import com.vrv.imsdk.api.MsgImage;
 import com.vrv.imsdk.model.ChatMsg;
-import com.vrv.imsdk.util.SDKFileUtils;
+import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.ui.activity.MainActivity;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.io.File;
@@ -38,26 +39,27 @@ public class MessageAdapter extends BaseAdapter {
     private static final int TIME_INTERVAL = 15;       //间隔时间大于15分钟的消息显示一个时间弱提示
 
     private static final int TYPE_HANDLER_GET_PICTURE_THUMB = 1;
+    private static final int TYPE_HANDLER_SHOW_IMAGE = 2;
 
     private final MessageActivity mMessageActivity;
-    private List<ChatMsg> chatMsgList;
+    private List<ChatMsg> mChatMsgList;
 
     public MessageAdapter(MessageActivity mMessageActivity, List<ChatMsg> chatMsgList) {
         this.mMessageActivity = mMessageActivity;
-        this.chatMsgList = chatMsgList;
+        this.mChatMsgList = chatMsgList;
     }
 
     @Override
     public int getCount() {
         int result = 0;
-        if (chatMsgList != null)
-            result = chatMsgList.size();
+        if (mChatMsgList != null)
+            result = mChatMsgList.size();
         return result;
     }
 
     @Override
     public Object getItem(int position) {
-        if(chatMsgList != null) return chatMsgList.get(position);
+        if(mChatMsgList != null) return mChatMsgList.get(position);
         else return null;
     }
 
@@ -68,7 +70,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        ChatMsg chatMsg = chatMsgList.get(position);
+        ChatMsg chatMsg = mChatMsgList.get(position);
         long id = chatMsg.getSendID() == 0?chatMsg.getId():chatMsg.getSendID();
 
         return  SDKManager.instance().getAuth().isMyself(id) ? MESSAGE_OUT : MESSAGE_IN;
@@ -77,7 +79,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ChatMsg chatMsg = chatMsgList.get(position);
+        ChatMsg chatMsg = mChatMsgList.get(position);
         Log.v(TAG, chatMsg == null?"":chatMsg.toString() + chatMsg.getMessage());
         int direction = getItemViewType(position);
         String msg;
@@ -87,6 +89,13 @@ public class MessageAdapter extends BaseAdapter {
                 msg = "[网页]";
                 break;
             case ChatMsgApi.TYPE_TEXT:
+                if ((convertView != null) &&  //释放图片资源
+                         (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE) &&
+                            (((ImageMsgViewHolder)convertView.getTag()).ivImageMessage != null)) {
+                    ((ImageMsgViewHolder)convertView.getTag()).ivImageMessage.setImageBitmap(null);
+
+                    //convertView = null;
+                }
                 if ((convertView != null) &&
                         (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_TEXT)&&
                             (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {
@@ -121,8 +130,8 @@ public class MessageAdapter extends BaseAdapter {
                         (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)  &&
                                 (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {
                     ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageResource(R.drawable.ic_image);
-                    if (isShowTimeWeakHint(position)) {
-                        ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));  //重用
+                    if (isShowTimeWeakHint(position)) {                      //可重用，对时间提示标签进行处理
+                        ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setText(LiteDood.convertTimeForMessage(mMessageActivity, chatMsg.getSendTime()));
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setVisibility(View.VISIBLE);
                     }
                     else {
@@ -130,24 +139,19 @@ public class MessageAdapter extends BaseAdapter {
                         ((ImageMsgViewHolder) convertView.getTag()).tvTimeWeakHint.setVisibility(View.GONE);
                     }
                 }
-                else {
+                else {                                                      //不可重用，新建View
                     convertView = inflateImageView(position, chatMsg);
 
                 }
 
+                //填充图片源
                 MsgImage image = ChatMsgApi.parseImgJson(chatMsg.getMessage());
-
-                String imageName = ConfigApi.decryptFile(image.getEncDecKey(), image.getThumbShowPath());
-                File file = new File(imageName);
-                if (file.exists()) {
-                    Bitmap picture = LiteDood.getBitmapFromFile(imageName);
-                    ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage.setImageBitmap(picture);
-                }
-                else {
+                if (!setMessageImageShow(image.getEncDecKey(), image.getThumbShowPath(), ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage)) {
+                    //没有设置成功说明图片没有下载或没有解码，重新找服务器获取
                     RequestHelper.downloadThumbImg(chatMsg, new MessageAdapterRequestHandler(TYPE_HANDLER_GET_PICTURE_THUMB,
                             ((ImageMsgViewHolder) convertView.getTag()).ivImageMessage, image.getEncDecKey()));
                 }
-
+//
                 break;
             case ChatMsgApi.TYPE_FILE:
                 msg = "[文件]";
@@ -227,10 +231,10 @@ public class MessageAdapter extends BaseAdapter {
                 break;
         }
 
-        BaseViewHolder textMsgViewHolder = ((BaseViewHolder) convertView.getTag());
+        BaseViewHolder baseViewHolder = ((BaseViewHolder) convertView.getTag());
         //不是弱提示，那么肯定是对话，一定会有头像和名称组件
         if (chatMsg.getMessageType() != ChatMsgApi.TYPE_WEAK_HINT) {
-            textMsgViewHolder.imgAvatar.setImageBitmap(LiteDood.getBitmapFromFile(chatMsg.getAvatar()));
+            baseViewHolder.imgAvatar.setImageBitmap(LiteDood.getBitmapFromFile(chatMsg.getAvatar()));
 
             switch (mMessageActivity.getIntent().getIntExtra(MessageActivity.ID_MESSAGE_TYPE, 0)) {
                 case MessageActivity.TYPE_MESSAGE_GROUP:              //群显示名称
@@ -239,17 +243,17 @@ public class MessageAdapter extends BaseAdapter {
                         name = MessageActivity.getMemberName(chatMsg.getSendID());
                     }
                     if (!name.equals("")) {
-                        textMsgViewHolder.tvName.setText(name);
+                        baseViewHolder.tvName.setText(name);
                     } else {
 
-                        textMsgViewHolder.tvName.setVisibility(View.GONE);
+                        baseViewHolder.tvName.setVisibility(View.GONE);
                     }
                     break;
                 case MessageActivity.TYPE_MESSAGE_CHAT:              //点对点聊天不显示
-                    textMsgViewHolder.tvName.setVisibility(View.GONE);
+                    baseViewHolder.tvName.setVisibility(View.GONE);
                     break;
                 default:
-                    textMsgViewHolder.tvName.setVisibility(View.GONE);
+                    baseViewHolder.tvName.setVisibility(View.GONE);
                     break;
             }
         }
@@ -365,6 +369,22 @@ public class MessageAdapter extends BaseAdapter {
 
     }
 
+    //将加密图片解码，并设置到ImageView中显示
+    private boolean setMessageImageShow(String decKey, String path, View imageView) {
+        boolean result = false;
+        String imageName = ConfigApi.decryptFile(decKey, path);
+        File file = new File(imageName);
+        if (file.exists()) {
+            Bitmap picture = LiteDood.getBitmapFromFile(imageName);
+
+            if (imageView != null) {
+                ((AppCompatImageView) imageView).setImageBitmap(picture);
+                result = true;
+            }
+        }
+        return result;
+    }
+
     private boolean isShowTimeWeakHint(int position) {
         boolean result = false;
         if (position == 0) {
@@ -412,6 +432,7 @@ public class MessageAdapter extends BaseAdapter {
         private int mType;
         private View mView;
         private String mDecKey;
+        private String mEncFilePath;
 
         public MessageAdapterRequestHandler(int type, View imageMessageView, String decKey) {
             mType = type;
@@ -420,20 +441,13 @@ public class MessageAdapter extends BaseAdapter {
         }
 
         @Override
-        public void handleSuccess(Message msg) {
+        public void handleSuccess(final Message msg) {
+            mEncFilePath = msg.getData().toString();
             switch (mType) {
                 case TYPE_HANDLER_GET_PICTURE_THUMB:
-                    Log.v(TAG, msg.getData().toString());
-                    String imageName = ConfigApi.decryptFile(mDecKey, String.valueOf(msg.getData()));
-                    Log.v(TAG, imageName);
-                    File file = new File(imageName);
-                    Log.v(TAG, file.toString());
-                    if (file.exists()) {
-                        Bitmap picture = LiteDood.getBitmapFromFile(imageName);
-
-                        if (mView != null)
-                            ((AppCompatImageView) mView).setImageBitmap(picture);
-                    }
+                   setMessageImageShow(mDecKey, mEncFilePath, mView);
+                    break;
+                case TYPE_HANDLER_SHOW_IMAGE:
                     break;
 
             }
