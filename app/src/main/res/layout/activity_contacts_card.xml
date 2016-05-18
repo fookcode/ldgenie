@@ -10,7 +10,7 @@
         android:id="@+id/tbContactCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/White" />
+        style="@style/LiteDoodActionBarTheme"/>
 
     <android.support.v7.widget.ListViewCompat
         android:id="@+id/lvContactCardItemList"

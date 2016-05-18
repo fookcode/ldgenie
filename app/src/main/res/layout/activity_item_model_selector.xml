@@ -8,7 +8,8 @@
         android:id="@+id/tbItemModelSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="创建群">
+        android:title="创建群"
+        style="@style/LiteDoodActionBarTheme">
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnCreateGroup"
             android:layout_width="48dp"

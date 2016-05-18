@@ -11,17 +11,18 @@
 		<android.support.v7.widget.Toolbar
 			android:id="@+id/tbMain"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:navigationIcon="@drawable/ic_drawer"
+			style="@style/LiteDoodActionBarTheme">
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/ivMainMenu"
-                android:layout_width="wrap_content"
+                android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
+				android:scaleType="centerInside"
                 android:clickable="true"
                 android:background="@drawable/sl_widget_common_click"
-                android:layout_marginRight="@dimen/common_margin_max"
-                android:src="@drawable/ic_plus_sign"
+                android:src="@drawable/ic_plus"
                 android:layout_gravity="right"
-                android:padding="@dimen/common_padding_max"
                 />
         </android.support.v7.widget.Toolbar>
 		<FrameLayout

@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:name=".LiteDoodApplication"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:theme="@style/LiteDoodTheme">
         <provider
             android:authorities="com.vrv.litedood"
             android:name=".provider.LiteDoodMessageProvider"
@@ -76,8 +76,6 @@
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
         <activity android:name=".ui.activity.FindContactsActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
-        <activity android:name=".ui.activity.FindContactsResultActivity"
-            android:parentActivityName=".ui.activity.FindContactsActivity"/>
     </application>
 
 </manifest>

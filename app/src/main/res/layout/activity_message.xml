@@ -4,11 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/litedood_background">
+    android:background="@color/litedood_list_background">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarMessage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        style="@style/LiteDoodActionBarTheme"/>
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/clpbMessageHistoryLoading"
         android:layout_width="match_parent"

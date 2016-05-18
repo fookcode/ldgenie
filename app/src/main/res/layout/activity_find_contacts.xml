@@ -6,7 +6,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tbFindContacts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/LiteDoodActionBarTheme">
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btnFindContactsAction"
         android:layout_width="48dp"

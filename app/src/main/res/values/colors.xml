@@ -141,7 +141,9 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
 
-    <color name="litedood_background">#F2F2F2</color>
+    <color name="litedood_actionbar_backgroud">#C13F2F</color>
+
+    <color name="litedood_list_background">#F2F2F2</color>
     <color name="litedood_button_bar_backgroud">#F8F8F8</color>
 
     <color name="litedood_button_backgroud">#C13F2F</color>

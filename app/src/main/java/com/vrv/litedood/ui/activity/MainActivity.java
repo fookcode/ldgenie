@@ -215,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         mToobar = (Toolbar) findViewById(R.id.tbMain);
         mToobar.setNavigationIcon(R.drawable.ic_drawer);
-
         setSupportActionBar(mToobar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
