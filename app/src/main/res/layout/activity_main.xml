@@ -13,7 +13,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:navigationIcon="@drawable/ic_drawer"
-			style="@style/LiteDoodActionBarTheme">
+			style="@style/LiteDoodActionBarTheme" >
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/ivMainMenu"
                 android:layout_width="?attr/actionBarSize"
