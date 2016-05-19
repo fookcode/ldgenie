@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.ListViewCompat;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -235,8 +236,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final ListPopupWindow popupWindow = new ListPopupWindow(MainActivity.this);
                 List<HashMap<String, Object>> data = new ArrayList<>();
-                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_user), R.drawable.ic_launcher));
-                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_group), R.drawable.ic_launcher));
+                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_user), R.drawable.ic_add_friend));
+                data.add(newMenuItem(getResources().getString(R.string.main_menu_item_add_group), R.drawable.ic_create_group));
 
                 ListAdapter adapter = new SimpleAdapter(
                         MainActivity.this,
@@ -246,9 +247,11 @@ public class MainActivity extends AppCompatActivity {
                         new int[] {R.id.tvMainMenuItemText, R.id.ivMainMenuItemIcon}); //布局中的视图ResId集合，这最后两个参数值一一对应
 
 
+                popupWindow.setListSelector(getResources().getDrawable(R.drawable.sl_main_popup_menu_item));
                 popupWindow.setAnchorView(v);
                 popupWindow.setAdapter(adapter);
                 popupWindow.setWidth(320);
+                //popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.sl_main_popup_menu_background));
                 popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

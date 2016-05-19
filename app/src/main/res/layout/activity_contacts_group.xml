@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
@@ -10,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/litedood_actionbar_backgroud">
+        app:theme="@style/LiteDoodActionBarTheme">
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/ivContactGroupAdd"
             android:layout_width="?attr/actionBarSize"
@@ -20,7 +21,8 @@
             android:background="@drawable/sl_widget_common_click"
             android:clickable="true"
             android:padding="@dimen/common_padding_max"
-            android:src="@drawable/ic_add_group" />
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_group_chat" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.ListViewCompat

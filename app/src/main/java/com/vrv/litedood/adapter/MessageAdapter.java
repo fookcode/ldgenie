@@ -213,8 +213,14 @@ public class MessageAdapter extends BaseAdapter {
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_REVOKE:
-                msg = "[TYPE_REVOKE]";
-                convertView = inflateTextView(position, chatMsg);
+                //msg = "[消息撤回]";
+//                convertView = inflateTextView(position, chatMsg);
+//                ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
+//                ConfigApi.decryptFile()
+                msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
+                if (msg.equals("")) msg = "[消息撤回]";
+                else msg = msg + "撤回了一条消息";
+                convertView = inflateWeakHintView(ChatMsgApi.TYPE_WEAK_HINT, convertView);
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;
             case ChatMsgApi.TYPE_DYNAMIC:
@@ -236,7 +242,7 @@ public class MessageAdapter extends BaseAdapter {
 
         BaseViewHolder baseViewHolder = ((BaseViewHolder) convertView.getTag());
         //不是弱提示，那么肯定是对话，一定会有头像和名称组件
-        if (chatMsg.getMessageType() != ChatMsgApi.TYPE_WEAK_HINT) {
+        if ((chatMsg.getMessageType() != ChatMsgApi.TYPE_WEAK_HINT) && (chatMsg.getMessageType() != ChatMsgApi.TYPE_REVOKE)) {
             //baseViewHolder.imgAvatar.setImageBitmap(LiteDood.getBitmapFromFile(chatMsg.getAvatar()));
 
 

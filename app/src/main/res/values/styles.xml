@@ -2,7 +2,7 @@
 
     <style name="LiteDoodTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <style name="LiteDoodActionBarTheme" parent="Base.Widget.AppCompat.ActionBar">
+    <style name="LiteDoodActionBarTheme" parent="Theme.AppCompat">
         <item name="android:titleTextStyle">@style/LiteDoodActionBarTitleTextStyle</item>
         <item name="android:background">@color/litedood_actionbar_backgroud</item>
     </style>

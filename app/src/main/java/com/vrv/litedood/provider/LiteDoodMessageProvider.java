@@ -84,12 +84,12 @@ public class LiteDoodMessageProvider extends ContentProvider {
             }
         });
 
-        SDKManager.instance().getAuth().setReLoginListener(new Auth.ReLoginListener() {
-            @Override
-            public void onReLogin(int i) {
-                Log.v(TAG, String.valueOf(i));
-            }
-        });
+//        SDKManager.instance().getAuth().setReLoginListener(new Auth.ReLoginListener() {
+//            @Override
+//            public void onReLogin(int i) {
+//                Log.v(TAG, String.valueOf(i));
+//            }
+//        });
         return true;
     }
 
