@@ -2,6 +2,7 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -160,15 +161,15 @@ public class MainActivity extends AppCompatActivity {
             String avatarPath = myself.getAvatar();
             if ((null != avatarPath) && (!avatarPath.isEmpty())) {
                 File fAvatar = new File(avatarPath);
+                Bitmap bitmapAvatar;
                 if ((fAvatar.isDirectory()) || (!fAvatar.exists())) {
 
-                    ivAvatar.setImageResource(R.drawable.ic_launcher);
+                    bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
                     //boolean result = RequestHelper.getUserInfo(chat.getId(), new ChatRequlestHandler(context, viewHolder, TYPE_GET_USER));
                     //if (!result) {Log.v(TAG, "获取用户数据失败");}
                 }
                 else {
-                    Bitmap bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
-                    ivAvatar.setImageDrawable(new BitmapDrawable(getResources(), LiteDood.getRoundedCornerBitmap(bitmapAvatar, 180)));
+                    bitmapAvatar = BitmapFactory.decodeFile(avatarPath);
 //                    ivAvatar.setImageBitmap(bitmapAvatar);
 //                    ArrayList<Drawable> list = new ArrayList<>();
 //                    list.add(new BitmapDrawable(getResources(), bitmapAvatar));
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
+                ivAvatar.setImageDrawable(new BitmapDrawable(getResources(), LiteDood.getRoundedCornerBitmap(bitmapAvatar, 180)));     //180表示是个全圆，第二个参数为圆度
             }
 
             View.OnClickListener listener = new View.OnClickListener() {

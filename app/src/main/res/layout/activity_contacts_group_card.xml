@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
             android:minHeight="32dp"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
             android:minHeight="32dp"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
             android:minHeight="32dp"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
             android:minHeight="32dp"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:layout_margin="@dimen/common_margin_min"
             android:clickable="true"
             android:minHeight="32dp"
-            android:background="@drawable/sl_widget_common_click">
+            android:background="@drawable/sl_main_menu_button_click">
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -3,6 +3,8 @@ package com.vrv.litedood.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,24 +36,25 @@ public class ConfigureAdapter extends BaseAdapter {
 
         public ArrayList<HashMap> toList() {
             ArrayList<HashMap> result = new ArrayList<>();
-            result.add(newItem("声音设置", TYPE_TITLE, null));
-            result.add(newItem("提示音", TYPE_BOOLEAN, bSoundOn));
-            result.add(newItem("震动", TYPE_BOOLEAN, bVibrationOn));
+            result.add(newItem("声音设置", TYPE_TITLE, null, R.drawable.ic_config_sound));
+            result.add(newItem("提示音", TYPE_BOOLEAN, bSoundOn, 0));
+            result.add(newItem("震动", TYPE_BOOLEAN, bVibrationOn, 0));
 //
 //            result.add(newItem("聊天设置", TYPE_TITLE, null));
 //            result.add(newItem("其它", TYPE_BOOLEAN, true));
 
-            result.add(newItem("关于", TYPE_TITLE, null));
-            result.add(newItem("关于"+ context.getResources().getString(R.string.app_name), TYPE_NULL, null));
+            result.add(newItem("关于", TYPE_TITLE, null, R.drawable.ic_about));
+            result.add(newItem("关于"+ context.getResources().getString(R.string.app_name), TYPE_NULL, null, 0));
 
             return result;
         }
 
-        private HashMap<String, Object> newItem(String name, int type, Object value) {
+        private HashMap<String, Object> newItem(String name, int type, Object value, int ResId) {
             HashMap<String, Object> result = new HashMap<>();
             result.put("name", name);
             result.put("type", type);
             result.put("value", value);
+            result.put("resid", ResId);
             return result;
         }
 
@@ -105,6 +108,10 @@ public class ConfigureAdapter extends BaseAdapter {
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_config_title, null);
                 AppCompatTextView tvConfigCategoryTitle = (AppCompatTextView)convertView.findViewById(R.id.tvConfigCategoryTitle);
                 tvConfigCategoryTitle.setText((String)item.get("name"));
+                AppCompatImageView ivConfigCategoryTitleImage = (AppCompatImageView)convertView.findViewById(R.id.ivConfigCategoryTitleImage);
+                if((int)item.get("resid") != 0) {
+                    ivConfigCategoryTitleImage.setImageResource((int)item.get("resid"));
+                }
                 break;
             case TYPE_BOOLEAN:
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_config_item, null);

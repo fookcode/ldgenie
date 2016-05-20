@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvConfigCategoryTitle"
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/LightGrey"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    android:orientation="horizontal"
+    android:background="@color/litedood_config_title"
+    android:gravity="center_vertical"
+    android:padding="@dimen/common_padding_max">
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivConfigCategoryTitleImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_margin_max"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvConfigCategoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/DarkGray"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginLeft="@dimen/common_margin_min" />
+</android.support.v7.widget.LinearLayoutCompat>

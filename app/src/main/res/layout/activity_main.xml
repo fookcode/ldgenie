@@ -20,7 +20,7 @@
                 android:layout_height="?attr/actionBarSize"
 				android:scaleType="centerInside"
                 android:clickable="true"
-                android:background="@drawable/sl_widget_common_click"
+                android:background="@drawable/sl_main_menu_button_click"
                 android:src="@drawable/ic_plus"
                 android:layout_gravity="right"
                 />
@@ -49,6 +49,7 @@
                 android:src="@drawable/ic_message_focused"
                 android:padding="14dp"
                 android:scaleType="centerInside"
+                android:background="@android:color/transparent"
                 android:text="@string/main_message_button_text"/>
 			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/btnContacts"
@@ -58,6 +59,7 @@
                 android:src="@drawable/ic_contacts"
                 android:padding="14dp"
                 android:scaleType="centerInside"
+                android:background="@android:color/transparent"
 				android:text="@string/main_contacts_button_text" />
 			<android.support.v7.widget.AppCompatImageButton
 				android:id="@+id/btnPandora"
@@ -67,6 +69,7 @@
                 android:src="@drawable/ic_pandora"
                 android:padding="14dp"
                 android:scaleType="centerInside"
+                android:background="@android:color/transparent"
 				android:text="@string/main_pandora_button_text" />
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -78,21 +81,23 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
-		android:background="@color/LightSteelBlue"
+		android:background="@color/White"
         android:clickable="true">
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="220dp"
 			android:orientation="horizontal"
-            android:background="@color/LightCyan">
+            android:background="@drawable/bg">
 			<android.support.v7.widget.AppCompatImageView
 				android:id="@+id/ivMyProfileAvatar"
 				android:layout_width="108dp"
 				android:layout_height="108dp"
 				android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"
-                android:scaleType="centerCrop"
-                android:clickable="true" />
+                android:scaleType="fitCenter"
+                android:clickable="true"
+                android:padding="1dp"
+                android:background="@drawable/sl_main_avatar"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMyProfileName"
                 android:layout_width="wrap_content"
@@ -100,6 +105,7 @@
                 android:layout_below="@id/ivMyProfileAvatar"
 				android:layout_margin="@dimen/common_margin"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/White"
                 android:text="用户名称"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 			<android.support.v7.widget.AppCompatTextView
@@ -109,6 +115,7 @@
                 android:layout_below="@id/tvMyProfileName"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
 				android:layout_centerHorizontal="true"
+                android:textColor="@color/litedood_myself_sign_text"
                 android:singleLine="true" />
 		</RelativeLayout>
         <android.support.v7.widget.ListViewCompat
@@ -116,25 +123,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:divider="@android:color/holo_red_dark"
+            android:divider="@color/LightGrey"
             >
         </android.support.v7.widget.ListViewCompat>
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <android.support.v4.widget.Space
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
+            android:orientation="horizontal"
+            android:padding="@dimen/common_margin_max"
+            android:gravity="center_vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:paddingLeft="@dimen/common_margin_max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src ="@drawable/ic_exit" />
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_margin="@dimen/common_margin_max"
-                android:text="@string/logout_button_text"
-                />
+                android:layout_height="wrap_content"
+                android:textColor="@color/DarkGray"
+                android:text="退出登录"
+                android:background="@android:color/transparent"
+                style="?android:attr/borderlessButtonStyle" />
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v4.widget.DrawerLayout>

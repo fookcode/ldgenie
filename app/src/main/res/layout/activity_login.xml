@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_forgot_password"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/sl_widget_common_click"
+                android:background="@drawable/sl_main_menu_button_click"
                 android:clickable="true"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvRegisterUser"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login_text_register"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/sl_widget_common_click"
+                android:background="@drawable/sl_main_menu_button_click"
                 android:clickable="true"/>
 
         </RelativeLayout>
