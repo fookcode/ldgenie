@@ -81,6 +81,7 @@ public class ContactsCardActivity extends AppCompatActivity {
             setContentView(R.layout.activity_contacts_card);
 
             Toolbar tbContactCard = (Toolbar) findViewById(R.id.tbContactCard);
+            tbContactCard.setNavigationIcon(R.drawable.ic_back);
             setSupportActionBar(tbContactCard);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

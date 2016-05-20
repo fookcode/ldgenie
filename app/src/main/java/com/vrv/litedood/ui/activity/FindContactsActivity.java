@@ -44,6 +44,7 @@ public class FindContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_contacts);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbFindContacts);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -140,10 +140,10 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:textColor="@color/DarkGray"
                 android:text="退出登录"
-                android:background="@android:color/transparent"
+
                 style="?android:attr/borderlessButtonStyle" />
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>

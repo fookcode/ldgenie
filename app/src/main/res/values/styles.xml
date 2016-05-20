@@ -1,15 +1,25 @@
 <resources>
 
-    <style name="LiteDoodTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="LiteDoodTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/litedood_button_backgroud</item>
+        <item name="colorControlActivated">@color/litedood_button_backgroud</item>
+        <item name="colorControlHighlight">@color/litedood_button_backgroud_pressed</item>
+    </style>
 
     <style name="LiteDoodActionBarTheme" parent="Theme.AppCompat">
         <item name="android:titleTextStyle">@style/LiteDoodActionBarTitleTextStyle</item>
         <item name="android:background">@color/litedood_actionbar_backgroud</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_back</item>
+
     </style>
 
     <style name="LiteDoodActionBarTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/White</item>
     </style>"
+
+    <style name="LiteDoodEditTextViewStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@color/litedood_button_backgroud</item>
+    </style>
 
     <style name="testStyle" parent="Base.Widget.AppCompat.ImageButton">
         <item name="attr3">testNull</item>

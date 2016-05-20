@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestHelper.logout(new MainRequestHandler(TYPE_HANDLER_LOGOUT));
-                SDKManager.instance().destroy();
+
             }
         });
     }
@@ -389,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 case TYPE_HANDLER_LOGOUT:
                     LoginActivity.startLoginActivity(MainActivity.this, true);
                     LiteDoodApplication.getAppContext().setMyself(null);
+                    //SDKManager.instance().destroy();
                     break;
 
                 default:
@@ -411,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                         hint = hint + ", 请与管理员联系";
                     }
                     Toast.makeText(MainActivity.this, hint, Toast.LENGTH_SHORT).show();
+                    //SDKManager.instance().destroy();
                     break;
 
             }

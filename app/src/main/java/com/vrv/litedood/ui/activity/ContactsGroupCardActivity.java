@@ -33,6 +33,7 @@ public class ContactsGroupCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts_group_card);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbContactsGroupCard);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -111,6 +111,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void initToolbar() {
         mToolbarMessage = (Toolbar)findViewById(R.id.toolbarMessage);
+        mToolbarMessage.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(mToolbarMessage);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

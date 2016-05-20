@@ -77,6 +77,7 @@ public class ContactsGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts_group);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbContactGroup);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);

@@ -67,6 +67,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         pager.setCurrentItem(STEP1);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbForgotPassword);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
