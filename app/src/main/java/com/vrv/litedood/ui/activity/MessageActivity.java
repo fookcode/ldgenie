@@ -3,6 +3,7 @@ package com.vrv.litedood.ui.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -10,11 +11,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.Toast;
 
@@ -229,9 +233,8 @@ public class MessageActivity extends AppCompatActivity {
 //                getShowedMessageCount(count),
 //                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
 
-        final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
-
+        final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,6 +246,24 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+    }
+
+    public boolean isScrollMessageListView() {
+        boolean result = false;
+        final LinearLayoutCompat rootLayout = (LinearLayoutCompat)findViewById(R.id.llActivityMessageRootLayout);
+        int screenHeight = rootLayout.getRootView().getHeight();
+
+        Rect rectangle= new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        int contentScreenHeight = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight() + rectangle.top;
+
+        if (contentScreenHeight < screenHeight) {
+            result = true;
+        }
+        return  result;
     }
 
     private void setMessageHistory() {
