@@ -35,67 +35,75 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/White">
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/edtMessage"
-            android:layout_width="1dp"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginLeft="@dimen/common_margin_max"
-            android:layout_marginBottom="@dimen/common_margin_min"
-            android:layout_weight="1" />
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnSendMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            style="?android:attr/borderlessButtonStyle"
-            android:text="发送"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+            android:orientation="horizontal"
+            android:background="@color/White">
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/edtMessage"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginLeft="@dimen/common_margin_max"
+                android:layout_marginBottom="@dimen/common_margin_min"
+                android:layout_weight="1" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnSendMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="发送"/>
+        </android.support.v7.widget.LinearLayoutCompat>
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/common_padding_max"
-        android:background="@color/litedood_list_background">
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/btnMessageFace"
-            android:layout_width="16dp"
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_message_face"
-            android:layout_marginRight="1dp"
-            android:clickable="true"
-            />
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/btnMessageImage"
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_message_image"
-            android:clickable="true"
-            />
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/btnMessageCamera"
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_message_camera"
-            android:clickable="true"
-            />
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/btnMessageFile"
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_message_file"
-            android:clickable="true"
-            />
-    </android.support.v7.widget.LinearLayoutCompat>
+            android:padding="@dimen/common_padding_max"
+            android:background="@color/litedood_list_background">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/btnMessageFace"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_message_face"
+                android:layout_marginRight="1dp"
+                android:clickable="true"
+                />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/btnMessageImage"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_message_image"
+                android:clickable="true"
+                />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/btnMessageCamera"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_message_camera"
+                android:clickable="true"
+                />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/btnMessageFile"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_message_file"
+                android:clickable="true"
+                />
+        </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpMessageAttachment"
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:visibility="gone">
+
+        </android.support.v4.view.ViewPager>
 
     </android.support.v7.widget.LinearLayoutCompat>
 
