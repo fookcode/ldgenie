@@ -77,6 +77,7 @@
             android:parentActivityName=".ui.activity.ContactsGroupActivity" />
         <activity android:name=".ui.activity.FindContactsActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.TestActivity" />
     </application>
 
 </manifest>

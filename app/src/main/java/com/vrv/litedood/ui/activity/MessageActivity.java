@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +25,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
@@ -72,6 +70,9 @@ public class MessageActivity extends AppCompatActivity {
     public static final int TYPE_MESSAGE_UNKNOWN = 0;
 
     private static final int DEFAULT_MESSAGE_COUNT = 15;
+
+    private static final int FRAGMENT_ITEM_FACE = 0;
+    private static final int FRAGMENT_ITEM_IMAGE = 1;
 
     private static List<Contact> mMemberContacts = null;         //两个表态变量，临时用作处理Group中的发言人名字
     private static Group mGroup = null;
@@ -244,6 +245,12 @@ public class MessageActivity extends AppCompatActivity {
 //                new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
 
         final AppCompatEditText edtMessage = (AppCompatEditText)findViewById(R.id.edtMessage);
+        edtMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.vpMessageAttachment).setVisibility(View.GONE);
+            }
+        });
         final AppCompatButton btnSendMessage = (AppCompatButton)findViewById(R.id.btnSendMessage);
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,35 +269,50 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void initAttachmentAction() {
-        ArrayList<Fragment> attachmentFragementList = new ArrayList<>();
+        ArrayList<Fragment> fragments = new ArrayList<>();
         final ViewPager pager = (ViewPager)findViewById(R.id.vpMessageAttachment);
         MessageFaceFagment messageFaceFagment = new MessageFaceFagment();
         MessageImageFragment messageImageFragment = new MessageImageFragment();
-        attachmentFragementList.add(messageFaceFagment);
-        attachmentFragementList.add(messageImageFragment);
+        fragments.add(messageFaceFagment);
+        fragments.add(messageImageFragment);
         FragmentManager fm = getSupportFragmentManager();
-        fm.getFragments().add(messageFaceFagment);
-        fm.getFragments().add(messageImageFragment);
-        pager.setAdapter(new MessageAttachmentPagerAdapter(fm));
+//        FragmentTransaction transaction = fm.beginTransaction();
+//        transaction.add(messageFaceFagment, "FACE");
+//        transaction.add(messageImageFragment, "IMAGE").hide(messageImageFragment);
+//        transaction.commit();
+        pager.setAdapter(new MessageAttachmentPagerAdapter(fm, fragments));
 
-        AppCompatImageButton btnFace = (AppCompatImageButton)findViewById(R.id.btnMessageFace);
+        AppCompatImageView btnFace = (AppCompatImageView)findViewById(R.id.btnMessageFace);
         btnFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
-                pager.setCurrentItem(0);
+                if (pager.getVisibility() != View.VISIBLE) {
+                    InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
+                    pager.setCurrentItem(0);
+                }
+                else {
+                    if (pager.getCurrentItem() != FRAGMENT_ITEM_FACE) {pager.setCurrentItem(FRAGMENT_ITEM_FACE);}
+                    else pager.setVisibility(View.GONE);
+                }
             }
         });
-        AppCompatImageButton btnImage = (AppCompatImageButton)findViewById(R.id.btnMessageImage);
+        AppCompatImageView btnImage = (AppCompatImageView)findViewById(R.id.btnMessageImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
-                pager.setCurrentItem(1);
+                if (pager.getVisibility() != View.VISIBLE) {
+                    InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
+                    pager.setCurrentItem(FRAGMENT_ITEM_IMAGE);
+                }
+                else {
+                    if (pager.getCurrentItem() != FRAGMENT_ITEM_IMAGE) {pager.setCurrentItem(FRAGMENT_ITEM_IMAGE);}
+                    else  pager.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -300,19 +322,20 @@ public class MessageActivity extends AppCompatActivity {
         private FragmentManager mFragmentManager;
         private ArrayList<Fragment> mFragmentList;
 
-        public MessageAttachmentPagerAdapter(FragmentManager fm) {
+        public MessageAttachmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
             super(fm);
             mFragmentManager = fm;
+            mFragmentList = fragments;
         }
 
         @Override
         public int getCount() {
-            return mFragmentManager.getFragments().size();
+            return mFragmentList.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentManager.getFragments().get(position);
+            return mFragmentList.get(position);
         }
     }
 
