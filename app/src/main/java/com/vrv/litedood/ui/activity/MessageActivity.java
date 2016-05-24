@@ -4,22 +4,29 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
@@ -34,6 +41,8 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
+import com.vrv.litedood.ui.activity.MessageAttachmentFragment.MessageFaceFagment;
+import com.vrv.litedood.ui.activity.MessageAttachmentFragment.MessageImageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +120,7 @@ public class MessageActivity extends AppCompatActivity {
 
         initToolbar();
         initMessageData();
+        initAttachmentAction();
     }
 
     private void initToolbar() {
@@ -250,6 +260,62 @@ public class MessageActivity extends AppCompatActivity {
 
 
     }
+
+    private void initAttachmentAction() {
+        ArrayList<Fragment> attachmentFragementList = new ArrayList<>();
+        final ViewPager pager = (ViewPager)findViewById(R.id.vpMessageAttachment);
+        MessageFaceFagment messageFaceFagment = new MessageFaceFagment();
+        MessageImageFragment messageImageFragment = new MessageImageFragment();
+        attachmentFragementList.add(messageFaceFagment);
+        attachmentFragementList.add(messageImageFragment);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.getFragments().add(messageFaceFagment);
+        fm.getFragments().add(messageImageFragment);
+        pager.setAdapter(new MessageAttachmentPagerAdapter(fm));
+
+        AppCompatImageButton btnFace = (AppCompatImageButton)findViewById(R.id.btnMessageFace);
+        btnFace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
+                pager.setCurrentItem(0);
+            }
+        });
+        AppCompatImageButton btnImage = (AppCompatImageButton)findViewById(R.id.btnMessageImage);
+        btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager inputMethodService = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodService.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                MessageActivity.this.findViewById(R.id.vpMessageAttachment).setVisibility(View.VISIBLE);
+                pager.setCurrentItem(1);
+            }
+        });
+
+    }
+
+    class MessageAttachmentPagerAdapter extends FragmentPagerAdapter {
+        private FragmentManager mFragmentManager;
+        private ArrayList<Fragment> mFragmentList;
+
+        public MessageAttachmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+            mFragmentManager = fm;
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentManager.getFragments().size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentManager.getFragments().get(position);
+        }
+    }
+
 
     public boolean isScrollMessageListView() {
         boolean result = false;

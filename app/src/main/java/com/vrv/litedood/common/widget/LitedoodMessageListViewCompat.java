@@ -37,23 +37,23 @@ public class LitedoodMessageListViewCompat extends ListViewCompat {
             this.setSelection(this.getCount() -1);
         }
 
-        float g = getResources().getDisplayMetrics().density;
-        Log.v(TAG, "density: " + String.valueOf(g));
-        float g1 = (float)getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-        Log.v(TAG, "densityDpi / Density_Default: " + String.valueOf(g1));
-
-        Rect rect= new Rect();
-        getWindowVisibleDisplayFrame(rect);
-
-        int contentViewHeight = ((AppCompatActivity)getContext()).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();//顶层GroupView的高度，不含status和title，此例中也就是ListView的父对象
-        Log.v(TAG, "Android Content View height: " + String.valueOf(contentViewHeight));
-
-        if (((AppCompatActivity)getContext()).getWindow().getDecorView() == this.getRootView()) {
-            Log.v(TAG, "getWindow().getDecorView() == View.getRootView()");
-        }
-        int keyboardHeight = this.getRootView().getHeight() - (((LinearLayoutCompat)this.getParent()).getHeight() + rect.top);
-        float keyboardHeightDP = keyboardHeight / g;
-        Log.v(TAG, "dp: " + String.valueOf(keyboardHeightDP));
+//        float g = getResources().getDisplayMetrics().density;
+//        Log.v(TAG, "density: " + String.valueOf(g));
+//        float g1 = (float)getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+//        Log.v(TAG, "densityDpi / Density_Default: " + String.valueOf(g1));
+//
+//        Rect rect= new Rect();
+//        getWindowVisibleDisplayFrame(rect);
+//
+//        int contentViewHeight = ((AppCompatActivity)getContext()).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();//顶层GroupView的高度，不含status和title，此例中也就是ListView的父对象
+//        Log.v(TAG, "Android Content View height: " + String.valueOf(contentViewHeight));
+//
+//        if (((AppCompatActivity)getContext()).getWindow().getDecorView() == this.getRootView()) {
+//            Log.v(TAG, "getWindow().getDecorView() == View.getRootView()");
+//        }
+//        int keyboardHeight = this.getRootView().getHeight() - (((LinearLayoutCompat)this.getParent()).getHeight() + rect.top);
+//        float keyboardHeightDP = keyboardHeight / g;
+//        Log.v(TAG, "dp: " + String.valueOf(keyboardHeightDP));
 
 
 
