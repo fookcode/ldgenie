@@ -128,7 +128,6 @@ public class MessageAdapter extends BaseAdapter {
                 break;
             case ChatMsgApi.TYPE_IMAGE:
 //                msg = "[图片]";
-
                 if ((convertView != null) &&
                         (((BaseViewHolder)convertView.getTag()).mMsgType == ChatMsgApi.TYPE_IMAGE)  &&
                                 (((BaseViewHolder)convertView.getTag()).mMsgDirection == direction)) {

@@ -10,18 +10,17 @@ import android.view.ViewGroup;
 import com.vrv.litedood.R;
 
 /**
- * Created by yanqiyang on 2016/5/24.
+ * Created by kinee on 2016/6/5.
  */
-public class MessageFaceFagment extends Fragment {
-
-    public MessageFaceFagment() {
+public class MessageFacePageFragment extends Fragment {
+    public MessageFacePageFragment() {
         super();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_message_attachment_face, null);
+        View result = inflater.inflate(R.layout.fragment_message_attachement_face_page, null);
+        return result;
     }
 }

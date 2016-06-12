@@ -39,7 +39,7 @@ import com.vrv.litedood.R;
 import com.vrv.litedood.adapter.MessageAdapter;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
-import com.vrv.litedood.ui.activity.MessageAttachmentFragment.MessageFaceFagment;
+import com.vrv.litedood.ui.activity.MessageAttachmentFragment.MessageFaceFragment;
 import com.vrv.litedood.ui.activity.MessageAttachmentFragment.MessageImageFragment;
 
 import java.util.ArrayList;
@@ -271,13 +271,13 @@ public class MessageActivity extends AppCompatActivity {
     private void initAttachmentAction() {
         ArrayList<Fragment> fragments = new ArrayList<>();
         final ViewPager pager = (ViewPager)findViewById(R.id.vpMessageAttachment);
-        MessageFaceFagment messageFaceFagment = new MessageFaceFagment();
+        MessageFaceFragment messageFaceFragment = new MessageFaceFragment();
         MessageImageFragment messageImageFragment = new MessageImageFragment();
-        fragments.add(messageFaceFagment);
+        fragments.add(messageFaceFragment);
         fragments.add(messageImageFragment);
         FragmentManager fm = getSupportFragmentManager();
 //        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.add(messageFaceFagment, "FACE");
+//        transaction.add(messageFaceFragment, "FACE");
 //        transaction.add(messageImageFragment, "IMAGE").hide(messageImageFragment);
 //        transaction.commit();
         pager.setAdapter(new MessageAttachmentPagerAdapter(fm, fragments));
