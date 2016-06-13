@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 
@@ -770,5 +771,63 @@ public final class LiteDood {
             result = DateUtils.formatDateTime(context, sendTime, DateUtils.FORMAT_SHOW_DATE);
         }
         return result;
+    }
+
+    public static ArrayList<Bitmap[][]> getFacesEx() {
+        final int ORI_WIDTH = 3168;      //all pixel
+        final int WIDTH = 32;
+        final int HEIGHT = 30;//one face's width and height
+        final int H_COUNT = 7;
+        final int V_COUNT= 3;
+
+        int count = 0;
+
+        ArrayList<Bitmap[][]> result = new ArrayList<>();
+
+        Bitmap faceAll = BitmapFactory.decodeResource(LiteDoodApplication.getMainActivity().getResources(), R.drawable.face_emoji_all);
+
+        double p = ((double)ORI_WIDTH) / (H_COUNT * V_COUNT * WIDTH);
+        for (int n = 0; n < Math.ceil(p); n++) {
+            Bitmap[][] page = new Bitmap[V_COUNT][H_COUNT];
+            for (int i = 0; i < V_COUNT; i++) {
+                for (int j = 0; j < H_COUNT; j++) {
+                    page[i][j] = Bitmap.createBitmap(faceAll, result.size() * V_COUNT * H_COUNT * WIDTH + i * H_COUNT * WIDTH + j * WIDTH, 0, WIDTH, HEIGHT);
+                    if (++count >= ORI_WIDTH/WIDTH) break;
+                }
+            }
+            result.add(page);
+        }
+
+        return result;
+
+    }
+
+    public static ArrayList<Bitmap[]> getFaces() {
+        final int ORI_WIDTH = 3168;      //all pixel
+        final int WIDTH = 32;
+        final int HEIGHT = 30;//one face's width and height
+        final int H_COUNT = 7;
+        final int V_COUNT= 3;
+
+        int count = 0;
+
+        ArrayList<Bitmap[]> result = new ArrayList<>();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        Bitmap faceAll = BitmapFactory.decodeResource(LiteDoodApplication.getMainActivity().getResources(), R.drawable.face_emoji_all, options);
+
+
+        double p = ((double)ORI_WIDTH) / (H_COUNT * V_COUNT * WIDTH);
+        for (int n = 0; n < Math.ceil(p); n++) {
+            Bitmap[] page = new Bitmap[V_COUNT * H_COUNT];
+            for (int i = 0; i < V_COUNT * H_COUNT; i++) {
+                    page[i] = Bitmap.createBitmap(faceAll, result.size() * V_COUNT * H_COUNT * WIDTH + i * WIDTH, 0, WIDTH, HEIGHT);
+                    if (++count >= ORI_WIDTH/WIDTH) break;
+                }
+            result.add(page);
+        }
+
+        return result;
+
     }
 }
