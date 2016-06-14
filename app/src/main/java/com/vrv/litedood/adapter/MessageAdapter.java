@@ -132,17 +132,11 @@ public class MessageAdapter extends BaseAdapter {
                 Matcher m = mPattern.matcher(msg);
                 while (m.find()) {
 
-                    SpannableStringBuilder ssb = new SpannableStringBuilder(msg);
-                    ImageSpan imageSpan = mFaces.get(m.group());
-                    if (imageSpan == null) {
-                        Drawable dr = LiteDood.getFaceFromCode(m.group());
-                        if (dr != null) {
-                            imageSpan = new ImageSpan(dr, ImageSpan.ALIGN_BASELINE);
-                            mFaces.put(m.group(), imageSpan);
-                            sMsg.setSpan(imageSpan, m.start(), m.start() + m.group().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        }
+                    Drawable dr = LiteDood.getFaceFromCode(m.group());
+                    if (dr != null) {
+                        ImageSpan imageSpan = new ImageSpan(dr, ImageSpan.ALIGN_BASELINE);
+                        sMsg.setSpan(imageSpan, m.start(), m.start() + m.group().length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                     }
-
                  }
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(sMsg);
                 break;
