@@ -83,7 +83,8 @@ public class MessageFaceFragment extends Fragment {
         ArrayList<Bitmap[]> faceForPage = LiteDood.getFaces();
         for (int i = 0; i < faceForPage.size(); i ++) {
             MessageFacePageFragment facePage = new MessageFacePageFragment();
-            facePage.setFaces(faceForPage.get(i));
+            facePage.setFaces(faceForPage.get(i), LiteDood.getFaceCode().get(i));
+
             fragments.add(facePage);
         }
         return fragments;

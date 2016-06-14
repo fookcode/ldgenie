@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.text.format.Time;
@@ -44,6 +45,8 @@ public final class LiteDood {
     public static final String DB_NAME = APP_ID + ".db";
 
     public static final int LIST_VIEW_HEADER_ITEM = 1;
+
+    private static ArrayList<Bitmap[]> mFacePages = null;
 
     private static HashMap<Character, Integer> mSeekPositionMap = new HashMap<>();
 
@@ -773,12 +776,14 @@ public final class LiteDood {
         return result;
     }
 
+    private static final int H_COUNT = 7;
+    private static final int V_COUNT= 3;
+
     public static ArrayList<Bitmap[][]> getFacesEx() {
         final int ORI_WIDTH = 3168;      //all pixel
         final int WIDTH = 32;
         final int HEIGHT = 30;//one face's width and height
-        final int H_COUNT = 7;
-        final int V_COUNT= 3;
+
 
         int count = 0;
 
@@ -803,30 +808,73 @@ public final class LiteDood {
     }
 
     public static ArrayList<Bitmap[]> getFaces() {
-        final int ORI_WIDTH = 3168;      //all pixel
+
+        if (mFacePages != null) return mFacePages;
+
+        final int ORI_WIDTH = 1120;      //all pixel
         final int WIDTH = 32;
-        final int HEIGHT = 30;//one face's width and height
-        final int H_COUNT = 7;
-        final int V_COUNT= 3;
+        final int HEIGHT = 32;//one face's width and height
 
         int count = 0;
 
-        ArrayList<Bitmap[]> result = new ArrayList<>();
+        mFacePages = new ArrayList<>();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         Bitmap faceAll = BitmapFactory.decodeResource(LiteDoodApplication.getMainActivity().getResources(), R.drawable.face_emoji_all, options);
-
 
         double p = ((double)ORI_WIDTH) / (H_COUNT * V_COUNT * WIDTH);
         for (int n = 0; n < Math.ceil(p); n++) {
             Bitmap[] page = new Bitmap[V_COUNT * H_COUNT];
             for (int i = 0; i < V_COUNT * H_COUNT; i++) {
-                    page[i] = Bitmap.createBitmap(faceAll, result.size() * V_COUNT * H_COUNT * WIDTH + i * WIDTH, 0, WIDTH, HEIGHT);
+                    page[i] = Bitmap.createBitmap(faceAll, mFacePages.size() * V_COUNT * H_COUNT * WIDTH + i * WIDTH, 0, WIDTH, HEIGHT);
                     if (++count >= ORI_WIDTH/WIDTH) break;
                 }
-            result.add(page);
+            mFacePages.add(page);
         }
+        return mFacePages;
+    }
 
+    final static String[] FACECODES = {
+            "[微笑]", "[色]", "[得意]", "[流泪]", "[害羞]", "[闭嘴]", "[惊讶]",
+            "[呲牙]", "[调皮]", "[发怒]", "[尴尬]", "[睡]", "[抓狂]", "[偷笑]",
+            "[白眼]", "[左哼哼]", "[流汗]", "[疑问]", "[衰]", "[敲打]", "[疯了]",
+            "[晕]", "[不高兴]", "[再见]", "[抠鼻]", "[鼓掌]", "[右哼哼]", "[鄙视]",
+            "[委屈]", "[阴险]", "[亲亲]", "[可怜]", "[傲慢]", "[嘘]", "[坏笑]"
+    };
+
+    public static ArrayList<String[]> getFaceCode() {
+
+        ArrayList<String[]> result = new ArrayList<>();
+
+        int count = 0;
+        for(int i = 0; i < Math.ceil(((double)FACECODES.length)/(V_COUNT*H_COUNT)); i ++) {
+            String[] faceCodes = new String[V_COUNT*H_COUNT];
+            for (int j = 0; j < V_COUNT * H_COUNT; j++) {
+                faceCodes[j] = FACECODES[i*V_COUNT*H_COUNT + j];
+                if (++ count >= FACECODES.length) break;
+
+            }
+            result.add(faceCodes);
+
+        }
+        return result;
+    }
+
+    public static BitmapDrawable getFaceFromCode(String code) {
+        int pos = 0;
+        BitmapDrawable result = null;
+        for(String item :FACECODES) {
+            if (item.equals(code)) break;
+            pos++;
+        }
+        if (pos < FACECODES.length) {
+            int page = pos / (H_COUNT * V_COUNT);
+            int offset = pos % (H_COUNT * V_COUNT);
+
+            if (mFacePages == null) getFaces();
+            result = new BitmapDrawable(LiteDoodApplication.getMainActivity().getResources(), mFacePages.get(page)[offset]);
+            result.setBounds(0, 0, result.getIntrinsicWidth(), result.getIntrinsicHeight());
+        }
         return result;
 
     }

@@ -135,9 +135,6 @@ public class LiteDoodMessageProvider extends ContentProvider {
         return uri;
     }
 
-    public static void test() {}
-
-
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0;
@@ -147,4 +144,5 @@ public class LiteDoodMessageProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
+
 }

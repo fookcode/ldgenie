@@ -1,10 +1,17 @@
 package com.vrv.litedood.adapter;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.format.Time;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +31,10 @@ import com.vrv.litedood.common.sdk.action.RequestHelper;
 import com.vrv.litedood.ui.activity.MessageActivity;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kinee on 2016/3/31.
@@ -45,6 +55,9 @@ public class MessageAdapter extends BaseAdapter {
 
     private static final Bitmap mMyAvatar = LiteDood.getBitmapFromFile(LiteDoodApplication.getAppContext().getMyself().getAvatar());
     private static Bitmap mMemberAvatar = null;
+
+    private Pattern mPattern = Pattern.compile("\\[\\S{1,3}\\]");
+    private HashMap<String, ImageSpan> mFaces = new HashMap<>();
 
     public MessageAdapter(MessageActivity mMessageActivity, List<ChatMsg> chatMsgList) {
         this.mMessageActivity = mMessageActivity;
@@ -112,9 +125,26 @@ public class MessageAdapter extends BaseAdapter {
 
                 }
 
-                msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
                 ((TextMsgViewHolder)convertView.getTag()).mMsgType = ChatMsgApi.TYPE_TEXT;
-                ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
+
+                msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
+                SpannableString sMsg = new SpannableString(msg);
+                Matcher m = mPattern.matcher(msg);
+                while (m.find()) {
+
+                    SpannableStringBuilder ssb = new SpannableStringBuilder(msg);
+                    ImageSpan imageSpan = mFaces.get(m.group());
+                    if (imageSpan == null) {
+                        Drawable dr = LiteDood.getFaceFromCode(m.group());
+                        if (dr != null) {
+                            imageSpan = new ImageSpan(dr, ImageSpan.ALIGN_BASELINE);
+                            mFaces.put(m.group(), imageSpan);
+                            sMsg.setSpan(imageSpan, m.start(), m.start() + m.group().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                    }
+
+                 }
+                ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(sMsg);
                 break;
             case ChatMsgApi.TYPE_AUDIO:
                 msg = "[音频]";
