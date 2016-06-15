@@ -132,9 +132,9 @@ public class MessageAdapter extends BaseAdapter {
                 Matcher m = mPattern.matcher(msg);
                 while (m.find()) {
 
-                    Drawable dr = LiteDood.getFaceFromCode(m.group());
+                    Drawable dr = LiteDood.getFaceByCode(m.group());
                     if (dr != null) {
-                        ImageSpan imageSpan = new ImageSpan(dr, ImageSpan.ALIGN_BASELINE);
+                        ImageSpan imageSpan = new ImageSpan(dr, ImageSpan.ALIGN_BOTTOM);
                         sMsg.setSpan(imageSpan, m.start(), m.start() + m.group().length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                     }
                  }
@@ -192,7 +192,7 @@ public class MessageAdapter extends BaseAdapter {
             case ChatMsgApi.TYPE_WEAK_HINT:
                 msg = ChatMsgApi.parseTxtJson(chatMsg.getMessage());
 //                ConfigApi.decryptFile()
-                if (msg.equals("")) msg = "[弱提示]";
+                if (msg.equals("")) msg = "[暂未识别的提示消息]";
                 convertView = inflateWeakHintView(ChatMsgApi.TYPE_WEAK_HINT, convertView);
                 ((TextMsgViewHolder)convertView.getTag()).tvMessage.setText(msg);
                 break;

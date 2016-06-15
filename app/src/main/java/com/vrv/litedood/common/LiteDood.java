@@ -860,7 +860,7 @@ public final class LiteDood {
         return result;
     }
 
-    public static BitmapDrawable getFaceFromCode(String code) {
+    public static BitmapDrawable getFaceByCode(String code) {
         int pos = 0;
         BitmapDrawable result = null;
         for(String item :FACECODES) {

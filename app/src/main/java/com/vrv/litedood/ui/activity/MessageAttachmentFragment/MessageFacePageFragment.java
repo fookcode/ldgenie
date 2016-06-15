@@ -63,7 +63,7 @@ public class MessageFacePageFragment extends Fragment {
                             BitmapDrawable dr = new BitmapDrawable(LiteDoodApplication.getMainActivity().getResources(),mFaces[(int)v.getTag()]);
                             dr.setBounds(0,0, dr.getIntrinsicWidth(),dr.getIntrinsicHeight());
 
-                            ImageSpan face = new ImageSpan(dr, ImageSpan.ALIGN_BASELINE);
+                            ImageSpan face = new ImageSpan(dr, ImageSpan.ALIGN_BOTTOM);
                             ssb.setSpan(face, startPosition, startPosition + faceName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                             //edtMessage.setCompoundDrawablesWithIntrinsicBounds(null, null, dr, null);
