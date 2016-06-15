@@ -1,7 +1,9 @@
 package com.vrv.litedood.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +14,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.SortedList;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 
@@ -71,7 +77,6 @@ public final class LiteDood {
 
         return output;
     }
-
 
     public static <T extends ItemModel> ArrayList<T> reorganizeGroups(ArrayList<T> items, Class TClazz) {
         if ((items == null) || (items.size() == 0)) return items;
@@ -776,8 +781,16 @@ public final class LiteDood {
         return result;
     }
 
-    private static final int H_COUNT = 7;
-    private static final int V_COUNT= 3;
+    private static final int V_COUNT= 3;            //每个表情页显示三行表情
+    private static final int H_COUNT = 7;           //每行表情显示七个
+
+    private final static String[] FACECODES = {
+            "[微笑]", "[色]", "[得意]", "[流泪]", "[害羞]", "[闭嘴]", "[惊讶]",
+            "[呲牙]", "[调皮]", "[发怒]", "[尴尬]", "[睡]", "[抓狂]", "[偷笑]",
+            "[白眼]", "[左哼哼]", "[流汗]", "[疑问]", "[衰]", "[敲打]", "[疯了]",
+            "[晕]", "[不高兴]", "[再见]", "[抠鼻]", "[鼓掌]", "[右哼哼]", "[鄙视]",
+            "[委屈]", "[阴险]", "[亲亲]", "[可怜]", "[傲慢]", "[嘘]", "[坏笑]"
+    };
 
     public static ArrayList<Bitmap[][]> getFacesEx() {
         final int ORI_WIDTH = 3168;      //all pixel
@@ -802,18 +815,16 @@ public final class LiteDood {
             }
             result.add(page);
         }
-
         return result;
-
     }
 
     public static ArrayList<Bitmap[]> getFaces() {
 
         if (mFacePages != null) return mFacePages;
 
-        final int ORI_WIDTH = 1120;      //all pixel
+        final int ORI_WIDTH = 1120;             //totle width pixel
         final int WIDTH = 32;
-        final int HEIGHT = 32;//one face's width and height
+        final int HEIGHT = 32;                  //one face's width and height pixel
 
         int count = 0;
 
@@ -833,14 +844,6 @@ public final class LiteDood {
         }
         return mFacePages;
     }
-
-    final static String[] FACECODES = {
-            "[微笑]", "[色]", "[得意]", "[流泪]", "[害羞]", "[闭嘴]", "[惊讶]",
-            "[呲牙]", "[调皮]", "[发怒]", "[尴尬]", "[睡]", "[抓狂]", "[偷笑]",
-            "[白眼]", "[左哼哼]", "[流汗]", "[疑问]", "[衰]", "[敲打]", "[疯了]",
-            "[晕]", "[不高兴]", "[再见]", "[抠鼻]", "[鼓掌]", "[右哼哼]", "[鄙视]",
-            "[委屈]", "[阴险]", "[亲亲]", "[可怜]", "[傲慢]", "[嘘]", "[坏笑]"
-    };
 
     public static ArrayList<String[]> getFaceCode() {
 
@@ -877,5 +880,38 @@ public final class LiteDood {
         }
         return result;
 
+    }
+
+    /**
+     * Getting All Images Path
+     *
+     * @param activity
+     * @return ArrayList with images Path
+     * from http://stackoverflow.com/questions/4195660/get-list-of-photo-galleries-on-android
+     */
+    public static ArrayList<String> getAllShownImagesPath(Activity activity) {
+        Uri uri;
+        Cursor cursor;
+        int column_index_data, column_index_folder_name;
+        ArrayList<String> listOfAllImages = new ArrayList<String>();
+        String absolutePathOfImage = null;
+        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = { MediaStore.MediaColumns.DATA,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+
+        cursor = activity.getContentResolver().query(uri, projection, null,
+                null, null);
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+//        column_index_folder_name = cursor
+//                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+//        MediaStore.Images.Media.DATE_MODIFIED
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+
+            listOfAllImages.add(absolutePathOfImage);
+        }
+        return listOfAllImages;
     }
 }

@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -103,6 +104,8 @@ public class LiteDoodMessageProvider extends ContentProvider {
                 result = db.query(MessageDTO.TABLE_NAME, projection, selection, selectionArgs, null, null, MessageDTO.TABLE_MESSAGE_COLUMN_SENDTIME);
                 break;
             }
+            default:
+
         }
 
         return result;
