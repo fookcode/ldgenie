@@ -2,6 +2,7 @@ package com.vrv.litedood.ui.activity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -273,6 +275,8 @@ public class MessageActivity extends AppCompatActivity {
         final ViewPager pager = (ViewPager)findViewById(R.id.vpMessageAttachment);
         MessageFaceFragment messageFaceFragment = new MessageFaceFragment();
         MessageImageFragment messageImageFragment = new MessageImageFragment();
+        messageImageFragment.setParam(getIntent().getLongExtra(ID_USER_ID, 0), this);
+
         fragments.add(messageFaceFragment);
         fragments.add(messageImageFragment);
         FragmentManager fm = getSupportFragmentManager();
@@ -463,6 +467,43 @@ public class MessageActivity extends AppCompatActivity {
         return  result;
 
     }
+
+//    public void choosePic()
+//    {
+//
+//        final CharSequence[] items = {"拍照上传", "从相册上传", "取消"};
+//
+//        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle("添加相片")
+//                .setItems(items, new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int item) {
+//                        int RESULT_OK_CAMERA = 1;
+//                        int RESULT_OK_ALBUM = 2;
+//
+//                        if(item == 0)  //拍照
+//                        {
+//                            Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+//                            startActivityForResult(getImageByCamera, RESULT_OK_CAMERA);
+//                        }
+//                        else if(item == 1)//相册
+//                        {
+//                            Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
+//                            getImage.addCategory(Intent.CATEGORY_OPENABLE);
+//                            getImage.setType("image/jpeg");
+//                            startActivityForResult(getImage, RESULT_OK_ALBUM);
+//                        }
+//                        else
+//                        {
+//                            dialog.dismiss();
+//                        }
+//
+//
+//                    }
+//                }).create();
+//        dialog.show();
+//    }
 
     public class MessageRequestHandler extends RequestHandler {
         private int nType;

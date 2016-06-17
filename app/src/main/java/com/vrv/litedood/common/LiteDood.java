@@ -2,6 +2,8 @@ package com.vrv.litedood.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,18 +18,23 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.SortedList;
 import android.text.format.DateUtils;
 import android.text.format.Time;
+import android.util.Log;
 
 import com.vrv.imsdk.model.ItemModel;
+import com.vrv.imsdk.model.ListModel;
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -717,6 +724,21 @@ public final class LiteDood {
         return result;
     }
 
+    public static Bitmap getScaleBitmapFromFile(String bitmapFilePath) {
+        final int width = 240, height = 320;
+
+        Bitmap result = null;
+        if ((null != bitmapFilePath) && (!bitmapFilePath.isEmpty())) {
+            File bitmapFile = new File(bitmapFilePath);
+            if ((!bitmapFile.isDirectory()) && (bitmapFile.exists())) {
+                result = BitmapFactory.decodeFile(bitmapFilePath);
+                if (result != null)
+                    result = Bitmap.createScaledBitmap(result, width, height, false);
+            }
+        }
+        return result;
+    }
+
     public static String convertTimeForChat(Context context, long sendTime) {
         String result = "";
         Time time = new Time();
@@ -887,31 +909,67 @@ public final class LiteDood {
      *
      * @param activity
      * @return ArrayList with images Path
-     * from http://stackoverflow.com/questions/4195660/get-list-of-photo-galleries-on-android
+     * @from http://stackoverflow.com/questions/4195660/get-list-of-photo-galleries-on-android
      */
-    public static ArrayList<String> getAllShownImagesPath(Activity activity) {
+    public static ArrayList<HashMap<String, Object>> getLastImagesPath(Activity activity) {
         Uri uri;
         Cursor cursor;
-        int column_index_data, column_index_folder_name;
-        ArrayList<String> listOfAllImages = new ArrayList<String>();
+        int column_index_data, column_index_modified_date;
+        ArrayList<HashMap<String, Object>> listOfAllImages = new ArrayList<>();
         String absolutePathOfImage = null;
+        long modifiedDate = 0;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = { MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_MODIFIED};
 
         cursor = activity.getContentResolver().query(uri, projection, null,
                 null, null);
-
+//        if (cursor.getCount() )
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 //        column_index_folder_name = cursor
 //                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-//        MediaStore.Images.Media.DATE_MODIFIED
+        column_index_modified_date = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
         while (cursor.moveToNext()) {
             absolutePathOfImage = cursor.getString(column_index_data);
+            modifiedDate = cursor.getLong(column_index_modified_date);
+            HashMap<String, Object> file = new HashMap<>();
+            file.put("path", absolutePathOfImage);
+            file.put("date", modifiedDate);
+            //Log.v(LiteDood.APP_ID, String.valueOf(modifiedDate));
+            listOfAllImages.add(file);
 
-            listOfAllImages.add(absolutePathOfImage);
         }
+        Collections.sort(listOfAllImages, new Comparator<HashMap<String, Object>>() {
+            @Override
+            public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
+                int result = 0;
+                if (((long)lhs.get("date") - (long)rhs.get("date")) < 0) {
+                    result = 1;
+                }
+                else if (((long)lhs.get("date") - (long)rhs.get("date")) > 0) {
+                    result = -1;
+                }
+                return result;
+            }
+        });
+
         return listOfAllImages;
+    }
+
+    public static String getRealPathFromUri(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }

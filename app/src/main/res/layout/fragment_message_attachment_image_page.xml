@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/ivImage1"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="image1"
+            android:layout_marginRight="2dp"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id = "@+id/cbImageSelector1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:tag="check1"
+            android:layout_margin="@dimen/common_margin_max" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/ivImage2"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="image2"
+            android:layout_marginRight="2dp"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id = "@+id/cbImageSelector2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:tag="check2"
+            android:layout_margin="@dimen/common_margin_max" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivImage3"
+        android:scaleType="centerInside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="image3"
+        android:layout_marginRight="2dp"/>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id = "@+id/cbImageSelector3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:tag="check3"
+            android:layout_margin="@dimen/common_margin_max" />
+    </RelativeLayout>
+
+</LinearLayout>

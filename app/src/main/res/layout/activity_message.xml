@@ -87,6 +87,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_message_camera"
                 android:clickable="true"
+                android:visibility="gone"
                 />
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/btnMessageFile"
@@ -95,6 +96,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/ic_message_file"
                 android:clickable="true"
+                android:visibility="gone"
                 />
 
         </android.support.v7.widget.LinearLayoutCompat>
