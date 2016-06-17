@@ -925,35 +925,33 @@ public final class LiteDood {
                 MediaStore.Images.Media.DATE_MODIFIED};
 
         cursor = activity.getContentResolver().query(uri, projection, null,
-                null, null);
-//        if (cursor.getCount() )
+                null, MediaStore.Images.Media.DATE_MODIFIED + " DESC");
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-//        column_index_folder_name = cursor
-//                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-        column_index_modified_date = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
+//        column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+//        column_index_modified_date = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
         while (cursor.moveToNext()) {
             absolutePathOfImage = cursor.getString(column_index_data);
-            modifiedDate = cursor.getLong(column_index_modified_date);
+            //modifiedDate = cursor.getLong(column_index_modified_date);
             HashMap<String, Object> file = new HashMap<>();
             file.put("path", absolutePathOfImage);
-            file.put("date", modifiedDate);
+            //file.put("date", modifiedDate);
             //Log.v(LiteDood.APP_ID, String.valueOf(modifiedDate));
             listOfAllImages.add(file);
 
         }
-        Collections.sort(listOfAllImages, new Comparator<HashMap<String, Object>>() {
-            @Override
-            public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
-                int result = 0;
-                if (((long)lhs.get("date") - (long)rhs.get("date")) < 0) {
-                    result = 1;
-                }
-                else if (((long)lhs.get("date") - (long)rhs.get("date")) > 0) {
-                    result = -1;
-                }
-                return result;
-            }
-        });
+//        Collections.sort(listOfAllImages, new Comparator<HashMap<String, Object>>() {
+//            @Override
+//            public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
+//                int result = 0;
+//                if (((long)lhs.get("date") - (long)rhs.get("date")) < 0) {
+//                    result = 1;
+//                }
+//                else if (((long)lhs.get("date") - (long)rhs.get("date")) > 0) {
+//                    result = -1;
+//                }
+//                return result;
+//            }
+//        });
 
         return listOfAllImages;
     }
