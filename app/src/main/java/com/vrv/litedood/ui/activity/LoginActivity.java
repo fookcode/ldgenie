@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.vrv.imsdk.SDKManager;
+import com.vrv.imsdk.VIMClient;
 import com.vrv.imsdk.model.Contact;
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
+import com.vrv.litedood.common.LiteDood;
 import com.vrv.litedood.common.sdk.action.RequestHandler;
 import com.vrv.litedood.common.sdk.action.RequestHelper;
 
@@ -24,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private final static String TAG = LoginActivity.class.getSimpleName();
 
 
-    private final static String AREA_CODE = "vrv";
-    private final static String NATIONAL_CODE = "0086";
+    public final static String AREA_CODE = "vrv";
+    public final static String NATIONAL_CODE = "0086";
 
     public enum HandlerType  {TYPE_LOGIN, TYPE_AUTOLOGIN, TYPE_GET_MYSELF};
     private final static String RELOGIN = "relogin";
@@ -50,12 +52,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent intent = getIntent();
         if (!intent.getBooleanExtra(RELOGIN, false)) {
             boolean loginResult = RequestHelper.autoLogin(new LoginRequestHandler(this, HandlerType.TYPE_AUTOLOGIN));
             if (!loginResult) {
                 setLoginContent();
-                Log.v(TAG, "SDK autoLogin()调用失败");
+                Log.e(TAG, "SDK autoLogin()调用失败");
             }
         }
         else {

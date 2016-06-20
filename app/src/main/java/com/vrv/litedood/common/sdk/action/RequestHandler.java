@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.vrv.litedood.LiteDoodApplication;
 import com.vrv.litedood.R;
-import com.vrv.litedood.ui.activity.MainActivity;
 
 
 /**
@@ -31,16 +30,16 @@ public abstract class RequestHandler extends Handler {
     public static final int DIS_PRO = 3;
 
     private static AlertDialog dialog;
-    private Context context;
+    private Context mContext;
 
     public RequestHandler(){};
 
     public RequestHandler(Context context) {
-        this.context = context;
+        this.mContext = context;
     };
 
-    public Context getContext() {
-        return context;
+    public Context getmContext() {
+        return mContext;
     }
 
     @Override
@@ -57,8 +56,8 @@ public abstract class RequestHandler extends Handler {
                 break;
             case SHOW_PRO:
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                AppCompatActivity activity = (AppCompatActivity)context;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getmContext());
+                AppCompatActivity activity = (AppCompatActivity) mContext;
                 View view = activity.getLayoutInflater().inflate(R.layout.item_busy_indicator, null);
                 dialog = builder.setView(view).show();
                 dialog.getWindow().setLayout(160, 160);
@@ -94,6 +93,10 @@ public abstract class RequestHandler extends Handler {
                 message = "加友失败，对方已经是您的好友";
                 Toast.makeText(LiteDoodApplication.getMainActivity(), code + ":" + message, Toast.LENGTH_SHORT).show();
                 break;
+            case 386:
+                message ="发送失败";
+                Toast.makeText(mContext, code + ":" + message, Toast.LENGTH_SHORT).show();
+                break;
             default:
                 if ((null == message) || (message.isEmpty())) message = "出现一个未知错误";
                 Toast.makeText(LiteDoodApplication.getMainActivity(), code + ":" + message, Toast.LENGTH_SHORT).show();
@@ -115,7 +118,7 @@ public abstract class RequestHandler extends Handler {
 //        @NonNull
 //        @Override
 //        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getmContext());
 //            View view = getActivity().getLayoutInflater().inflate(R.layout.item_busy_indicator, null);
 //           // Log.v(TAG, String.valueOf(params.height) + "   " + String.valueOf(params.width));
 //            builder.setView(view);

@@ -72,10 +72,13 @@ public class ChatAdapter extends BaseAdapter {
         Chat chat = chatList.get(position);
         //Log.v(TAG, chat.toString());
 
-        //设置示读指示
+        //设置未读指示
         int unReadNum = chat.getUnReadNum();
         if (unReadNum > 0) {
-            viewHolder.count.setText(String.valueOf(unReadNum));
+            if (unReadNum > 99) {
+                viewHolder.count.setText("..");
+            }
+            else viewHolder.count.setText(String.valueOf(unReadNum));
             viewHolder.count.setVisibility(View.VISIBLE);
         }
         else if (viewHolder.count.getVisibility() == View.VISIBLE){

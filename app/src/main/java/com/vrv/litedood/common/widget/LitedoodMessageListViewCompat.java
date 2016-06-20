@@ -45,10 +45,10 @@ public class LitedoodMessageListViewCompat extends ListViewCompat {
 //        Rect rect= new Rect();
 //        getWindowVisibleDisplayFrame(rect);
 //
-//        int contentViewHeight = ((AppCompatActivity)getContext()).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();//顶层GroupView的高度，不含status和title，此例中也就是ListView的父对象
+//        int contentViewHeight = ((AppCompatActivity)getmContext()).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();//顶层GroupView的高度，不含status和title，此例中也就是ListView的父对象
 //        Log.v(TAG, "Android Content View height: " + String.valueOf(contentViewHeight));
 //
-//        if (((AppCompatActivity)getContext()).getWindow().getDecorView() == this.getRootView()) {
+//        if (((AppCompatActivity)getmContext()).getWindow().getDecorView() == this.getRootView()) {
 //            Log.v(TAG, "getWindow().getDecorView() == View.getRootView()");
 //        }
 //        int keyboardHeight = this.getRootView().getHeight() - (((LinearLayoutCompat)this.getParent()).getHeight() + rect.top);

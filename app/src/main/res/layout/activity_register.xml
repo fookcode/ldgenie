@@ -44,8 +44,10 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnRegisterNoMask"
             android:layout_width="32dp"
-            android:layout_height="wrap_content"
+            android:textColor="@color/White"
+            android:layout_height="32dp"
             android:text="*"
+            android:background="@drawable/sl_common_button"
             android:layout_gravity="center_vertical"/>
     </android.support.v7.widget.LinearLayoutCompat>
     <android.support.v7.widget.AppCompatButton
@@ -55,5 +57,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/common_margin_max"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:background="@drawable/sl_login_button"
+        android:textColor="@color/White"
         android:text="注    册"/>
 </LinearLayout>

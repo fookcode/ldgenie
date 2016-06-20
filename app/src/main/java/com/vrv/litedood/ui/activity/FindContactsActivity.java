@@ -45,6 +45,7 @@ public class FindContactsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.tbFindContacts);
         toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setTitle("添加好友/群");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

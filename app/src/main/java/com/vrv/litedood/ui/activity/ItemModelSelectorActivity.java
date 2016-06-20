@@ -54,6 +54,7 @@ public class ItemModelSelectorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_model_selector);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tbItemModelSelector);
         toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setTitle("发起群聊");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

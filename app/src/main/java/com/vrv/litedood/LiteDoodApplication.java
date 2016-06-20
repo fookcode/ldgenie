@@ -25,9 +25,7 @@ public class LiteDoodApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mAppContext = this;
-
-        VIMClient.init(mAppContext, LiteDood.APP_ID);
-
+        VIMClient.init(this, LiteDood.APP_ID);
 
     }
 

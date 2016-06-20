@@ -10,20 +10,25 @@
     <RelativeLayout
         android:id="@+id/rlMessageAttachmentImageAction"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_padding_max">
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnMessageAttachmentOpenAlbum"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_alignParentLeft="true"
             android:text="打开相册"
+            android:textColor="@color/White"
+            android:background="@drawable/sl_common_button"
             android:layout_marginLeft="@dimen/common_margin_max"/>
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnMessageAttachmentSendImage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
-            android:text="发送"
+            android:text="发送图片"
+            android:textColor="@color/White"
+            android:background="@drawable/sl_common_button"
             android:layout_marginRight="@dimen/common_margin_max"/>
     </RelativeLayout>
 </LinearLayout>

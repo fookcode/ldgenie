@@ -365,7 +365,7 @@ public class MessageActivity extends AppCompatActivity {
         int count = getIntent().getIntExtra(ID_UNREAD_MESSAGE_NUMBER, 0);
         RequestHelper.getChatHistory(getIntent().getLongExtra(ID_USER_ID, 0),
                 0,
-                getShowedMessageCount(count),
+                getShowedMessageCount(count > DEFAULT_MESSAGE_COUNT ? DEFAULT_MESSAGE_COUNT : count),
                 new MessageRequestHandler(TYPE_HANDLER_GET_HISTORY_MESSAGE));
     }
 
